@@ -2,7 +2,7 @@ package persistence;
 
 import entities.AfiliacionEmpresa;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface AfiliacionRepository extends CrudRepository<AfiliacionEmpresa, Long>
-{
-}
+@Repository
+public interface AfiliacionRepository extends CrudRepository<AfiliacionEmpresa, Long> {}

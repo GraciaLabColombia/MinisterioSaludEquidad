@@ -1,9 +1,12 @@
 package builder;
 
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import annotation.ServiceConfig;
+import dto.RequestBodyDTO;
+import dto.RequestDTO;
+import dto.RequestFormPostDTO;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -11,47 +14,74 @@ import java.util.regex.Pattern;
 
 public class PropertiesBuilder
 {
-    public static StringBuilder buildUrl(Properties config_properties, String uri)
+    public static RequestBodyDTO getAnnotationFeatures(String body, String method_name, Class<?> class_from_method, Class<?>... parameters) throws NoSuchMethodException
     {
-        StringBuilder builder = new StringBuilder();
-        builder.append(config_properties.getProperty("protocol"))
-                .append(":")
-                .append("//")
-                .append(config_properties.getProperty("domain"))
-                .append(":")
-                .append(config_properties.getProperty("port"))
-                .append(":")
-                .append(config_properties.getProperty(uri));
+        Method method = class_from_method.getMethod(method_name, parameters);
+        ServiceConfig mapping = method.getAnnotation(ServiceConfig.class);
 
-        return builder;
+        RequestBodyDTO post_request = new RequestBodyDTO();
+        post_request.setHeaders(getHeaders(mapping));
+        post_request.setUrl(buildUrl(mapping).toString());
+        post_request.setBody(body);
+
+        return post_request;
 
     }
 
-    public static Map<?,?> getMapFromStringHeaders(String method_name, Class<?> class_from_method) throws NoSuchMethodException
+    public static RequestFormPostDTO getAnnotationFeatures(String method_name, Class<?> class_from_method, Class<?>... params) throws NoSuchMethodException
     {
-        Map headers_map = Collections.EMPTY_MAP;
+        Method method = class_from_method.getMethod(method_name, params);
+        ServiceConfig mapping = method.getAnnotation(ServiceConfig.class);
+
+        RequestFormPostDTO post_form_request = new RequestFormPostDTO();
+        post_form_request.setHeaders(getHeaders(mapping));
+        post_form_request.setUrl(buildUrl(mapping).toString());
+        post_form_request.setParams(getParams(mapping));
+
+        return post_form_request;
+    }
+
+    public static RequestDTO getAnnotationFeaturesForGet(String method_name, Class<?> class_from_method, Class<?>... params) throws NoSuchMethodException
+    {
+        Method method = class_from_method.getMethod(method_name, params);
+        ServiceConfig mapping = method.getAnnotation(ServiceConfig.class);
+
+        RequestDTO get_request = new RequestDTO();
+        get_request.setHeaders(getHeaders(mapping));
+        get_request.setUrl(buildUrl(mapping).toString());
+
+        return get_request;
+    }
+
+    private static Map getHeaders(ServiceConfig config)
+    {
+        Map<String, String> headers_map = new HashMap<String, String>();
         Pattern pattern = Pattern.compile("(.+)?\\=(.+)");
-        Method method = class_from_method.getMethod(method_name);
-        RequestMapping mapping = method.getAnnotation(RequestMapping.class);
-        for(String header: mapping.headers())
-        {
-            Matcher matcher = pattern.matcher(header);
-            if(matcher.find())
-            {
-                headers_map.put(matcher.group(1), matcher.group(2));
-            }
-        }
-        for(Annotation[] annotations: method.getParameterAnnotations())
-        {
-            for(Annotation annotation: annotations)
-            {
-                if (annotation instanceof RequestHeader)
-                {
-                    RequestHeader header = (RequestHeader) annotation;
-                    headers_map.put(header.name(), header.value()) ;
-                }
-            }
-        }
+        Arrays.asList(config.headers()).forEach(header -> {Matcher matcher = pattern.matcher(header); if(matcher.find()) headers_map.put(matcher.group(1), matcher.group(2));});
         return headers_map;
+    }
+
+    private static ArrayList<NameValuePair> getParams(ServiceConfig config)
+    {
+        ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+        Pattern pattern = Pattern.compile("(.+)?\\=(.+)");
+        Arrays.asList(config.params()).forEach(param -> {Matcher matcher = pattern.matcher(param); if(matcher.find()) postParameters.add(new BasicNameValuePair(matcher.group(1), matcher.group(2)));});
+
+        return postParameters;
+    }
+
+    private static StringBuilder buildUrl(ServiceConfig config)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append(config.protocol())
+                .append(":")
+                .append("//")
+                .append(config.domain())
+                .append(":")
+                .append(config.port())
+                .append(config.uri());
+
+        return builder;
+
     }
 }

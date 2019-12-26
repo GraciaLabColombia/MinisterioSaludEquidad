@@ -1,20 +1,19 @@
 package app;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import annotation.ServiceConfig;
 import builder.PropertiesBuilder;
 import controller.BaseController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestMethod;
 import dto.RequestBodyDTO;
 import dto.RequestFormPostDTO;
 import dto.ResponseMinSaludDTO;
 import dto.TokenDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMethod;
 import singleton.ConfiguracionSingleton;
 import utils.SisafitraConstant;
-
-import java.io.IOException;
-import java.lang.reflect.Method;
 
 public class Controller extends BaseController
 {

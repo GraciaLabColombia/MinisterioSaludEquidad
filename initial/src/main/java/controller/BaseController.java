@@ -12,6 +12,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import utils.SisafitraConstant;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -52,10 +53,10 @@ public class BaseController
             returning = gson.fromJson(json_string, type);
             Field statusCodeField;
             try {
-                statusCodeField = returning.getClass().getDeclaredField("status_code");
+                statusCodeField = returning.getClass().getDeclaredField(SisafitraConstant.STATUS_CODE);
             }catch(NoSuchFieldException ex)
             {
-                statusCodeField = returning.getClass().getSuperclass().getDeclaredField("status_code");
+                statusCodeField = returning.getClass().getSuperclass().getDeclaredField(SisafitraConstant.STATUS_CODE);
             }
             statusCodeField.setAccessible(true);
             statusCodeField.set(returning, response.getStatusLine().getStatusCode());

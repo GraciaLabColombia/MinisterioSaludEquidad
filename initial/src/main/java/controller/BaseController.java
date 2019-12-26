@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
@@ -20,8 +21,7 @@ import java.util.Map;
  */
 public class BaseController
 {
-    public <T> Object responseFromPostRequest(RequestBodyDTO request, Class<T> type) throws IOException
-    {
+    public <T> Object responseFromPostRequest(RequestBodyDTO request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
         Gson gson = new Gson();
         Object returning;
         HttpPost post = new HttpPost(request.getUrl());
@@ -31,13 +31,16 @@ public class BaseController
              CloseableHttpResponse response = httpClient.execute(post))
         {
             String json_string = EntityUtils.toString(response.getEntity());
-            returning =  gson.fromJson(json_string, type);
+            returning = gson.fromJson(json_string, type);
+            Field statusCodeField = returning.getClass().getDeclaredField("status_code");
+            statusCodeField.setAccessible(true);
+            statusCodeField.set(returning, response.getStatusLine().getStatusCode());
+
         }
         return returning;
     }
 
-    public <T> Object responseFromPostFormRequest(RequestFormPostDTO request, Class<T> type) throws IOException
-    {
+    public <T> Object responseFromPostFormRequest(RequestFormPostDTO request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
         Gson gson = new Gson();
         Object returning;
         HttpPost post = new HttpPost(request.getUrl());
@@ -48,12 +51,14 @@ public class BaseController
         {
             String json_string = EntityUtils.toString(response.getEntity());
             returning =  gson.fromJson(json_string, type);
+            Field statusCodeField = returning.getClass().getDeclaredField("status_code");
+            statusCodeField.setAccessible(true);
+            statusCodeField.set(returning, response.getStatusLine().getStatusCode());
         }
         return returning;
     }
 
-    public <T> Object responseFromGetRequest(String url, Map<String, String> headers, Class<T> type) throws IOException
-    {
+    public <T> Object responseFromGetRequest(String url, Map<String, String> headers, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
         Gson gson = new Gson();
         Object returning;
         HttpGet get = new HttpGet(url);
@@ -63,6 +68,9 @@ public class BaseController
         {
             String json_string = EntityUtils.toString(response.getEntity());
             returning = gson.fromJson(json_string, type);
+            Field statusCodeField = returning.getClass().getDeclaredField("status_code");
+            statusCodeField.setAccessible(true);
+            statusCodeField.set(returning, response.getStatusLine().getStatusCode());
         }
 
         return returning;

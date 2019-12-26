@@ -23,4 +23,14 @@ public class RequestDTO
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String toString() {
+        final String[] headers_string = {""};
+        this.headers.forEach((k,v)-> headers_string[0] += " " + k + " = " + v);
+        return "RequestDTO{" +
+                "headers:" + headers_string[0] +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

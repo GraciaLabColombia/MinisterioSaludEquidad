@@ -2,11 +2,16 @@ package dto;
 
 public class TokenDTO
 {
+    private int status_code;
     private String access_token;
 
     private String token_type;
 
     private int expires_in;
+
+    public int getStatus_code() {
+        return status_code;
+    }
 
     public String getAccess_token() {
         return access_token;
@@ -18,5 +23,15 @@ public class TokenDTO
 
     public int getExpires_in() {
         return expires_in;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenDTO{" +
+                "status_code=" + status_code +
+                ", access_token='" + access_token + '\'' +
+                ", token_type='" + token_type + '\'' +
+                ", expires_in=" + expires_in +
+                '}';
     }
 }

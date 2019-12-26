@@ -7,10 +7,11 @@ import dto.RequestBodyDTO;
 import dto.RequestFormPostDTO;
 import dto.ResponseMinSaludDTO;
 import dto.TokenDTO;
-import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
 import singleton.ConfiguracionSingleton;
-import utils.Contants;
+import utils.SisafitraConstant;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -21,6 +22,9 @@ public class Controller extends BaseController
 	{
 		ConfiguracionSingleton.getInstance();
 	}
+
+	Logger log = LoggerFactory.getLogger(this.getClass().getName());
+
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "Token", clientId = "9160f6412fad4b7fbc5f86d37a8dd680",
 			uri = "/token", headers = {"Content-Type=application/x-www-form-urlencoded"},
@@ -29,18 +33,28 @@ public class Controller extends BaseController
 			method = RequestMethod.POST)
 	public TokenDTO token()
 	{
-		TokenDTO response = null;;
+		TokenDTO response = null;
+		log.info("Token init");
 		try
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestFormPostDTO request_body = PropertiesBuilder.getAnnotationFeatures(method.getName(), this.getClass());
+			log.info("Token request: ".concat(request_body.toString()).concat(" | "));
 			response = (TokenDTO) super.responseFromPostFormRequest(request_body, TokenDTO.class);
+			log.info("Token response: ".concat(response.toString()));
 			ConfiguracionSingleton.getInstance().setToken(response);
-			ConfiguracionSingleton.getInstance().setAuthorization(Contants.BEARER.concat(response.getAccess_token()));
-		}catch (NoSuchMethodException | IOException e)
+			ConfiguracionSingleton.getInstance().setAuthorization(SisafitraConstant.BEARER.concat(response.getAccess_token()));
+		}catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
+		{
+			log.error("Response es invalido para el objeto TokenDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
+		{
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
+
 		return response;
 
 	}
@@ -56,13 +70,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -78,13 +99,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -100,13 +128,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -122,13 +157,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -144,13 +186,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -166,13 +215,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -188,13 +244,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -210,13 +273,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -232,13 +302,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -254,13 +331,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -276,13 +360,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -298,13 +389,20 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
 		{
 			e.printStackTrace();
+		}catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
+		{
+			e.printStackTrace();
 		}
+
 
 		return response;
 	}
@@ -320,10 +418,16 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(Contants.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException | IOException e)
+		{
+			e.printStackTrace();
+		} catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		} catch (NoSuchFieldException e)
 		{
 			e.printStackTrace();
 		}

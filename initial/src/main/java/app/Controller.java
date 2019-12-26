@@ -69,7 +69,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		}catch (NoSuchMethodException e)
@@ -98,7 +98,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -127,7 +127,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -156,7 +156,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -185,7 +185,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -214,7 +214,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -243,7 +243,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -272,7 +272,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -301,7 +301,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -330,7 +330,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -359,7 +359,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -388,7 +388,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
@@ -417,7 +417,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)

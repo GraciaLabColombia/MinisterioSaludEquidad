@@ -1,8 +1,7 @@
 package dto;
 
-public class ResponseMinSaludDTO
+public class ResponseMinSaludDTO extends ResponseDTO
 {
-    private int status_code;
     private int resultado;
 
     private String mensaje;
@@ -19,9 +18,5 @@ public class ResponseMinSaludDTO
 
     public String getCodigo() {
         return codigo;
-    }
-
-    public int getStatus_code() {
-        return status_code;
     }
 }

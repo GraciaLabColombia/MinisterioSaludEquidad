@@ -9,7 +9,6 @@ public class ConfiguracionSingleton
     private TokenDTO token;
     private String authorization;
 
-    // static method to create instance of Singleton class
     public static ConfiguracionSingleton getInstance()
     {
         if (configuracion == null)
@@ -21,7 +20,7 @@ public class ConfiguracionSingleton
     @Override
     protected Object clone() throws CloneNotSupportedException
     {
-        throw new CloneNotSupportedException("Can´t clone a singleton class");
+        throw new CloneNotSupportedException("Can't clone a singleton class");
     }
 
     public TokenDTO getToken() {
@@ -29,7 +28,9 @@ public class ConfiguracionSingleton
     }
 
     public void setToken(TokenDTO token) {
-        this.token = token;
+        if (this.token == null) {
+            this.token = token;
+        }
     }
 
     public String getAuthorization() {
@@ -37,6 +38,8 @@ public class ConfiguracionSingleton
     }
 
     public void setAuthorization(String authorization) {
-        this.authorization = authorization;
+        if (this.authorization == null) {
+            this.authorization = authorization;
+        }
     }
 }

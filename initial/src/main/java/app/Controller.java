@@ -39,7 +39,7 @@ public class Controller extends BaseController
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestFormPostDTO request_body = PropertiesBuilder.getAnnotationFeatures(method.getName(), this.getClass());
-			log.info("Token request: ".concat(request_body.toString()).concat(" | "));
+			log.info("Token request: ".concat(request_body.toString()));
 			response = (TokenDTO) super.responseFromPostFormRequest(request_body, TokenDTO.class);
 			log.info("Token response: ".concat(response.toString()));
 			ConfiguracionSingleton.getInstance().setToken(response);
@@ -73,15 +73,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		}catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -102,15 +102,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -131,15 +131,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -149,7 +149,7 @@ public class Controller extends BaseController
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "ConsultaEmpresaTrasladada", clientId = "147171ef46c44b41b77b2aaac10ae39b",
 			uri = "/ConsultaEmpresaTrasladada", headers = {"Content-Type=application/json"},
-			method = RequestMethod.POST)
+			method = RequestMethod.GET)
 	public ResponseMinSaludDTO consultaEmpresa(String authorization, String entity_body)
 	{
 		ResponseMinSaludDTO response = null;
@@ -160,15 +160,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -178,7 +178,7 @@ public class Controller extends BaseController
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "ConsultaEstructuraEmpresa", clientId = "d99d20985fde4150b924c8d0177691b6",
 			uri = "/ConsultaEstructuraEmpresa", headers = {"Content-Type=application/json"},
-			method = RequestMethod.POST)
+			method = RequestMethod.GET)
 	public ResponseMinSaludDTO consultaEstructuraEmpresa(String authorization, String entity_body)
 	{
 		ResponseMinSaludDTO response = null;
@@ -189,15 +189,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -218,15 +218,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -247,15 +247,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -276,15 +276,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -305,15 +305,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -334,15 +334,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -363,15 +363,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -392,15 +392,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		}catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 
@@ -421,15 +421,15 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
-		} catch (NoSuchMethodException | IOException e)
+		} catch (NoSuchMethodException e)
 		{
-			e.printStackTrace();
-		} catch (IllegalAccessException e)
+			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (NoSuchFieldException e)
+			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+		} catch (IOException e)
 		{
-			e.printStackTrace();
+			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
 		}
 
 		return response;

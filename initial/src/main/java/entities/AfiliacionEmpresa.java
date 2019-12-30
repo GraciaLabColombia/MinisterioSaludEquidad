@@ -14,85 +14,85 @@ public class AfiliacionEmpresa extends BaseEntity
     @Id
     @Column(name = "SRV_AFILIACION_EMPRESA_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private BigDecimal afiliacionEmpresaId;
+    private transient BigDecimal afiliacionEmpresaId;
 
     @Column(name = "EMPRE_NIT_DESCENT")
-    private String empreNitDescent;
+    private String ConsecutivoNITEmpleador;
 
     @Column(name = "EMPRE_TIPPERS")
-    private String empreTipPerson;
+    private String TipoPersona;
 
     @Column(name = "NAT_JURIDICA")
-    private String natJuridica;
+    private String NaturalezaJuridica;
 
     @Column(name = "TIPO_APORT")
-    private String tipoApor;
+    private String TipoAportante;
 
     @Column(name = "EMPRE_RAZSOC")
-    private String empreRazsoc;
+    private String RazonSocialEmpleador;
 
     @Column(name = "EMPRE_PERNAT_PRINOM")
-    private String emprePernatPriNom;
+    private String PrimerNombreEmpleador;
 
     @Column(name = "EMPRE_PERNAT_PRIAPE")
-    private String emprePernatPriApe;
+    private String PrimerApellidoEmpleador;
 
     @Column(name = "EMPRE_EMAIL")
-    private String empreEmail;
+    private String CorreoEmpleador;
 
     @Column(name = "EMPRE_CODACT")
-    private String empreCodact;
+    private String ActividadEconomica;
 
     @Column(name = "CLASE_APOR")
-    private String claseApor;
+    private String ClaseAportante;
 
     @Column(name = "TIPDOC_REPRE")
-    private String tipdoc_repre;
+    private String TipoDocumentoRepresentante;
 
     @Column(name = "ID_REPRE")
-    private String idRepre;
+    private String NumeroDocumentoRepresentante;
 
     @Column(name = "EMPRE_REPRE_PRINOM")
-    private String empreReprePriNom;
+    private String PrimerNombreRepresentante;
 
     @Column(name = "EMPRE_REPRE_PRIAPE")
-    private String empreReprePriApe;
+    private String PrimerApellidoRepresentante;
 
     @Column(name = "FECCREAARL")
-    private LocalDateTime fecCreaArl;
+    private LocalDateTime FechaAfiliacion;
 
     @Column(name = "EMPRE_COD_SEDEPRIM")
-    private String empreCodSedePrim;
+    private String CodigoSedeP;
 
     @Column(name = "EMPRE_NOM_SEDEPRIM")
-    private String empreNomSedePrim;
+    private String NombreSedeP;
 
     @Column(name = "EMPRE_MUNI_SEDEPRIM")
-    private String empreMuniSedePrim;
+    private String MunicipioSedeP;
 
     @Column(name = "EMPRE_DIR_SEDEPRIM")
-    private String empreDirSedePrim;
+    private String DireccionSedeP;
 
     @Column(name = "EMPRE_ZONA_SEDEPRIM")
-    private String empreZonaSedePrim;
+    private String ZonaSedeP;
 
     @Column(name = "EMPRE_TEL_SEDEPRIM")
-    private String empreTelSedePrim;
+    private String TelefonoSedeP;
 
     @Column(name = "EMPRE_EMAIL_SEDEPRIM")
-    private String empreEmailSedePrim;
+    private String CorreoSedeP;
 
     @Column(name = "TIPDOC_RESPO")
-    private String tipDocRespo;
+    private String TipoDocumentoResponsable;
 
     @Column(name = "ID_RESPO")
-    private String idRespo;
+    private String NumeroDocumentoResponsable;
 
     @Column(name = "RESPO_PRIAPE")
-    private String respoPriApe;
+    private String PrimerNombreResponsable;
 
     @Column(name = "RESPO_PRINOM")
-    private String respoPriNom;
+    private String PrimerApellidoResponsable;
 
     public BigDecimal getAfiliacionEmpresaId() {
         return afiliacionEmpresaId;
@@ -102,211 +102,211 @@ public class AfiliacionEmpresa extends BaseEntity
         this.afiliacionEmpresaId = afiliacionEmpresaId;
     }
 
-    public String getEmpreNitDescent() {
-        return empreNitDescent;
+    public String getConsecutivoNITEmpleador() {
+        return ConsecutivoNITEmpleador;
     }
 
-    public void setEmpreNitDescent(String empreNitDescent) {
-        this.empreNitDescent = empreNitDescent;
+    public void setConsecutivoNITEmpleador(String consecutivoNITEmpleador) {
+        ConsecutivoNITEmpleador = consecutivoNITEmpleador;
     }
 
-    public String getEmpreTipPerson() {
-        return empreTipPerson;
+    public String getTipoPersona() {
+        return TipoPersona;
     }
 
-    public void setEmpreTipPerson(String empreTipPerson) {
-        this.empreTipPerson = empreTipPerson;
+    public void setTipoPersona(String tipoPersona) {
+        TipoPersona = tipoPersona;
     }
 
-    public String getNatJuridica() {
-        return natJuridica;
+    public String getNaturalezaJuridica() {
+        return NaturalezaJuridica;
     }
 
-    public void setNatJuridica(String natJuridica) {
-        this.natJuridica = natJuridica;
+    public void setNaturalezaJuridica(String naturalezaJuridica) {
+        NaturalezaJuridica = naturalezaJuridica;
     }
 
-    public String getTipoApor() {
-        return tipoApor;
+    public String getTipoAportante() {
+        return TipoAportante;
     }
 
-    public void setTipoApor(String tipoApor) {
-        this.tipoApor = tipoApor;
+    public void setTipoAportante(String tipoAportante) {
+        TipoAportante = tipoAportante;
     }
 
-    public String getEmpreRazsoc() {
-        return empreRazsoc;
+    public String getRazonSocialEmpleador() {
+        return RazonSocialEmpleador;
     }
 
-    public void setEmpreRazsoc(String empreRazsoc) {
-        this.empreRazsoc = empreRazsoc;
+    public void setRazonSocialEmpleador(String razonSocialEmpleador) {
+        RazonSocialEmpleador = razonSocialEmpleador;
     }
 
-    public String getEmprePernatPriNom() {
-        return emprePernatPriNom;
+    public String getPrimerNombreEmpleador() {
+        return PrimerNombreEmpleador;
     }
 
-    public void setEmprePernatPriNom(String emprePernatPriNom) {
-        this.emprePernatPriNom = emprePernatPriNom;
+    public void setPrimerNombreEmpleador(String primerNombreEmpleador) {
+        PrimerNombreEmpleador = primerNombreEmpleador;
     }
 
-    public String getEmprePernatPriApe() {
-        return emprePernatPriApe;
+    public String getPrimerApellidoEmpleador() {
+        return PrimerApellidoEmpleador;
     }
 
-    public void setEmprePernatPriApe(String emprePernatPriApe) {
-        this.emprePernatPriApe = emprePernatPriApe;
+    public void setPrimerApellidoEmpleador(String primerApellidoEmpleador) {
+        PrimerApellidoEmpleador = primerApellidoEmpleador;
     }
 
-    public String getEmpreEmail() {
-        return empreEmail;
+    public String getCorreoEmpleador() {
+        return CorreoEmpleador;
     }
 
-    public void setEmpreEmail(String empreEmail) {
-        this.empreEmail = empreEmail;
+    public void setCorreoEmpleador(String correoEmpleador) {
+        CorreoEmpleador = correoEmpleador;
     }
 
-    public String getEmpreCodact() {
-        return empreCodact;
+    public String getActividadEconomica() {
+        return ActividadEconomica;
     }
 
-    public void setEmpreCodact(String empreCodact) {
-        this.empreCodact = empreCodact;
+    public void setActividadEconomica(String actividadEconomica) {
+        ActividadEconomica = actividadEconomica;
     }
 
-    public String getClaseApor() {
-        return claseApor;
+    public String getClaseAportante() {
+        return ClaseAportante;
     }
 
-    public void setClaseApor(String claseApor) {
-        this.claseApor = claseApor;
+    public void setClaseAportante(String claseAportante) {
+        ClaseAportante = claseAportante;
     }
 
-    public String getTipdoc_repre() {
-        return tipdoc_repre;
+    public String getTipoDocumentoRepresentante() {
+        return TipoDocumentoRepresentante;
     }
 
-    public void setTipdoc_repre(String tipdoc_repre) {
-        this.tipdoc_repre = tipdoc_repre;
+    public void setTipoDocumentoRepresentante(String tipoDocumentoRepresentante) {
+        TipoDocumentoRepresentante = tipoDocumentoRepresentante;
     }
 
-    public String getIdRepre() {
-        return idRepre;
+    public String getNumeroDocumentoRepresentante() {
+        return NumeroDocumentoRepresentante;
     }
 
-    public void setIdRepre(String idRepre) {
-        this.idRepre = idRepre;
+    public void setNumeroDocumentoRepresentante(String numeroDocumentoRepresentante) {
+        NumeroDocumentoRepresentante = numeroDocumentoRepresentante;
     }
 
-    public String getEmpreReprePriNom() {
-        return empreReprePriNom;
+    public String getPrimerNombreRepresentante() {
+        return PrimerNombreRepresentante;
     }
 
-    public void setEmpreReprePriNom(String empreReprePriNom) {
-        this.empreReprePriNom = empreReprePriNom;
+    public void setPrimerNombreRepresentante(String primerNombreRepresentante) {
+        PrimerNombreRepresentante = primerNombreRepresentante;
     }
 
-    public String getEmpreReprePriApe() {
-        return empreReprePriApe;
+    public String getPrimerApellidoRepresentante() {
+        return PrimerApellidoRepresentante;
     }
 
-    public void setEmpreReprePriApe(String empreReprePriApe) {
-        this.empreReprePriApe = empreReprePriApe;
+    public void setPrimerApellidoRepresentante(String primerApellidoRepresentante) {
+        PrimerApellidoRepresentante = primerApellidoRepresentante;
     }
 
-    public LocalDateTime getFecCreaArl() {
-        return fecCreaArl;
+    public LocalDateTime getFechaAfiliacion() {
+        return FechaAfiliacion;
     }
 
-    public void setFecCreaArl(LocalDateTime fecCreaArl) {
-        this.fecCreaArl = fecCreaArl;
+    public void setFechaAfiliacion(LocalDateTime fechaAfiliacion) {
+        FechaAfiliacion = fechaAfiliacion;
     }
 
-    public String getEmpreCodSedePrim() {
-        return empreCodSedePrim;
+    public String getCodigoSedeP() {
+        return CodigoSedeP;
     }
 
-    public void setEmpreCodSedePrim(String empreCodSedePrim) {
-        this.empreCodSedePrim = empreCodSedePrim;
+    public void setCodigoSedeP(String codigoSedeP) {
+        CodigoSedeP = codigoSedeP;
     }
 
-    public String getEmpreNomSedePrim() {
-        return empreNomSedePrim;
+    public String getNombreSedeP() {
+        return NombreSedeP;
     }
 
-    public void setEmpreNomSedePrim(String empreNomSedePrim) {
-        this.empreNomSedePrim = empreNomSedePrim;
+    public void setNombreSedeP(String nombreSedeP) {
+        NombreSedeP = nombreSedeP;
     }
 
-    public String getEmpreMuniSedePrim() {
-        return empreMuniSedePrim;
+    public String getMunicipioSedeP() {
+        return MunicipioSedeP;
     }
 
-    public void setEmpreMuniSedePrim(String empreMuniSedePrim) {
-        this.empreMuniSedePrim = empreMuniSedePrim;
+    public void setMunicipioSedeP(String municipioSedeP) {
+        MunicipioSedeP = municipioSedeP;
     }
 
-    public String getEmpreDirSedePrim() {
-        return empreDirSedePrim;
+    public String getDireccionSedeP() {
+        return DireccionSedeP;
     }
 
-    public void setEmpreDirSedePrim(String empreDirSedePrim) {
-        this.empreDirSedePrim = empreDirSedePrim;
+    public void setDireccionSedeP(String direccionSedeP) {
+        DireccionSedeP = direccionSedeP;
     }
 
-    public String getEmpreZonaSedePrim() {
-        return empreZonaSedePrim;
+    public String getZonaSedeP() {
+        return ZonaSedeP;
     }
 
-    public void setEmpreZonaSedePrim(String empreZonaSedePrim) {
-        this.empreZonaSedePrim = empreZonaSedePrim;
+    public void setZonaSedeP(String zonaSedeP) {
+        ZonaSedeP = zonaSedeP;
     }
 
-    public String getEmpreTelSedePrim() {
-        return empreTelSedePrim;
+    public String getTelefonoSedeP() {
+        return TelefonoSedeP;
     }
 
-    public void setEmpreTelSedePrim(String empreTelSedePrim) {
-        this.empreTelSedePrim = empreTelSedePrim;
+    public void setTelefonoSedeP(String telefonoSedeP) {
+        TelefonoSedeP = telefonoSedeP;
     }
 
-    public String getEmpreEmailSedePrim() {
-        return empreEmailSedePrim;
+    public String getCorreoSedeP() {
+        return CorreoSedeP;
     }
 
-    public void setEmpreEmailSedePrim(String empreEmailSedePrim) {
-        this.empreEmailSedePrim = empreEmailSedePrim;
+    public void setCorreoSedeP(String correoSedeP) {
+        CorreoSedeP = correoSedeP;
     }
 
-    public String getTipDocRespo() {
-        return tipDocRespo;
+    public String getTipoDocumentoResponsable() {
+        return TipoDocumentoResponsable;
     }
 
-    public void setTipDocRespo(String tipDocRespo) {
-        this.tipDocRespo = tipDocRespo;
+    public void setTipoDocumentoResponsable(String tipoDocumentoResponsable) {
+        TipoDocumentoResponsable = tipoDocumentoResponsable;
     }
 
-    public String getIdRespo() {
-        return idRespo;
+    public String getNumeroDocumentoResponsable() {
+        return NumeroDocumentoResponsable;
     }
 
-    public void setIdRespo(String idRespo) {
-        this.idRespo = idRespo;
+    public void setNumeroDocumentoResponsable(String numeroDocumentoResponsable) {
+        NumeroDocumentoResponsable = numeroDocumentoResponsable;
     }
 
-    public String getRespoPriApe() {
-        return respoPriApe;
+    public String getPrimerNombreResponsable() {
+        return PrimerNombreResponsable;
     }
 
-    public void setRespoPriApe(String respoPriApe) {
-        this.respoPriApe = respoPriApe;
+    public void setPrimerNombreResponsable(String primerNombreResponsable) {
+        PrimerNombreResponsable = primerNombreResponsable;
     }
 
-    public String getRespoPriNom() {
-        return respoPriNom;
+    public String getPrimerApellidoResponsable() {
+        return PrimerApellidoResponsable;
     }
 
-    public void setRespoPriNom(String respoPriNom) {
-        this.respoPriNom = respoPriNom;
+    public void setPrimerApellidoResponsable(String primerApellidoResponsable) {
+        PrimerApellidoResponsable = primerApellidoResponsable;
     }
 }

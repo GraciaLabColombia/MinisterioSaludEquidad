@@ -3,7 +3,6 @@ package app;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 import annotation.ServiceConfig;
@@ -80,20 +79,26 @@ public class Controller extends BaseController
 	{
 		try
 		{
-			Method method = new Object() {}.getClass().getEnclosingMethod();
-			int correctos = 0, incorrectos= 0;
 			List<AfiliacionEmpresa> afiliaciones = this.afiliacionService.afiliacionPorEstado(EstadosEnum.FALLIDO.name(), EstadosEnum.EN_TRAMITE.name());
+            int correctos = 0, incorrectos= 0;
+            Method method = new Object() {}.getClass().getEnclosingMethod();
 			for(AfiliacionEmpresa afiliacion: afiliaciones)
 			{
 				Gson gson = new Gson();
 				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(gson.toJson(afiliacion), method.getName(), this.getClass(), method.getParameterTypes());
 				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization == null ? ConfiguracionSingleton.getInstance().getAuthorization() : authorization);
-                ResponseMinSaludDTO response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
-				afiliacion.setEstadoMin(new BigDecimal(2));
-				this.afiliacionService.add(afiliacion);
+                try{ResponseMinSaludDTO response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);}
+                catch (IllegalAccessException | NoSuchFieldException e)
+                {
+                    log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+                    //TODO save in log table (i dont have access for these feature now (12/30/2019))
+                    incorrectos++;
+                }
+                afiliacion.setEstadoMin(new BigDecimal(2));//TODO getIdForState
+                correctos++;
 			}
 
-            AfiliacionResponseDTO response = new AfiliacionResponseDTO();
+            CountResponseDTO response = new CountResponseDTO();
 			response.setCorrectos(correctos);
 			response.setIncorrecto(incorrectos);
 			response.setTotal(afiliaciones.size());
@@ -103,20 +108,17 @@ public class Controller extends BaseController
 		}catch (NoSuchMethodException e)
 		{
 			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
-		}catch (IllegalAccessException | NoSuchFieldException e)
-		{
-			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
-		} catch (IOException e)
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}catch (IOException e)
 		{
 			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (MinSaludBusinessException e)
 		{
 			log.error("Error de negocio. ERROR: ".concat(e.getMessage()));
             return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
-
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-	}
+    }
 
 	@PostMapping(path = "/InicioRelacionLaboralARL", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",

@@ -1,6 +1,6 @@
 package dto;
 
-public class AfiliacionResponseDTO
+public class CountResponseDTO
 {
     private int total;
 

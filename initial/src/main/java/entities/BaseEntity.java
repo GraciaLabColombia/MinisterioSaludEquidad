@@ -7,35 +7,35 @@ import java.time.LocalDateTime;
 public class BaseEntity
 {
     @Column(name = "EMPRE_FORM")
-    private String empreForm;
+    private transient String empre_form;
 
     @Column(name = "TOKEN_MIN")
-    private String tokenMin;
+    private transient String tokenMin;
 
     @Column(name = "FECCAPTURA")
-    private LocalDateTime fechaCaptura;
+    private transient LocalDateTime fechaCaptura;
 
     @Column(name = "FECREPORTE")
-    private LocalDateTime  fechaReporte;
+    private transient LocalDateTime  fechaReporte;
 
     @Column(name = "FECRESPUESTA")
-    private LocalDateTime  fechaRespuesta;
+    private transient LocalDateTime  fechaRespuesta;
 
     @Column(name = "ESTADO_MIN")
-    private BigDecimal estadoMin;
+    private transient BigDecimal estadoMin;
 
     @Column(name = "EMPRE_TIPDOC")
-    private String empreTipDoc;
+    private String TipoDocumentoEmpleador;
 
     @Column(name = "EMPRE_ID")
-    private String empreId;
+    private String NumeroDocumentoEmpleador;
 
-    public String getEmpreForm() {
-        return empreForm;
+    public String getEmpre_form() {
+        return empre_form;
     }
 
-    public void setEmpreForm(String empreForm) {
-        this.empreForm = empreForm;
+    public void setEmpre_form(String empre_form) {
+        this.empre_form = empre_form;
     }
 
     public String getTokenMin() {
@@ -78,19 +78,19 @@ public class BaseEntity
         this.estadoMin = estadoMin;
     }
 
-    public String getEmpreTipDoc() {
-        return empreTipDoc;
+    public String getTipoDocumentoEmpleador() {
+        return TipoDocumentoEmpleador;
     }
 
-    public void setEmpreTipDoc(String empreTipDoc) {
-        this.empreTipDoc = empreTipDoc;
+    public void setTipoDocumentoEmpleador(String tipoDocumentoEmpleador) {
+        TipoDocumentoEmpleador = tipoDocumentoEmpleador;
     }
 
-    public String getEmpreId() {
-        return empreId;
+    public String getNumeroDocumentoEmpleador() {
+        return NumeroDocumentoEmpleador;
     }
 
-    public void setEmpreId(String empreId) {
-        this.empreId = empreId;
+    public void setNumeroDocumentoEmpleador(String numeroDocumentoEmpleador) {
+        NumeroDocumentoEmpleador = numeroDocumentoEmpleador;
     }
 }

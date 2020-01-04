@@ -26,9 +26,9 @@ public class Application {
 
 		Controller controller = new Controller();
 		Object response = controller.token();
-		//if(response instanceof TokenDTO) {
+		if(response instanceof TokenDTO) {
 			controller.afiliacionARL();
-		//}
+		}
 
 	}
 

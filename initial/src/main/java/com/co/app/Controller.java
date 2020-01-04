@@ -9,6 +9,8 @@ import com.co.annotation.ServiceConfig;
 import com.co.builder.PropertiesBuilder;
 import com.co.dto.*;
 import com.co.persistence.AfiliacionRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.co.controller.BaseController;
 import com.co.entities.AfiliacionEmpresa;
@@ -30,18 +32,18 @@ import com.co.utils.SisafitraConstant;
 @RequestMapping("/")
 public class Controller extends BaseController
 {
-	@Autowired
+    @Autowired
 	private AfiliacionService afiliacionService;
+
+	String authorization;
 
 	public Controller()
 	{
-		ConfiguracionSingleton.getInstance();
 		this.afiliacionService = new AfiliacionService();
 	}
 
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
-	@Autowired
 	@PostMapping(path = "/token", consumes = "application/x-www-form-urlencoded", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "Token", clientId = "9160f6412fad4b7fbc5f86d37a8dd680",
@@ -51,7 +53,7 @@ public class Controller extends BaseController
 			method = RequestMethod.POST)
 	public Object token()
 	{
-		Object a = this.afiliacionService;
+        //Object a = this.afiliacionService;
 		Object response = null;
 		log.info("Token init");
 		try
@@ -62,6 +64,7 @@ public class Controller extends BaseController
 			response =  super.responseFromPostFormRequest(request_body, TokenDTO.class);
 			log.info("Token response: ".concat(response.toString()));
 			if(response instanceof TokenDTO) {
+			    authorization = ((TokenDTO)response).getAccess_token();
 				ConfiguracionSingleton.getInstance().setToken((TokenDTO)response);
 				ConfiguracionSingleton.getInstance().setAuthorization(SisafitraConstant.BEARER.concat(((TokenDTO)response).getAccess_token()));
 			}
@@ -98,9 +101,8 @@ public class Controller extends BaseController
 			for(AfiliacionEmpresa afiliacion: afiliaciones)
 			{
 				log.info("Afiliacion ID: ".concat(afiliacion.getAfiliacionEmpresaId().toPlainString()));
-				Gson gson = new Gson();
-				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(gson.toJson(afiliacion), method.getName(), this.getClass(), method.getParameterTypes());
-				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION,  ConfiguracionSingleton.getInstance().getAuthorization());
+				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(afiliacion), method.getName(), this.getClass(), method.getParameterTypes());
+				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION,  "HOJnVuseiou2U5KQ79dNXSp96r3wNf7f2Y0ULb7b-nrDl4WaHFEGB8nS6KnHcPueawDvePT1DPly6SrXH7e3__cbl1vsSAGtCBG8zgFghu1RTHN7Tnax9r-swHY9N85ecDEfQ8DnHB02znkT9hkbVgcJ79xqDRpQjQZEtbswvvaMjhXANwVkR3-O4qEzf1G2r_e2iDmivaPaJWeVJpG6qvP8KmuCRzrY63fVchwg_AUYugy7xmqxnedjOQ-V3VRFnc8OYo_pQo7M7y8oLWiVk50cwOJQsYd7ONi7yxZ7jn7I0QCGEnMZtgKhG-Ajk6Ocl72Ayxrz4Zmg86QSB_oiQJtLa8p-E_9zu3QZyB98UtZgprOSstI3T5gAd4L754yd");
 				log.info("Afiliacion request: ".concat(request_body.toString()));
                 try{
 					Object response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);

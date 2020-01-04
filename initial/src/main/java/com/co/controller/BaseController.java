@@ -1,6 +1,8 @@
 package com.co.controller;
 
 import com.co.dto.ErrorDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.co.dto.RequestBodyDTO;
 import com.co.dto.RequestFormPostDTO;
@@ -44,6 +46,12 @@ public class BaseController
         return sendRequest(get, type);
     }
 
+
+    public String mapperBody(Object object) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(object);
+    }
+
     private <T> Object sendRequest(HttpUriRequest request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
         Gson gson = new Gson();
         Object returning;
@@ -52,16 +60,15 @@ public class BaseController
         {
             int status_code = response.getStatusLine().getStatusCode();
             String json_string = EntityUtils.toString(response.getEntity());
-            returning = gson.fromJson(json_string, type);
             Field statusCodeField;
-            if(status_code >= 400 && status_code < 500){
-                returning = gson.fromJson(json_string, ErrorDTO.class);
-            } else if (status_code == 500)
+            if (status_code != 200)
             {
                 returning = new ErrorDTO();
                 ((ErrorDTO)returning).setStatus_code(status_code);
                 ((ErrorDTO)returning).setError(response.getStatusLine().toString());
                 ((ErrorDTO)returning).setError_description(response.getStatusLine().getReasonPhrase());
+            }else {
+                returning = gson.fromJson(json_string, type);
             }
             try {
                 statusCodeField = returning.getClass().getDeclaredField(SisafitraConstant.STATUS_CODE);

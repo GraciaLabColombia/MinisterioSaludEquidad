@@ -1,36 +1,32 @@
 package com.co.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
+@JsonIgnoreProperties(value = { "empre_form",  "tokenMin", "fechaCaptura", "fechaReporte", "fechaRespuesta", "estadoMin"})
 @MappedSuperclass
-public class BaseEntity
+public class BaseEntity implements Serializable
 {
-    @JsonIgnore
     @Column(name = "EMPRE_FORM")
     private String empre_form;
 
-    @JsonIgnore
     @Column(name = "TOKEN_MIN")
     private String tokenMin;
 
-    @JsonIgnore
     @Column(name = "FECCAPTURA")
-    private LocalDateTime fechaCaptura;
+    private String fechaCaptura;
 
-    @JsonIgnore
     @Column(name = "FECREPORTE")
-    private LocalDateTime  fechaReporte;
+    private String  fechaReporte;
 
-    @JsonIgnore
     @Column(name = "FECRESPUESTA")
-    private LocalDateTime  fechaRespuesta;
+    private String  fechaRespuesta;
 
-    @JsonIgnore
     @Column(name = "ESTADO_MIN")
     private BigDecimal estadoMin;
 
@@ -39,6 +35,9 @@ public class BaseEntity
 
     @Column(name = "EMPRE_ID")
     private String NumeroDocumentoEmpleador;
+
+    public BaseEntity() {
+    }
 
     public String getEmpre_form() {
         return empre_form;
@@ -56,27 +55,27 @@ public class BaseEntity
         this.tokenMin = tokenMin;
     }
 
-    public LocalDateTime getFechaCaptura() {
+    public String getFechaCaptura() {
         return fechaCaptura;
     }
 
-    public void setFechaCaptura(LocalDateTime fechaCaptura) {
+    public void setFechaCaptura(String fechaCaptura) {
         this.fechaCaptura = fechaCaptura;
     }
 
-    public LocalDateTime getFechaReporte() {
+    public String getFechaReporte() {
         return fechaReporte;
     }
 
-    public void setFechaReporte(LocalDateTime fechaReporte) {
+    public void setFechaReporte(String fechaReporte) {
         this.fechaReporte = fechaReporte;
     }
 
-    public LocalDateTime getFechaRespuesta() {
+    public String getFechaRespuesta() {
         return fechaRespuesta;
     }
 
-    public void setFechaRespuesta(LocalDateTime fechaRespuesta) {
+    public void setFechaRespuesta(String fechaRespuesta) {
         this.fechaRespuesta = fechaRespuesta;
     }
 
@@ -89,17 +88,19 @@ public class BaseEntity
     }
 
     public String getTipoDocumentoEmpleador() {
-        return TipoDocumentoEmpleador;
+        return TipoDocumentoEmpleador  == null ? "null" : TipoDocumentoEmpleador;
     }
 
+    @JsonProperty("TipoDocumentoEmpleador")
     public void setTipoDocumentoEmpleador(String tipoDocumentoEmpleador) {
         TipoDocumentoEmpleador = tipoDocumentoEmpleador;
     }
 
     public String getNumeroDocumentoEmpleador() {
-        return NumeroDocumentoEmpleador;
+        return NumeroDocumentoEmpleador  == null ? "null" : NumeroDocumentoEmpleador;
     }
 
+    @JsonProperty("NumeroDocumentoEmpleador")
     public void setNumeroDocumentoEmpleador(String numeroDocumentoEmpleador) {
         NumeroDocumentoEmpleador = numeroDocumentoEmpleador;
     }

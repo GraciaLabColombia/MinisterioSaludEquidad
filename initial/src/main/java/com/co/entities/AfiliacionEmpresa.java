@@ -1,18 +1,25 @@
 package com.co.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
+@JsonPropertyOrder({ "CodigoARL", "TipoDocumentoEmpleador", "NumeroDocumentoEmpleador",
+                    "ConsecutivoNITEmpleador", "TipoPersona", "NaturalezaJuridica", "TipoAportante",
+"RazonSocialEmpleador", "PrimerNombreEmpleador", "PrimerApellidoEmpleador", "CorreoEmpleador", "ActividadEconomica",
+"ClaseAportante", "TipoDocumentoRepresentante", "NumeroDocumentoRepresentante", "PrimerNombreRepresentante",
+"PrimerApellidoRepresentante", "FechaAfiliacion", "CodigoSedeP", "NombreSedeP", "MunicipioSedeP", "DireccionSedeP", "ZonaSedeP",
+"TelefonoSedeP", "CorreoSedeP", "TipoDocumentoResponsable", "NumeroDocumentoResponsable", "PrimerNombreResponsable", "PrimerApellidoResponsable"})
+@JsonIgnoreProperties(value = { "afiliacionEmpresaId",
+        "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
+        "fechaRespuesta", "estadoMin" })
 @NamedQueries({
         @NamedQuery(name = "AfiliacionEmpresa.afiliacionesPorProcesarQuery", query = "SELECT a FROM AfiliacionEmpresa a WHERE a.estadoMin IN(:estados)")})
 @Entity
 @Table(name = "SRV_AFILIACION_EMPRESA")
 public class AfiliacionEmpresa extends BaseEntity
 {
-    @JsonIgnore
     @Id
     @Column(name = "SRV_AFILIACION_EMPRESA_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,10 +32,10 @@ public class AfiliacionEmpresa extends BaseEntity
     private String TipoPersona;
 
     @Column(name = "NAT_JURIDICA")
-    private String NaturalezaJuridica;
+    private String naturalezaJuridica;
 
     @Column(name = "TIPO_APOR")
-    private String TipoAportante;
+    private String tipoAportante;
 
     @Column(name = "EMPRE_RAZSOC")
     private String RazonSocialEmpleador;
@@ -43,10 +50,13 @@ public class AfiliacionEmpresa extends BaseEntity
     private String CorreoEmpleador;
 
     @Column(name = "EMPRE_CODACT")
-    private String ActividadEconomica;
+    private String actividadEconomica;
 
     @Column(name = "CLASE_APOR")
     private String ClaseAportante;
+
+    @Column(name = "COD_ARL")
+    private String CodigoARL;
 
     @Column(name = "TIPDOC_REPRE")
     private String TipoDocumentoRepresentante;
@@ -61,7 +71,7 @@ public class AfiliacionEmpresa extends BaseEntity
     private String PrimerApellidoRepresentante;
 
     @Column(name = "FECCREAARL")
-    private LocalDateTime FechaAfiliacion;
+    private String FechaAfiliacion;
 
     @Column(name = "EMPRE_COD_SEDEPRIN")
     private String CodigoSedeP;
@@ -96,6 +106,32 @@ public class AfiliacionEmpresa extends BaseEntity
     @Column(name = "RESPO_PRINOM")
     private String PrimerApellidoResponsable;
 
+    //Transient fields
+
+    @JsonInclude()
+    @Transient
+    @JsonProperty("ActividadEconomica")
+    public int activiEconimi;
+
+    @JsonInclude()
+    @Transient
+    @JsonProperty("NaturalezaJuridica")
+    public int natuJuridica;
+
+    @JsonInclude()
+    @Transient
+    @JsonProperty("TipoAportante")
+    public int tipAportante;
+
+    public String getCodigoARL() {
+        return CodigoARL == null ? "null" : CodigoARL;
+    }
+
+    @JsonProperty("CodigoARL")
+    public void setCodigoARL(String codigoARL) {
+        CodigoARL = codigoARL;
+    }
+
     public BigDecimal getAfiliacionEmpresaId() {
         return afiliacionEmpresaId;
     }
@@ -105,209 +141,235 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getConsecutivoNITEmpleador() {
-        return ConsecutivoNITEmpleador;
+        return ConsecutivoNITEmpleador == null ? "null" : ConsecutivoNITEmpleador;
     }
 
+    @JsonProperty("ConsecutivoNITEmpleador")
     public void setConsecutivoNITEmpleador(String consecutivoNITEmpleador) {
         ConsecutivoNITEmpleador = consecutivoNITEmpleador;
     }
 
     public String getTipoPersona() {
-        return TipoPersona;
+        return TipoPersona  == null ? "null" : TipoPersona;
     }
 
+    @JsonProperty("TipoPersona")
     public void setTipoPersona(String tipoPersona) {
         TipoPersona = tipoPersona;
     }
 
     public String getNaturalezaJuridica() {
-        return NaturalezaJuridica;
+        return naturalezaJuridica == null ? "null" : naturalezaJuridica;
     }
 
+    @JsonIgnore
     public void setNaturalezaJuridica(String naturalezaJuridica) {
-        NaturalezaJuridica = naturalezaJuridica;
+        this.naturalezaJuridica = naturalezaJuridica;
     }
 
     public String getTipoAportante() {
-        return TipoAportante;
+        return tipoAportante;
     }
 
+    @JsonIgnore
     public void setTipoAportante(String tipoAportante) {
-        TipoAportante = tipoAportante;
+        this.tipoAportante = tipoAportante;
     }
 
     public String getRazonSocialEmpleador() {
-        return RazonSocialEmpleador;
+        return RazonSocialEmpleador  == null ? "null" : RazonSocialEmpleador;
     }
 
+    @JsonProperty("RazonSocialEmpleador")
     public void setRazonSocialEmpleador(String razonSocialEmpleador) {
         RazonSocialEmpleador = razonSocialEmpleador;
     }
 
     public String getPrimerNombreEmpleador() {
-        return PrimerNombreEmpleador;
+        return PrimerNombreEmpleador  == null ? "null" : PrimerNombreEmpleador;
     }
 
+    @JsonProperty("PrimerNombreEmpleador")
     public void setPrimerNombreEmpleador(String primerNombreEmpleador) {
         PrimerNombreEmpleador = primerNombreEmpleador;
     }
 
     public String getPrimerApellidoEmpleador() {
-        return PrimerApellidoEmpleador;
+        return PrimerApellidoEmpleador  == null ? "null" :  PrimerApellidoEmpleador;
     }
 
+    @JsonProperty("PrimerApellidoEmpleador")
     public void setPrimerApellidoEmpleador(String primerApellidoEmpleador) {
         PrimerApellidoEmpleador = primerApellidoEmpleador;
     }
 
     public String getCorreoEmpleador() {
-        return CorreoEmpleador;
+        return CorreoEmpleador  == null ? "null" : CorreoEmpleador;
     }
 
+    @JsonProperty("CorreoEmpleador")
     public void setCorreoEmpleador(String correoEmpleador) {
         CorreoEmpleador = correoEmpleador;
     }
 
     public String getActividadEconomica() {
-        return ActividadEconomica;
+        return actividadEconomica;
     }
 
+    @JsonIgnore
     public void setActividadEconomica(String actividadEconomica) {
-        ActividadEconomica = actividadEconomica;
+        this.actividadEconomica = actividadEconomica;
     }
 
     public String getClaseAportante() {
-        return ClaseAportante;
+        return ClaseAportante  == null ? "null" : ClaseAportante;
     }
 
+    @JsonProperty("ClaseAportante")
     public void setClaseAportante(String claseAportante) {
         ClaseAportante = claseAportante;
     }
 
     public String getTipoDocumentoRepresentante() {
-        return TipoDocumentoRepresentante;
+        return TipoDocumentoRepresentante  == null ? "null" :  TipoDocumentoRepresentante;
     }
 
+    @JsonProperty("TipoDocumentoRepresentante")
     public void setTipoDocumentoRepresentante(String tipoDocumentoRepresentante) {
         TipoDocumentoRepresentante = tipoDocumentoRepresentante;
     }
 
     public String getNumeroDocumentoRepresentante() {
-        return NumeroDocumentoRepresentante;
+        return NumeroDocumentoRepresentante  == null ? "null" : NumeroDocumentoRepresentante;
     }
 
+    @JsonProperty("NumeroDocumentoRepresentante")
     public void setNumeroDocumentoRepresentante(String numeroDocumentoRepresentante) {
         NumeroDocumentoRepresentante = numeroDocumentoRepresentante;
     }
 
     public String getPrimerNombreRepresentante() {
-        return PrimerNombreRepresentante;
+        return PrimerNombreRepresentante  == null ? "null" : PrimerNombreRepresentante;
     }
 
+    @JsonProperty("PrimerNombreRepresentante")
     public void setPrimerNombreRepresentante(String primerNombreRepresentante) {
         PrimerNombreRepresentante = primerNombreRepresentante;
     }
 
     public String getPrimerApellidoRepresentante() {
-        return PrimerApellidoRepresentante;
+        return PrimerApellidoRepresentante  == null ? "null" : PrimerApellidoRepresentante;
     }
 
+    @JsonProperty("PrimerApellidoRepresentante")
     public void setPrimerApellidoRepresentante(String primerApellidoRepresentante) {
         PrimerApellidoRepresentante = primerApellidoRepresentante;
     }
 
-    public LocalDateTime getFechaAfiliacion() {
-        return FechaAfiliacion;
+    public String getFechaAfiliacion() {
+        return FechaAfiliacion  == null ? "null" : FechaAfiliacion;
     }
 
-    public void setFechaAfiliacion(LocalDateTime fechaAfiliacion) {
+    @JsonProperty("FechaAfiliacion")
+    public void setFechaAfiliacion(String fechaAfiliacion) {
         FechaAfiliacion = fechaAfiliacion;
     }
 
     public String getCodigoSedeP() {
-        return CodigoSedeP;
+        return CodigoSedeP  == null ? "null" : CodigoSedeP;
     }
 
+    @JsonProperty("CodigoSedeP")
     public void setCodigoSedeP(String codigoSedeP) {
         CodigoSedeP = codigoSedeP;
     }
 
     public String getNombreSedeP() {
-        return NombreSedeP;
+        return NombreSedeP  == null ? "null" : NombreSedeP;
     }
 
+    @JsonProperty("NombreSedeP")
     public void setNombreSedeP(String nombreSedeP) {
         NombreSedeP = nombreSedeP;
     }
 
     public String getMunicipioSedeP() {
-        return MunicipioSedeP;
+        return MunicipioSedeP  == null ? "null" : MunicipioSedeP;
     }
 
+    @JsonProperty("MunicipioSedeP")
     public void setMunicipioSedeP(String municipioSedeP) {
         MunicipioSedeP = municipioSedeP;
     }
 
     public String getDireccionSedeP() {
-        return DireccionSedeP;
+        return DireccionSedeP  == null ? "null" : DireccionSedeP;
     }
 
+    @JsonProperty("DireccionSedeP")
     public void setDireccionSedeP(String direccionSedeP) {
         DireccionSedeP = direccionSedeP;
     }
 
     public String getZonaSedeP() {
-        return ZonaSedeP;
+        return ZonaSedeP  == null ? "null" : ZonaSedeP;
     }
 
+    @JsonProperty("ZonaSedeP")
     public void setZonaSedeP(String zonaSedeP) {
         ZonaSedeP = zonaSedeP;
     }
 
     public String getTelefonoSedeP() {
-        return TelefonoSedeP;
+        return TelefonoSedeP  == null ? "null" : TelefonoSedeP;
     }
 
+    @JsonProperty("TelefonoSedeP")
     public void setTelefonoSedeP(String telefonoSedeP) {
         TelefonoSedeP = telefonoSedeP;
     }
 
     public String getCorreoSedeP() {
-        return CorreoSedeP;
+        return CorreoSedeP  == null ? "null" : CorreoSedeP;
     }
 
+    @JsonProperty("CorreoSedeP")
     public void setCorreoSedeP(String correoSedeP) {
         CorreoSedeP = correoSedeP;
     }
 
     public String getTipoDocumentoResponsable() {
-        return TipoDocumentoResponsable;
+        return TipoDocumentoResponsable  == null ? "null" : TipoDocumentoResponsable;
     }
 
+    @JsonProperty("TipoDocumentoResponsable")
     public void setTipoDocumentoResponsable(String tipoDocumentoResponsable) {
         TipoDocumentoResponsable = tipoDocumentoResponsable;
     }
 
     public String getNumeroDocumentoResponsable() {
-        return NumeroDocumentoResponsable;
+        return NumeroDocumentoResponsable  == null ? "null" : NumeroDocumentoResponsable;
     }
 
+    @JsonProperty("NumeroDocumentoResponsable")
     public void setNumeroDocumentoResponsable(String numeroDocumentoResponsable) {
         NumeroDocumentoResponsable = numeroDocumentoResponsable;
     }
 
     public String getPrimerNombreResponsable() {
-        return PrimerNombreResponsable;
+        return PrimerNombreResponsable  == null ? "null" : PrimerNombreResponsable;
     }
 
+    @JsonProperty("PrimerNombreResponsable")
     public void setPrimerNombreResponsable(String primerNombreResponsable) {
         PrimerNombreResponsable = primerNombreResponsable;
     }
 
     public String getPrimerApellidoResponsable() {
-        return PrimerApellidoResponsable;
+        return PrimerApellidoResponsable  == null ? "null" : PrimerApellidoResponsable;
     }
 
+    @JsonProperty("PrimerApellidoResponsable")
     public void setPrimerApellidoResponsable(String primerApellidoResponsable) {
         PrimerApellidoResponsable = primerApellidoResponsable;
     }

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.co.persistence.AfiliacionRepository;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AfiliacionService
@@ -29,7 +29,19 @@ public class AfiliacionService
 
     public List<AfiliacionEmpresa> afiliacionPorEstado(BigDecimal... estados) throws MinSaludBusinessException {
         List<AfiliacionEmpresa> result = this.repository.afiliacionesPorProcesarQuery(estados);
-        if (result.size() == 0)  throw new MinSaludBusinessException("No existen afiliaciones a tratar"); else return result;
+        if (result.size() == 0) {
+            throw new MinSaludBusinessException("No existen afiliaciones en estado: ".concat(Arrays.toString(estados)));
+        }
+        else
+        {
+            result.stream().forEach(p ->
+            {
+                p.activiEconimi = Integer.parseInt(p.getActividadEconomica());
+                p.tipAportante = Integer.parseInt(p.getTipoAportante());
+                p.natuJuridica = Integer.parseInt(p.getNaturalezaJuridica());
+            });
+            return result;
+        }
     }
 
 }

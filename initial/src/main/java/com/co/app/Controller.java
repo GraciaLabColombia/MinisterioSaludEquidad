@@ -3,12 +3,17 @@ package com.co.app;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import com.co.annotation.ServiceConfig;
 import com.co.builder.PropertiesBuilder;
 import com.co.dto.*;
+import com.co.entities.RespuestaSATARL;
 import com.co.persistence.AfiliacionRepository;
+import com.co.service.LogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -19,6 +24,7 @@ import com.co.exception.MinSaludBusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -35,7 +41,8 @@ public class Controller extends BaseController
     @Autowired
 	private AfiliacionService afiliacionService;
 
-	String authorization;
+    @Autowired
+	private LogService logService;
 
 	public Controller()
 	{
@@ -53,7 +60,6 @@ public class Controller extends BaseController
 			method = RequestMethod.POST)
 	public Object token()
 	{
-        //Object a = this.afiliacionService;
 		Object response = null;
 		log.info("Token init");
 		try
@@ -63,11 +69,6 @@ public class Controller extends BaseController
 			log.info("Token request: ".concat(request_body.toString()));
 			response =  super.responseFromPostFormRequest(request_body, TokenDTO.class);
 			log.info("Token response: ".concat(response.toString()));
-			if(response instanceof TokenDTO) {
-			    authorization = ((TokenDTO)response).getAccess_token();
-				ConfiguracionSingleton.getInstance().setToken((TokenDTO)response);
-				ConfiguracionSingleton.getInstance().setAuthorization(SisafitraConstant.BEARER.concat(((TokenDTO)response).getAccess_token()));
-			}
 		}catch (NoSuchMethodException e)
 		{
 			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
@@ -82,16 +83,15 @@ public class Controller extends BaseController
 		return response;
 
 	}
-
-	@Autowired
 	@PostMapping(path = "/AfiliacionARL", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "AfiliacionARL", clientId = "f45d4049f9a44f839e692f2ca331ec77",
 			uri = "/AfiliacionARL", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public Object afiliacionARL()
+	@Qualifier(value = "authorization")
+	public Object afiliacionARL(@RequestHeader("Authorization") String authorization)
 	{
-		log.info("AfiliacionARL init");
+		log.info("AfiliacionARL init with authorization ".concat(authorization));
 		try
 		{
 			List<AfiliacionEmpresa> afiliaciones = this.afiliacionService.afiliacionPorEstado(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName());
@@ -102,13 +102,21 @@ public class Controller extends BaseController
 			{
 				log.info("Afiliacion ID: ".concat(afiliacion.getAfiliacionEmpresaId().toPlainString()));
 				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(afiliacion), method.getName(), this.getClass(), method.getParameterTypes());
-				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION,  "HOJnVuseiou2U5KQ79dNXSp96r3wNf7f2Y0ULb7b-nrDl4WaHFEGB8nS6KnHcPueawDvePT1DPly6SrXH7e3__cbl1vsSAGtCBG8zgFghu1RTHN7Tnax9r-swHY9N85ecDEfQ8DnHB02znkT9hkbVgcJ79xqDRpQjQZEtbswvvaMjhXANwVkR3-O4qEzf1G2r_e2iDmivaPaJWeVJpG6qvP8KmuCRzrY63fVchwg_AUYugy7xmqxnedjOQ-V3VRFnc8OYo_pQo7M7y8oLWiVk50cwOJQsYd7ONi7yxZ7jn7I0QCGEnMZtgKhG-Ajk6Ocl72Ayxrz4Zmg86QSB_oiQJtLa8p-E_9zu3QZyB98UtZgprOSstI3T5gAd4L754yd");
+				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION,  authorization);
 				log.info("Afiliacion request: ".concat(request_body.toString()));
                 try{
 					Object response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 					log.info("Afiliacion response: ".concat(response.toString()));
 					if(response instanceof ErrorDTO)
 					{
+						RespuestaSATARL respuestaSATARL = new RespuestaSATARL();
+						respuestaSATARL.setEmpreForm(afiliacion.getEmpre_form());
+						respuestaSATARL.setSrvId(afiliacion.getAfiliacionEmpresaId());
+						respuestaSATARL.setSrvConsec(afiliacion.getAfiliacionEmpresaId());
+						respuestaSATARL.setTokenMin(afiliacion.getTokenMin());
+						respuestaSATARL.setFecRespuesta(localDateToDate(parseStringToLocalDate(afiliacion.getFechaRespuesta())));
+						respuestaSATARL.setEstadoMin(afiliacion.getEstadoMin());
+						respuestaSATARL.
 						afiliacion.setEstadoMin(EstadosEnum.FALLIDO.getName());
 						incorrectos++;
 					} else if(response instanceof ResponseMinSaludDTO)
@@ -206,11 +214,11 @@ public class Controller extends BaseController
 		return response;
 	}
 
-	@GetMapping(path = "/ConsultaEmpresaTrasladada", consumes = "application/json", produces = "application/json")
+	@PostMapping(path = "/ConsultaEmpresaTrasladada", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "ConsultaEmpresaTrasladada", clientId = "147171ef46c44b41b77b2aaac10ae39b",
 			uri = "/ConsultaEmpresaTrasladada", headers = {"Content-Type=application/json"},
-			method = RequestMethod.GET)
+			method = RequestMethod.POST)
 	public ResponseMinSaludDTO consultaEmpresa(String authorization, String entity_body)
 	{
 		ResponseMinSaludDTO response = null;
@@ -236,11 +244,11 @@ public class Controller extends BaseController
 		return response;
 	}
 
-        @GetMapping(path = "/ConsultaEstructuraEmpresa", consumes = "application/json", produces = "application/json")
+	@PostMapping(path = "/ConsultaEstructuraEmpresa", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "ConsultaEstructuraEmpresa", clientId = "d99d20985fde4150b924c8d0177691b6",
 			uri = "/ConsultaEstructuraEmpresa", headers = {"Content-Type=application/json"},
-			method = RequestMethod.GET)
+			method = RequestMethod.POST)
 	public ResponseMinSaludDTO consultaEstructuraEmpresa(String authorization, String entity_body)
 	{
 		ResponseMinSaludDTO response = null;
@@ -476,7 +484,7 @@ public class Controller extends BaseController
 		return response;
 	}
 
-	@PostMapping(path = "/q", consumes = "application/json", produces = "application/json")
+	@PostMapping(path = "/ModificacionIBC", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "ModificacionIBC", clientId = "83d16bb59dc548cb8a75bc43c8da68c6",
 			uri = "/ModificacionIBC", headers = {"Content-Type=application/json"},

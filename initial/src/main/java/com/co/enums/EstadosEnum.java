@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public enum EstadosEnum {
 
-    EN_TRAMITE(new BigDecimal(0)), EXITOSO(new BigDecimal(1)), FALLIDO(new BigDecimal(2   ));
+    EN_TRAMITE(new BigDecimal(1)), EXITOSO(new BigDecimal(2)), ERROR(new BigDecimal(2)), FALLIDO(new BigDecimal(3));
 
     private BigDecimal name;
 

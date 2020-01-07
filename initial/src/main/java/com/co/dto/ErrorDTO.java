@@ -8,6 +8,16 @@ public class ErrorDTO
 
     private  String error_description;
 
+    private String code_error;
+
+    public String getCode_error() {
+        return code_error;
+    }
+
+    public void setCode_error(String code_error) {
+        this.code_error = code_error;
+    }
+
     public int getStatus_code() {
         return status_code;
     }

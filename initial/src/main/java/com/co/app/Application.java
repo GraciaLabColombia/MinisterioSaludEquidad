@@ -24,11 +24,11 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 
-		Controller controller = new Controller();
+		/**Controller controller = new Controller();
 		Object response = controller.token();
 		if(response instanceof TokenDTO) {
 			controller.afiliacionARL();
-		}
+		}**/
 
 	}
 

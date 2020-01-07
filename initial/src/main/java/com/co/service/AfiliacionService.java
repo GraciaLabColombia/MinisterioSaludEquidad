@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+@Component
 @Service
 public class AfiliacionService
 {
@@ -36,9 +37,9 @@ public class AfiliacionService
         {
             result.stream().forEach(p ->
             {
-                p.activiEconimi = Integer.parseInt(p.getActividadEconomica());
-                p.tipAportante = Integer.parseInt(p.getTipoAportante());
-                p.natuJuridica = Integer.parseInt(p.getNaturalezaJuridica());
+                p.activiEconimi = Integer.parseInt(p.getActividadEconomica().trim());
+                p.tipAportante = Integer.parseInt(p.getTipoAportante().trim());
+                p.natuJuridica = Integer.parseInt(p.getNaturalezaJuridica().trim());
             });
             return result;
         }

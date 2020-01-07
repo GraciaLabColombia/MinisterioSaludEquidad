@@ -25,7 +25,7 @@ public class AfiliacionEmpresa extends BaseEntity
     @GeneratedValue(strategy = GenerationType.AUTO)
     private BigDecimal afiliacionEmpresaId;
 
-    @Column(name = "EMPRE_NIT_DESCENT")
+    @Column(name = "EMPRE_NIT_DESCEN")
     private String ConsecutivoNITEmpleador;
 
     @Column(name = "EMPRE_TIPPERS")
@@ -124,7 +124,7 @@ public class AfiliacionEmpresa extends BaseEntity
     public int tipAportante;
 
     public String getCodigoARL() {
-        return CodigoARL == null ? "null" : CodigoARL;
+        return CodigoARL;
     }
 
     @JsonProperty("CodigoARL")
@@ -141,7 +141,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getConsecutivoNITEmpleador() {
-        return ConsecutivoNITEmpleador == null ? "null" : ConsecutivoNITEmpleador;
+        return ConsecutivoNITEmpleador;
     }
 
     @JsonProperty("ConsecutivoNITEmpleador")
@@ -150,7 +150,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getTipoPersona() {
-        return TipoPersona  == null ? "null" : TipoPersona;
+        return TipoPersona;
     }
 
     @JsonProperty("TipoPersona")
@@ -159,7 +159,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getNaturalezaJuridica() {
-        return naturalezaJuridica == null ? "null" : naturalezaJuridica;
+        return naturalezaJuridica;
     }
 
     @JsonIgnore
@@ -177,7 +177,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getRazonSocialEmpleador() {
-        return RazonSocialEmpleador  == null ? "null" : RazonSocialEmpleador;
+        return RazonSocialEmpleador;
     }
 
     @JsonProperty("RazonSocialEmpleador")
@@ -186,7 +186,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getPrimerNombreEmpleador() {
-        return PrimerNombreEmpleador  == null ? "null" : PrimerNombreEmpleador;
+        return PrimerNombreEmpleador;
     }
 
     @JsonProperty("PrimerNombreEmpleador")
@@ -195,7 +195,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getPrimerApellidoEmpleador() {
-        return PrimerApellidoEmpleador  == null ? "null" :  PrimerApellidoEmpleador;
+        return PrimerApellidoEmpleador;
     }
 
     @JsonProperty("PrimerApellidoEmpleador")
@@ -204,7 +204,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getCorreoEmpleador() {
-        return CorreoEmpleador  == null ? "null" : CorreoEmpleador;
+        return CorreoEmpleador ;
     }
 
     @JsonProperty("CorreoEmpleador")
@@ -222,7 +222,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getClaseAportante() {
-        return ClaseAportante  == null ? "null" : ClaseAportante;
+        return ClaseAportante;
     }
 
     @JsonProperty("ClaseAportante")
@@ -231,7 +231,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getTipoDocumentoRepresentante() {
-        return TipoDocumentoRepresentante  == null ? "null" :  TipoDocumentoRepresentante;
+        return TipoDocumentoRepresentante;
     }
 
     @JsonProperty("TipoDocumentoRepresentante")
@@ -240,7 +240,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getNumeroDocumentoRepresentante() {
-        return NumeroDocumentoRepresentante  == null ? "null" : NumeroDocumentoRepresentante;
+        return NumeroDocumentoRepresentante;
     }
 
     @JsonProperty("NumeroDocumentoRepresentante")
@@ -249,7 +249,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getPrimerNombreRepresentante() {
-        return PrimerNombreRepresentante  == null ? "null" : PrimerNombreRepresentante;
+        return PrimerNombreRepresentante;
     }
 
     @JsonProperty("PrimerNombreRepresentante")
@@ -258,7 +258,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getPrimerApellidoRepresentante() {
-        return PrimerApellidoRepresentante  == null ? "null" : PrimerApellidoRepresentante;
+        return PrimerApellidoRepresentante;
     }
 
     @JsonProperty("PrimerApellidoRepresentante")
@@ -267,7 +267,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getFechaAfiliacion() {
-        return FechaAfiliacion  == null ? "null" : FechaAfiliacion;
+        return FechaAfiliacion;
     }
 
     @JsonProperty("FechaAfiliacion")
@@ -276,7 +276,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getCodigoSedeP() {
-        return CodigoSedeP  == null ? "null" : CodigoSedeP;
+        return CodigoSedeP;
     }
 
     @JsonProperty("CodigoSedeP")
@@ -285,7 +285,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getNombreSedeP() {
-        return NombreSedeP  == null ? "null" : NombreSedeP;
+        return NombreSedeP;
     }
 
     @JsonProperty("NombreSedeP")
@@ -294,7 +294,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getMunicipioSedeP() {
-        return MunicipioSedeP  == null ? "null" : MunicipioSedeP;
+        return MunicipioSedeP;
     }
 
     @JsonProperty("MunicipioSedeP")
@@ -303,7 +303,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getDireccionSedeP() {
-        return DireccionSedeP  == null ? "null" : DireccionSedeP;
+        return DireccionSedeP;
     }
 
     @JsonProperty("DireccionSedeP")
@@ -312,7 +312,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getZonaSedeP() {
-        return ZonaSedeP  == null ? "null" : ZonaSedeP;
+        return ZonaSedeP;
     }
 
     @JsonProperty("ZonaSedeP")
@@ -321,7 +321,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getTelefonoSedeP() {
-        return TelefonoSedeP  == null ? "null" : TelefonoSedeP;
+        return TelefonoSedeP;
     }
 
     @JsonProperty("TelefonoSedeP")
@@ -330,7 +330,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getCorreoSedeP() {
-        return CorreoSedeP  == null ? "null" : CorreoSedeP;
+        return CorreoSedeP;
     }
 
     @JsonProperty("CorreoSedeP")
@@ -339,7 +339,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getTipoDocumentoResponsable() {
-        return TipoDocumentoResponsable  == null ? "null" : TipoDocumentoResponsable;
+        return TipoDocumentoResponsable;
     }
 
     @JsonProperty("TipoDocumentoResponsable")
@@ -348,7 +348,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getNumeroDocumentoResponsable() {
-        return NumeroDocumentoResponsable  == null ? "null" : NumeroDocumentoResponsable;
+        return NumeroDocumentoResponsable;
     }
 
     @JsonProperty("NumeroDocumentoResponsable")
@@ -357,7 +357,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getPrimerNombreResponsable() {
-        return PrimerNombreResponsable  == null ? "null" : PrimerNombreResponsable;
+        return PrimerNombreResponsable;
     }
 
     @JsonProperty("PrimerNombreResponsable")
@@ -366,7 +366,7 @@ public class AfiliacionEmpresa extends BaseEntity
     }
 
     public String getPrimerApellidoResponsable() {
-        return PrimerApellidoResponsable  == null ? "null" : PrimerApellidoResponsable;
+        return PrimerApellidoResponsable;
     }
 
     @JsonProperty("PrimerApellidoResponsable")

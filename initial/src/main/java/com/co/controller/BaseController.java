@@ -1,6 +1,7 @@
 package com.co.controller;
 
 import com.co.dto.ErrorDTO;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -19,6 +20,9 @@ import com.co.utils.SisafitraConstant;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Map;
 
 /**
@@ -49,7 +53,20 @@ public class BaseController
 
     public String mapperBody(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsString(object);
+    }
+
+    public LocalDate parseStringToLocalDate(String date)
+    {
+        return LocalDate.parse(date);
+    }
+
+    public java.sql.Date localDateToDate(LocalDate date)
+    {
+        return (Date) java.util.Date.from(date.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
 
     private <T> Object sendRequest(HttpUriRequest request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
@@ -61,12 +78,13 @@ public class BaseController
             int status_code = response.getStatusLine().getStatusCode();
             String json_string = EntityUtils.toString(response.getEntity());
             Field statusCodeField;
-            if (status_code != 200)
+            if (status_code != 200 && status_code != 204)
             {
                 returning = new ErrorDTO();
                 ((ErrorDTO)returning).setStatus_code(status_code);
                 ((ErrorDTO)returning).setError(response.getStatusLine().toString());
                 ((ErrorDTO)returning).setError_description(response.getStatusLine().getReasonPhrase());
+                ((ErrorDTO)returning).setError_description(json_string);
             }else {
                 returning = gson.fromJson(json_string, type);
             }

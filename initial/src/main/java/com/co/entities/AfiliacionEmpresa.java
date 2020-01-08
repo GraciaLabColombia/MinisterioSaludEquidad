@@ -1,6 +1,8 @@
 package com.co.entities;
 
+import com.co.builder.SerializerCustom;
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,8 +16,6 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(value = { "afiliacionEmpresaId",
         "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
         "fechaRespuesta", "estadoMin" })
-@NamedQueries({
-        @NamedQuery(name = "AfiliacionEmpresa.afiliacionesPorProcesarQuery", query = "SELECT a FROM AfiliacionEmpresa a WHERE a.estadoMin IN(:estados)")})
 @Entity
 @Table(name = "SRV_AFILIACION_EMPRESA")
 public class AfiliacionEmpresa extends BaseEntity
@@ -25,84 +25,111 @@ public class AfiliacionEmpresa extends BaseEntity
     @GeneratedValue(strategy = GenerationType.AUTO)
     private BigDecimal afiliacionEmpresaId;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_NIT_DESCEN")
     private String ConsecutivoNITEmpleador;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_TIPPERS")
     private String TipoPersona;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "NAT_JURIDICA")
     private String naturalezaJuridica;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPO_APOR")
     private String tipoAportante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_RAZSOC")
     private String RazonSocialEmpleador;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_PERNAT_PRINOM")
     private String PrimerNombreEmpleador;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_PERNAT_PRIAPE")
     private String PrimerApellidoEmpleador;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_EMAIL")
     private String CorreoEmpleador;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_CODACT")
     private String actividadEconomica;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "CLASE_APOR")
     private String ClaseAportante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "COD_ARL")
     private String CodigoARL;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPDOC_REPRE")
     private String TipoDocumentoRepresentante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "ID_REPRE")
     private String NumeroDocumentoRepresentante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_REPRE_PRINOM")
     private String PrimerNombreRepresentante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_REPRE_PRIAPE")
     private String PrimerApellidoRepresentante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "FECCREAARL")
     private String FechaAfiliacion;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_COD_SEDEPRIN")
     private String CodigoSedeP;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_NOM_SEDEPRIN")
     private String NombreSedeP;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_MUNI_SEDEPRIN")
     private String MunicipioSedeP;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_DIR_SEDEPRIN")
     private String DireccionSedeP;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_ZONA_SEDEPRIN")
     private String ZonaSedeP;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_TEL_SEDEPRIN")
     private String TelefonoSedeP;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_EMAIL_SEDEPRIN")
     private String CorreoSedeP;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPDOC_RESPO")
     private String TipoDocumentoResponsable;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "ID_RESPO")
     private String NumeroDocumentoResponsable;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "RESPO_PRIAPE")
     private String PrimerNombreResponsable;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "RESPO_PRINOM")
     private String PrimerApellidoResponsable;
 

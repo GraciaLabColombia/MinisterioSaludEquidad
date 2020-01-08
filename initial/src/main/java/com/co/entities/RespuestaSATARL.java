@@ -10,7 +10,7 @@ public class RespuestaSATARL
 {
     @Id
     @Column(name = "SRV_RESPUESTA_SATARL_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "SRV_ID")

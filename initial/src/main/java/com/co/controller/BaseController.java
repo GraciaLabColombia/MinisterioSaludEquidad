@@ -1,6 +1,7 @@
 package com.co.controller;
 
 import com.co.dto.ErrorDTO;
+import com.co.entities.RespuestaSATARL;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,10 +21,14 @@ import com.co.utils.SisafitraConstant;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -53,7 +58,7 @@ public class BaseController
 
     public String mapperBody(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        //mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsString(object);
     }
 
@@ -67,6 +72,21 @@ public class BaseController
         return (Date) java.util.Date.from(date.atStartOfDay()
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
+    }
+
+    public RespuestaSATARL writeLogSATARL(String empre_form, BigDecimal srv_id, BigDecimal srv_consec, BigDecimal estado_min, String error, String authorization){
+        Pattern patron = Pattern.compile("\\{\"Message\":\"(.+?)\"}");
+        Matcher match = patron.matcher(error);
+        RespuestaSATARL respuestaSATARL = new RespuestaSATARL();
+        respuestaSATARL.setEmpreForm(empre_form);
+        respuestaSATARL.setSrvId(srv_id);
+        respuestaSATARL.setSrvConsec(srv_consec);
+        respuestaSATARL.setTokenMin(authorization);
+        respuestaSATARL.setFecRespuesta(java.util.Date.from(Instant.now()));
+        respuestaSATARL.setEstadoMin(estado_min);
+        respuestaSATARL.setIderrorMin(match.find() ? match.group(1) : "Not found");
+
+        return respuestaSATARL;
     }
 
     private <T> Object sendRequest(HttpUriRequest request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {

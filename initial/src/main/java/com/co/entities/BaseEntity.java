@@ -1,7 +1,9 @@
 package com.co.entities;
 
+import com.co.builder.SerializerCustom;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -30,9 +32,11 @@ public class BaseEntity implements Serializable
     @Column(name = "ESTADO_MIN")
     private BigDecimal estadoMin;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_TIPDOC")
     private String TipoDocumentoEmpleador;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_ID")
     private String NumeroDocumentoEmpleador;
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -23,5 +24,10 @@ public class LogService {
     public List<RespuestaSATARL> findAll()
     {
         return (List<RespuestaSATARL>) this.repository.findAll();
+    }
+
+    public List<RespuestaSATARL> getFailedStates(BigDecimal srvId, BigDecimal... estados)
+    {
+        return this.repository.getFallidosPorSrvId(srvId, estados);
     }
 }

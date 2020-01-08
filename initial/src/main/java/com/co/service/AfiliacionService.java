@@ -40,6 +40,8 @@ public class AfiliacionService
                 p.activiEconimi = Integer.parseInt(p.getActividadEconomica().trim());
                 p.tipAportante = Integer.parseInt(p.getTipoAportante().trim());
                 p.natuJuridica = Integer.parseInt(p.getNaturalezaJuridica().trim());
+                p.setZonaSedeP(p.getZonaSedeP().equals("1") ? "U" : "R");
+
             });
             return result;
         }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity(name = "SRV_RECL_CENTRO_TRABAJO")
-public class ReclCentroTrabajo extends BaseEntity
+public class RedCentroTrabajo extends BaseEntity
 {
     @Id
     @Column(name = "SRV_RECL_CENTRO_TRABAJO_ID")

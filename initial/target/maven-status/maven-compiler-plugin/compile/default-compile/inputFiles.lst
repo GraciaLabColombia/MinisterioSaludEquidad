@@ -7,7 +7,6 @@ C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initi
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\CountResponseDTO.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\InicioLaboral.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\ErrorDTO.java
-C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\ReclCentroTrabajo.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\utils\SisafitraConstant.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\CentrosTrabajo.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\persistence\InicioLaboralRepository.java
@@ -18,10 +17,13 @@ C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initi
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\NovedadesTransitorias.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\ParametroGeneral.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\builder\PropertiesBuilder.java
+C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\service\LogService.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\persistence\AfiliacionRepository.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\BaseEntity.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\NovedadIBCTipsal.java
+C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\RedCentroTrabajo.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\RequestFormPostDTO.java
+C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\persistence\RespuestaSATARLRepository.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\Retractacion.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\RequestBodyDTO.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\RequestDTO.java
@@ -29,6 +31,8 @@ C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initi
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\TokenDTO.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\ResponseMinSaludDTO.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\controller\BaseController.java
+C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\builder\SerializerCustom.java
+C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\RespuestaSATARL.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\SatArl.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\VariacionCentro.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\persistence\TerminacionLaboralRepository.java

@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 "TelefonoSedeP", "CorreoSedeP", "TipoDocumentoResponsable", "NumeroDocumentoResponsable", "PrimerNombreResponsable", "PrimerApellidoResponsable"})
 @JsonIgnoreProperties(value = { "afiliacionEmpresaId",
         "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
-        "fechaRespuesta", "estadoMin" })
+        "fechaRespuesta", "estadoMin", "naturalezaJuridica", "tipoAportante", "actividadEconomica" })
 @Entity
 @Table(name = "SRV_AFILIACION_EMPRESA")
 public class AfiliacionEmpresa extends BaseEntity

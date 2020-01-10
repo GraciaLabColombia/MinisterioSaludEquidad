@@ -16,6 +16,7 @@ import com.co.builder.PropertiesBuilder;
 import com.co.dto.*;
 import com.co.entities.RespuestaSATARL;
 import com.co.persistence.AfiliacionRepository;
+import com.co.service.ConsultaEmpresaService;
 import com.co.service.LogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +47,9 @@ public class Controller extends BaseController
 
     @Autowired
 	private LogService logService;
+
+    @Autowired
+    private ConsultaEmpresaService consultaEmpresaService;
 
 	public Controller()
 	{
@@ -212,20 +216,23 @@ public class Controller extends BaseController
 		return response;
 	}
 
-	@PostMapping(path = "/ConsultaEmpresaTrasladada", consumes = "application/json", produces = "application/json")
+	@PostMapping(path = "/ConsultaEmpresasTrasladadas", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
-			name = "ConsultaEmpresaTrasladada", clientId = "147171ef46c44b41b77b2aaac10ae39b",
-			uri = "/ConsultaEmpresaTrasladada", headers = {"Content-Type=application/json"},
+			name = "ConsultaEmpresasTrasladadas", clientId = "147171ef46c44b41b77b2aaac10ae39b",
+			uri = "/ConsultaEmpresasTrasladadas", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public ResponseMinSaludDTO consultaEmpresa(String authorization, String entity_body)
+	public Object consultaEmpresa(@RequestHeader("Authorization") String authorization, @RequestBody String entity_body)
 	{
-		ResponseMinSaludDTO response = null;
+		Object response = null;
 		try
 		{
+			log.info("Consulta empresa INIT: ");
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
+			log.info("Consulta empresa BODY: ".concat(request_body.toString()));
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
-			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
+			response = super.responseFromPostListRequest(request_body, ConsultaEmpresaDTO.class);
+			log.info("Consulta empresa BODY: ".concat(response.toString()));
 
 		} catch (NoSuchMethodException e)
 		{

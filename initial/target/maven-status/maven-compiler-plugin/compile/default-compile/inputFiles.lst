@@ -27,6 +27,7 @@ C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initi
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\Retractacion.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\RequestBodyDTO.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\RequestDTO.java
+C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\ConsultaEmpresaDTO.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\AfiliacionEmpresa.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\TokenDTO.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\ResponseMinSaludDTO.java
@@ -39,3 +40,4 @@ C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initi
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\service\AfiliacionService.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\app\Application.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\exception\MinSaludBusinessException.java
+C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\ListOfJsonDTO.java

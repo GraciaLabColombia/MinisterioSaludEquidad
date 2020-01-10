@@ -1,13 +1,17 @@
 package com.co.controller;
 
 import com.co.dto.ErrorDTO;
+import com.co.dto.ListOfJsonDTO;
 import com.co.entities.RespuestaSATARL;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.co.dto.RequestBodyDTO;
 import com.co.dto.RequestFormPostDTO;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -21,11 +25,14 @@ import com.co.utils.SisafitraConstant;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,6 +47,13 @@ public class BaseController
         request.getHeaders().forEach(post::setHeader);
         post.setEntity(new ByteArrayEntity(request.getBody().getBytes()));
         return sendRequest(post, type);
+    }
+
+    public <T> Object responseFromPostListRequest(RequestBodyDTO request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
+        HttpPost post = new HttpPost(request.getUrl());
+        request.getHeaders().forEach(post::setHeader);
+        post.setEntity(new ByteArrayEntity(request.getBody().getBytes()));
+        return sendRequestList(post, type);
     }
 
     public <T> Object responseFromPostFormRequest(RequestFormPostDTO request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
@@ -89,8 +103,16 @@ public class BaseController
         return respuestaSATARL;
     }
 
-    private <T> Object sendRequest(HttpUriRequest request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
-        Gson gson = new Gson();
+    private <T> Object sendRequestList(HttpUriRequest request, Class<T> type) throws IllegalAccessException, NoSuchFieldException, IOException {
+        return this.sendGeneralRequest(request, type, true);
+    }
+
+    private <T> Object sendRequest(HttpUriRequest request, Class<T> type) throws IllegalAccessException, NoSuchFieldException, IOException {
+        return this.sendGeneralRequest(request, type, false);
+    }
+
+    private <T> Object sendGeneralRequest(HttpUriRequest request, Class<T> type, boolean isArray) throws IOException, NoSuchFieldException, IllegalAccessException {
+        ObjectMapper mapper = new ObjectMapper();
         Object returning;
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(request))
@@ -106,17 +128,21 @@ public class BaseController
                 ((ErrorDTO)returning).setError_description(response.getStatusLine().getReasonPhrase());
                 ((ErrorDTO)returning).setError_description(json_string);
             }else {
-                returning = gson.fromJson(json_string, type);
-            }
-            try {
-                statusCodeField = returning.getClass().getDeclaredField(SisafitraConstant.STATUS_CODE);
-            }catch(NoSuchFieldException ex)
-            {
-                statusCodeField = returning.getClass().getSuperclass().getDeclaredField(SisafitraConstant.STATUS_CODE);
-            }
+                if(isArray) {
+                    returning = mapper.readValue(json_string, mapper.getTypeFactory().constructCollectionType(List.class, type));
+                }else {
+                    returning = mapper.readValue(json_string, type);
+                    try {
+                        statusCodeField = returning.getClass().getDeclaredField(SisafitraConstant.STATUS_CODE);
+                    }catch(NoSuchFieldException ex)
+                    {
+                        statusCodeField = returning.getClass().getSuperclass().getDeclaredField(SisafitraConstant.STATUS_CODE);
+                    }
 
-            statusCodeField.setAccessible(true);
-            statusCodeField.set(returning, response.getStatusLine().getStatusCode());
+                    statusCodeField.setAccessible(true);
+                    statusCodeField.set(returning, response.getStatusLine().getStatusCode());
+                }
+            }
         }
 
         return returning;

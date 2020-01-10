@@ -5,6 +5,7 @@ com\co\app\Controller$3.class
 com\co\persistence\InicioLaboralRepository.class
 com\co\entities\TransladoEmpresaArl.class
 com\co\app\Controller$13.class
+com\co\dto\ConsultaEmpresaDTO.class
 com\co\dto\ResponseDTO.class
 com\co\entities\AfiliacionEmpresa.class
 com\co\dto\RequestDTO.class
@@ -14,6 +15,7 @@ com\co\dto\CountResponseDTO.class
 com\co\entities\RetiroDefinitivoSGRL.class
 com\co\app\Controller$10.class
 com\co\app\Controller.class
+com\co\dto\ListOfJsonDTO.class
 com\co\dto\RequestBodyDTO.class
 com\co\app\Application.class
 com\co\app\Controller$12.class

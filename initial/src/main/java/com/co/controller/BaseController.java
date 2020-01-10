@@ -1,17 +1,11 @@
 package com.co.controller;
 
 import com.co.dto.ErrorDTO;
-import com.co.dto.ListOfJsonDTO;
 import com.co.entities.RespuestaSATARL;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
 import com.co.dto.RequestBodyDTO;
 import com.co.dto.RequestFormPostDTO;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -25,7 +19,6 @@ import com.co.utils.SisafitraConstant;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.Instant;

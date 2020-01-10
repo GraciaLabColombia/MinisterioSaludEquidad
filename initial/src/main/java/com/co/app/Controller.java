@@ -1,6 +1,7 @@
 package com.co.app;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 import com.co.annotation.ServiceConfig;
 import com.co.builder.PropertiesBuilder;
 import com.co.dto.*;
+import com.co.entities.ConsultaEmpresa;
 import com.co.entities.RespuestaSATARL;
 import com.co.persistence.AfiliacionRepository;
 import com.co.service.ConsultaEmpresaService;
@@ -55,6 +57,7 @@ public class Controller extends BaseController
 	{
 		this.afiliacionService = new AfiliacionService();
 		this.logService = new LogService();
+		this.consultaEmpresaService = new ConsultaEmpresaService();
 	}
 
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
@@ -229,24 +232,37 @@ public class Controller extends BaseController
 			log.info("Consulta empresa INIT: ");
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
-			log.info("Consulta empresa BODY: ".concat(request_body.toString()));
+			log.info("Consulta empresa request BODY: ".concat(request_body.toString()));
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = super.responseFromPostListRequest(request_body, ConsultaEmpresaDTO.class);
-			log.info("Consulta empresa BODY: ".concat(response.toString()));
+			log.info("Consulta empresa response BODY: ".concat(response.toString()));
+			List<ConsultaEmpresa> empresas =  this.consultaEmpresaService.transformConsultaEmpresa((List<ConsultaEmpresaDTO>) response, authorization);
+			log.info("Consulta empresa Transform: ".concat(empresas.toString()));
+			this.consultaEmpresaService.saveEmpresas(empresas);
+			log.info("Consulta empresa Save Ok!: ");
+			CountResponseDTO count = new CountResponseDTO();
+			count.setTotal(empresas.size());
+			count.setCorrectos(empresas.size());
+			count.setIncorrecto(0);
+
+			return count;
 
 		} catch (NoSuchMethodException e)
 		{
 			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
 			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (IOException e)
 		{
 			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (InvocationTargetException e) {
+			log.error("Error al invocar el servicio: ERROR: ".concat(e.getMessage()));
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
-
-		return response;
 	}
 
 	@PostMapping(path = "/ConsultaEstructuraEmpresa", consumes = "application/json", produces = "application/json")
@@ -254,27 +270,32 @@ public class Controller extends BaseController
 			name = "ConsultaEstructuraEmpresa", clientId = "d99d20985fde4150b924c8d0177691b6",
 			uri = "/ConsultaEstructuraEmpresa", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public ResponseMinSaludDTO consultaEstructuraEmpresa(String authorization, String entity_body)
+	public Object consultaEstructuraEmpresa(String authorization, String entity_body)
 	{
 		ResponseMinSaludDTO response = null;
 		try
 		{
+			log.info("Consulta estructura empresa INIT: ");
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
+			log.info("Consulta estructura empresa REQUEST: ".concat(request_body.toString()));
 			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
+			log.info("Consulta estructura empresa RESPONSE: ".concat(response.toString()));
 
 		} catch (NoSuchMethodException e)
 		{
 			log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch (IllegalAccessException | NoSuchFieldException e)
 		{
 			log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (IOException e)
 		{
 			log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
 
 		return response;
 	}

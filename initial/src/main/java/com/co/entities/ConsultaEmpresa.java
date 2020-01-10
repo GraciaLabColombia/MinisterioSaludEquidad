@@ -25,7 +25,7 @@ public class ConsultaEmpresa
     private String fecRespuestaTokenIni;
 
     @Column(name = "TIPO_REPORTE_MIN_TOKEN_INI")
-    private String tipoReporteMinTokenIni;
+    private String tipoReporte;
 
     @Column(name = "TOKEN_MIN_FIN")
     private String tokenMinFin;
@@ -36,26 +36,26 @@ public class ConsultaEmpresa
     @Column(name = "FEC_RESPUESTA_TOKEN_FIN")
     private String fecRespuestaTokenFin;
 
-    @Column(name = "TIPO_REPORTE_MIN_TOKEN")
-    private String tipoReporteMinTokenFin;
+    @Column(name = "TIPO_REPORTE_TOKEN_FIN")
+    private String tipoReporteTokenFin;
 
     @Column(name = "EMPRE_TIP_DOC")
-    private String empreTipDoc;
+    private String tipoDocumentoEmpleador;
 
     @Column(name = "EMPRE_ID")
-    private String empreId;
+    private String numeroDocumentoEmpleador;
 
     @Column(name = "EMPRE_NIT_DESCEN")
-    private String empreNitDescen;
+    private String consecutivoNitDescentralizado;
 
     @Column(name = "FEC_SOLICITUD")
-    private String fecSolicitud;
+    private String fechaSolicitud;
 
     @Column(name = "FEC_INI_COBERTURA")
     private String fecIniCobertura;
 
     @Column(name = "FEC_FIN_AFILIACION")
-    private String fecFinAfiliacion;
+    private String fechaFinAfiliacion;
 
     public ConsultaEmpresa() {
     }
@@ -101,11 +101,11 @@ public class ConsultaEmpresa
     }
 
     public String getTipoReporteMinTokenIni() {
-        return tipoReporteMinTokenIni;
+        return tipoReporte;
     }
 
     public void setTipoReporteMinTokenIni(String tipoReporteMinTokenIni) {
-        this.tipoReporteMinTokenIni = tipoReporteMinTokenIni;
+        this.tipoReporte = tipoReporteMinTokenIni;
     }
 
     public String getTokenMinFin() {
@@ -114,6 +114,22 @@ public class ConsultaEmpresa
 
     public void setTokenMinFin(String tokenMinFin) {
         this.tokenMinFin = tokenMinFin;
+    }
+
+    public String getTipoReporte() {
+        return tipoReporte;
+    }
+
+    public void setTipoReporte(String tipoReporte) {
+        this.tipoReporte = tipoReporte;
+    }
+
+    public String getTipoReporteTokenFin() {
+        return tipoReporteTokenFin;
+    }
+
+    public void setTipoReporteTokenFin(String tipoReporteTokenFin) {
+        this.tipoReporteTokenFin = tipoReporteTokenFin;
     }
 
     public String getFecCapturaTokenFin() {
@@ -133,43 +149,43 @@ public class ConsultaEmpresa
     }
 
     public String getTipoReporteMinTokenFin() {
-        return tipoReporteMinTokenFin;
+        return tipoReporte;
     }
 
     public void setTipoReporteMinTokenFin(String tipoReporteMinTokenFin) {
-        this.tipoReporteMinTokenFin = tipoReporteMinTokenFin;
+        this.tipoReporte = tipoReporteMinTokenFin;
     }
 
-    public String getEmpreTipDoc() {
-        return empreTipDoc;
+    public String getTipoDocumentoEmpleador() {
+        return tipoDocumentoEmpleador;
     }
 
-    public void setEmpreTipDoc(String empreTipDoc) {
-        this.empreTipDoc = empreTipDoc;
+    public void setTipoDocumentoEmpleador(String tipoDocumentoEmpleador) {
+        this.tipoDocumentoEmpleador = tipoDocumentoEmpleador;
     }
 
-    public String getEmpreId() {
-        return empreId;
+    public String getNumeroDocumentoEmpleador() {
+        return numeroDocumentoEmpleador;
     }
 
-    public void setEmpreId(String empreId) {
-        this.empreId = empreId;
+    public void setNumeroDocumentoEmpleador(String numeroDocumentoEmpleador) {
+        this.numeroDocumentoEmpleador = numeroDocumentoEmpleador;
     }
 
-    public String getEmpreNitDescen() {
-        return empreNitDescen;
+    public String getConsecutivoNitDescentralizado() {
+        return consecutivoNitDescentralizado;
     }
 
-    public void setEmpreNitDescen(String empreNitDescen) {
-        this.empreNitDescen = empreNitDescen;
+    public void setConsecutivoNitDescentralizado(String consecutivoNitDescentralizado) {
+        this.consecutivoNitDescentralizado = consecutivoNitDescentralizado;
     }
 
-    public String getFecSolicitud() {
-        return fecSolicitud;
+    public String getFechaSolicitud() {
+        return fechaSolicitud;
     }
 
-    public void setFecSolicitud(String fecSolicitud) {
-        this.fecSolicitud = fecSolicitud;
+    public void setFechaSolicitud(String fechaSolicitud) {
+        this.fechaSolicitud = fechaSolicitud;
     }
 
     public String getFecIniCobertura() {
@@ -180,11 +196,33 @@ public class ConsultaEmpresa
         this.fecIniCobertura = fecIniCobertura;
     }
 
-    public String getFecFinAfiliacion() {
-        return fecFinAfiliacion;
+    public String getFechaFinAfiliacion() {
+        return fechaFinAfiliacion;
     }
 
-    public void setFecFinAfiliacion(String fecFinAfiliacion) {
-        this.fecFinAfiliacion = fecFinAfiliacion;
+    public void setFechaFinAfiliacion(String fechaFinAfiliacion) {
+        this.fechaFinAfiliacion = fechaFinAfiliacion;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsultaEmpresa{" +
+                "afiliacionEmpresaId=" + afiliacionEmpresaId +
+                ", empreForm='" + empreForm + '\'' +
+                ", tokenMinIni='" + tokenMinIni + '\'' +
+                ", fecCapturaTokenIni='" + fecCapturaTokenIni + '\'' +
+                ", fecRespuestaTokenIni='" + fecRespuestaTokenIni + '\'' +
+                ", tipoReporte='" + tipoReporte + '\'' +
+                ", tokenMinFin='" + tokenMinFin + '\'' +
+                ", fecCapturaTokenFin='" + fecCapturaTokenFin + '\'' +
+                ", fecRespuestaTokenFin='" + fecRespuestaTokenFin + '\'' +
+                ", tipoReporteTokenFin='" + tipoReporteTokenFin + '\'' +
+                ", tipoDocumentoEmpleador='" + tipoDocumentoEmpleador + '\'' +
+                ", numeroDocumentoEmpleador='" + numeroDocumentoEmpleador + '\'' +
+                ", consecutivoNitDescentralizado='" + consecutivoNitDescentralizado + '\'' +
+                ", fechaSolicitud='" + fechaSolicitud + '\'' +
+                ", fecIniCobertura='" + fecIniCobertura + '\'' +
+                ", fechaFinAfiliacion='" + fechaFinAfiliacion + '\'' +
+                '}';
     }
 }

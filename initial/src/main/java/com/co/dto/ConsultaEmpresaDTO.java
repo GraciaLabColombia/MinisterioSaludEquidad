@@ -1,6 +1,5 @@
 package com.co.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,72 +7,72 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         "fecha_solicitud", "consecutivo_nit_descentralizado", "fecha_fin_afiliacion"})
 public class ConsultaEmpresaDTO
 {
-    private String TipoDocumentoEmpleador;
+    private String tipoDocumentoEmpleador;
 
-    private String NumeroDocumentoEmpleador;
+    private String numeroDocumentoEmpleador;
 
-    private String ConsecutivoNitDescentralizado;
+    private String consecutivoNitDescentralizado;
 
-    private String FechaSolicitud;
+    private String fechaSolicitud;
 
-    private String FechaFinAfiliacion;
+    private String fechaFinAfiliacion;
 
-    private String TipoReporte;
+    private String tipoReporte;
 
     public ConsultaEmpresaDTO() {
     }
 
     public String getTipoDocumentoEmpleador() {
-        return TipoDocumentoEmpleador;
+        return tipoDocumentoEmpleador;
     }
 
     @JsonProperty("TipoDocumentoEmpleador")
     public void setTipoDocumentoEmpleador(String tipoDocumentoEmpleador) {
-        TipoDocumentoEmpleador = tipoDocumentoEmpleador;
+        this.tipoDocumentoEmpleador = tipoDocumentoEmpleador;
     }
 
     public String getNumeroDocumentoEmpleador() {
-        return NumeroDocumentoEmpleador;
+        return numeroDocumentoEmpleador;
     }
 
     @JsonProperty("NumeroDocumentoEmpleador")
     public void setNumeroDocumentoEmpleador(String numeroDocumentoEmpleador) {
-        NumeroDocumentoEmpleador = numeroDocumentoEmpleador;
+        this.numeroDocumentoEmpleador = numeroDocumentoEmpleador;
     }
 
     public String getConsecutivoNitDescentralizado() {
-        return ConsecutivoNitDescentralizado;
+        return consecutivoNitDescentralizado;
     }
 
     @JsonProperty("ConsecutivoNitDescentralizado")
     public void setConsecutivoNitDescentralizado(String consecutivoNitDescentralizado) {
-        ConsecutivoNitDescentralizado = consecutivoNitDescentralizado;
+        this.consecutivoNitDescentralizado = consecutivoNitDescentralizado;
     }
 
     public String getFechaSolicitud() {
-        return FechaSolicitud;
+        return fechaSolicitud;
     }
 
     @JsonProperty("FechaSolicitud")
     public void setFechaSolicitud(String fechaSolicitud) {
-        FechaSolicitud = fechaSolicitud;
+        this.fechaSolicitud = fechaSolicitud;
     }
 
     public String getFechaFinAfiliacion() {
-        return FechaFinAfiliacion;
+        return fechaFinAfiliacion;
     }
 
     @JsonProperty("FechaFinAfiliacion")
     public void setFechaFinAfiliacion(String fechaFinAfiliacion) {
-        FechaFinAfiliacion = fechaFinAfiliacion;
+        this.fechaFinAfiliacion = fechaFinAfiliacion;
     }
 
     public String getTipoReporte() {
-        return TipoReporte;
+        return tipoReporte;
     }
 
     @JsonProperty("TipoReporte")
     public void setTipoReporte(String tipoReporte) {
-        TipoReporte = tipoReporte;
+        this.tipoReporte = tipoReporte;
     }
 }

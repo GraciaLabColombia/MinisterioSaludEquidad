@@ -1,8 +1,18 @@
 package com.co.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@JsonPropertyOrder({  "tipoDocumentoEmpleador", "numeroDocumentoEmpleador",
+        "consecutivoNITEmpleador"})
+@JsonIgnoreProperties(value = { "id",
+        "empreForm", "tokenMinIni", "fecCapturaTokenIni", "fecRespuestaTokenIni",
+        "tipoReporte", "tokenMinFin", "fecCapturaTokenFin", "fecRespuestaTokenFin", "tipoReporteTokenFin",
+        "fechaSolicitud", "fecIniCobertura", "fechaFinAfiliacion"})
 @Entity
 @Table(name = "SRV_CONSULTA_EMPRESA")
 public class ConsultaEmpresa
@@ -10,7 +20,7 @@ public class ConsultaEmpresa
     @Id
     @Column(name = "SRV_CONSULTA_EMPRESA_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private BigDecimal afiliacionEmpresaId;
+    private BigDecimal id;
 
     @Column(name = "EMPRE_FORM")
     private String empreForm;
@@ -61,11 +71,11 @@ public class ConsultaEmpresa
     }
 
     public BigDecimal getAfiliacionEmpresaId() {
-        return afiliacionEmpresaId;
+        return id;
     }
 
     public void setAfiliacionEmpresaId(BigDecimal afiliacionEmpresaId) {
-        this.afiliacionEmpresaId = afiliacionEmpresaId;
+        this.id = afiliacionEmpresaId;
     }
 
     public String getEmpreForm() {
@@ -160,6 +170,7 @@ public class ConsultaEmpresa
         return tipoDocumentoEmpleador;
     }
 
+    @JsonProperty("TipoDocumentoEmpleador")
     public void setTipoDocumentoEmpleador(String tipoDocumentoEmpleador) {
         this.tipoDocumentoEmpleador = tipoDocumentoEmpleador;
     }
@@ -168,6 +179,7 @@ public class ConsultaEmpresa
         return numeroDocumentoEmpleador;
     }
 
+    @JsonProperty("NumeroDocumentoEmpleador")
     public void setNumeroDocumentoEmpleador(String numeroDocumentoEmpleador) {
         this.numeroDocumentoEmpleador = numeroDocumentoEmpleador;
     }
@@ -176,6 +188,7 @@ public class ConsultaEmpresa
         return consecutivoNitDescentralizado;
     }
 
+    @JsonProperty("ConsecutivoNitDescentralizado")
     public void setConsecutivoNitDescentralizado(String consecutivoNitDescentralizado) {
         this.consecutivoNitDescentralizado = consecutivoNitDescentralizado;
     }
@@ -207,7 +220,7 @@ public class ConsultaEmpresa
     @Override
     public String toString() {
         return "ConsultaEmpresa{" +
-                "afiliacionEmpresaId=" + afiliacionEmpresaId +
+                "id=" + id +
                 ", empreForm='" + empreForm + '\'' +
                 ", tokenMinIni='" + tokenMinIni + '\'' +
                 ", fecCapturaTokenIni='" + fecCapturaTokenIni + '\'' +

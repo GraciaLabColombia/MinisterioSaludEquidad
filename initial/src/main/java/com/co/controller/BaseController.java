@@ -24,11 +24,14 @@ import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  *
@@ -81,6 +84,11 @@ public class BaseController
                 .toInstant());
     }
 
+    public static LocalDate getLocalDate(final LocalDate localDate) {
+        final LocalDate localDateStartingWithNextMonth = localDate.with(TemporalAdjusters.firstDayOfNextMonth()).plusMonths(1);
+        return IntStream.range(0, 1).boxed().map(localDateStartingWithNextMonth::plusDays).findAny().get();
+    }
+
     public RespuestaSATARL writeLogSATARL(String empre_form, BigDecimal srv_id, BigDecimal srv_consec, BigDecimal estado_min, String error, String authorization){
         Pattern patron = Pattern.compile("\\{\"Message\":\"(.+?)\"}");
         Matcher match = patron.matcher(error);
@@ -124,6 +132,10 @@ public class BaseController
                 if(isArray) {
                     returning = mapper.readValue(json_string, mapper.getTypeFactory().constructCollectionType(List.class, type));
                 }else {
+                    if(type.equals(String.class))
+                    {
+                        return json_string;
+                    }
                     returning = mapper.readValue(json_string, type);
                     try {
                         statusCodeField = returning.getClass().getDeclaredField(SisafitraConstant.STATUS_CODE);

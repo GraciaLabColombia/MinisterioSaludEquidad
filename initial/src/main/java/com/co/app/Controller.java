@@ -335,7 +335,7 @@ public class Controller extends BaseController
 					log.info("Consulta estructura empresa REQUEST: ".concat(request_body.toString()));
 					response = super.responseFromPostRequest(request_body, String.class);
 					if(response instanceof ErrorDTO)
-						return response;
+						throw new MinSaludBusinessException(response.toString());
 					log.info("Consulta estructura empresa RESPONSE: ".concat(response.toString()));
 					EstructuraEmpresa estructuraEmpresa = this.consultaEmpresaService.mapEstructura(response.toString());
 					this.estructuraEmpresaService.save(estructuraEmpresa);
@@ -352,6 +352,10 @@ public class Controller extends BaseController
 				} catch (IOException e)
 				{
 					log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
+					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+				} catch (MinSaludBusinessException e)
+				{
+					log.error("Error de negocio: ".concat(e.getMessage()));
 					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
 				}
 			}

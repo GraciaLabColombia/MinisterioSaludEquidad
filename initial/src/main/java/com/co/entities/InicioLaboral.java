@@ -23,37 +23,8 @@ public class InicioLaboral extends BaseEntity
 {
     @Id
     @Column(name = "SRV_INICIO_LABORAL_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
-
-    @Column(name = "EMPRE_FORM")
-    private String empreForm;
-
-    @Column(name = "EMPLE_FORM")
-    private String empleForm;
-
-    @Column(name = "TOKEN_MIN")
-    private String tokenMin;
-
-    @Column(name = "FECCACTURA")
-    private String fecCaptura;
-
-    @Column(name = "FECREPORTE")
-    private String fecReporte;
-
-    @Column(name = "FECRESPUESTA")
-    private String fecRespuesta;
-
-    @Column(name = "ESTADO_MIN")
-    private BigDecimal estadoMin;
-
-    @JsonSerialize(using = SerializerCustom.class)
-    @Column(name = "EMPRE_TIPDOC")
-    private String empreTipDoc;
-
-    @JsonSerialize(using = SerializerCustom.class)
-    @Column(name = "EMPRE_ID")
-    private String empreId;
 
     @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "CONSEC_DESENT")
@@ -109,82 +80,6 @@ public class InicioLaboral extends BaseEntity
 
     public void setId(BigDecimal id) {
         this.id = id;
-    }
-
-    public String getEmpreForm() {
-        return empreForm;
-    }
-
-    public void setEmpreForm(String empreForm) {
-        this.empreForm = empreForm;
-    }
-
-    public String getEmpleForm() {
-        return empleForm;
-    }
-
-    public void setEmpleForm(String empleForm) {
-        this.empleForm = empleForm;
-    }
-
-    @Override
-    public String getTokenMin() {
-        return tokenMin;
-    }
-
-    @Override
-    public void setTokenMin(String tokenMin) {
-        this.tokenMin = tokenMin;
-    }
-
-    public String getFecCaptura() {
-        return fecCaptura;
-    }
-
-    public void setFecCaptura(String fecCaptura) {
-        this.fecCaptura = fecCaptura;
-    }
-
-    public String getFecReporte() {
-        return fecReporte;
-    }
-
-    public void setFecReporte(String fecReporte) {
-        this.fecReporte = fecReporte;
-    }
-
-    public String getFecRespuesta() {
-        return fecRespuesta;
-    }
-
-    public void setFecRespuesta(String fecRespuesta) {
-        this.fecRespuesta = fecRespuesta;
-    }
-
-    public BigDecimal getEstadoMin_() {
-        return estadoMin;
-    }
-
-    public void setEstadoMin(BigDecimal estadoMin) {
-        this.estadoMin = estadoMin;
-    }
-
-    public String getEmpreTipDoc() {
-        return empreTipDoc;
-    }
-
-    @JsonProperty("TipoDocumentoEmpleador")
-    public void setEmpreTipDoc(String empreTipDoc) {
-        this.empreTipDoc = empreTipDoc;
-    }
-
-    public String getEmpreId() {
-        return empreId;
-    }
-
-    @JsonProperty("NumeroDocumentoEmpleador")
-    public void setEmpreId(String empreId) {
-        this.empreId = empreId;
     }
 
     public BigDecimal getConsecDesent() {

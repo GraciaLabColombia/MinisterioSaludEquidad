@@ -17,7 +17,7 @@ public class Sede
 
     @Id
     @Column(name = "SRV_ESTRUCTURA_SEDE_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "TOKEN_MIN")
@@ -29,7 +29,7 @@ public class Sede
     @Column(name = "FECRESPUESTA")
     private String fecRespuesta;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "SRV_ESTRUCTURA_EMPRESA_ID")
     private EstructuraEmpresa estructuraEmpresa;
 

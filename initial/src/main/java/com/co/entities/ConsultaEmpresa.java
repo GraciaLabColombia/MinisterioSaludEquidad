@@ -19,7 +19,7 @@ public class ConsultaEmpresa
 {
     @Id
     @Column(name = "SRV_CONSULTA_EMPRESA_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "EMPRE_FORM")
@@ -28,28 +28,28 @@ public class ConsultaEmpresa
     @Column(name = "TOKEN_MIN_INI")
     private String tokenMinIni;
 
-    @Column(name = "FEC_CAPTURA_TOKEN_INI")
+    @Column(name = "FECCAPTURA_TOKEN_INI")
     private String fecCapturaTokenIni;
 
-    @Column(name = "FEC_RESPUESTA_TOKEN_INI")
+    @Column(name = "FECRESPUESTA_TOKEN_INI")
     private String fecRespuestaTokenIni;
 
-    @Column(name = "TIPO_REPORTE_MIN_TOKEN_INI")
+    @Column(name = "TIPOREPORTE_MIN_TOKEN_INI")
     private String tipoReporte;
 
     @Column(name = "TOKEN_MIN_FIN")
     private String tokenMinFin;
 
-    @Column(name = "FEC_CAPTURA_TOKEN_FIN")
+    @Column(name = "FECCAPTURA_TOKEN_FIN")
     private String fecCapturaTokenFin;
 
-    @Column(name = "FEC_RESPUESTA_TOKEN_FIN")
+    @Column(name = "FECRESPUESTA_TOKEN_FIN")
     private String fecRespuestaTokenFin;
 
-    @Column(name = "TIPO_REPORTE_TOKEN_FIN")
+    @Column(name = "TIPOREPORTE_MIN_TOKEN_FIN")
     private String tipoReporteTokenFin;
 
-    @Column(name = "EMPRE_TIP_DOC")
+    @Column(name = "EMPRE_TIPDOC")
     private String tipoDocumentoEmpleador;
 
     @Column(name = "EMPRE_ID")
@@ -58,13 +58,13 @@ public class ConsultaEmpresa
     @Column(name = "EMPRE_NIT_DESCEN")
     private String consecutivoNitDescentralizado;
 
-    @Column(name = "FEC_SOLICITUD")
+    @Column(name = "FECSOLICITUD")
     private String fechaSolicitud;
 
-    @Column(name = "FEC_INI_COBERTURA")
+    @Column(name = "FECINI_COBERTURA")
     private String fecIniCobertura;
 
-    @Column(name = "FEC_FIN_AFILIACION")
+    @Column(name = "FECFIN_AFILIACION")
     private String fechaFinAfiliacion;
 
     public ConsultaEmpresa() {

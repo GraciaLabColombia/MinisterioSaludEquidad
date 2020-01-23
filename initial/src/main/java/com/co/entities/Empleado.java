@@ -9,7 +9,7 @@ public class Empleado
 {
     @Id
     @Column(name = "SRV_ESTRUCTURA_EMPLEADO_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "TOKEN_MIN")
@@ -21,7 +21,7 @@ public class Empleado
     @Column(name = "FECRESPUESTA")
     private String fecRespuesta;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "SRV_ESTRUCTURA_CENTRO_ID")
     private CentroTrabajo centro;
 

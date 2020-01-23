@@ -8,7 +8,7 @@ public class MoraAportesSGRL extends BaseEntity
 {
     @Id
     @Column(name = "SRV_MORA_APORTES_SGRL_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "CONSEC_DESENT")

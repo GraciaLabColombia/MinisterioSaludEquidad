@@ -22,7 +22,7 @@ public class AfiliacionEmpresa extends BaseEntity
 {
     @Id
     @Column(name = "SRV_AFILIACION_EMPRESA_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal afiliacionEmpresaId;
 
     @JsonSerialize(using = SerializerCustom.class)

@@ -8,7 +8,7 @@ public class RedCentroTrabajo extends BaseEntity
 {
     @Id
     @Column(name = "SRV_RECL_CENTRO_TRABAJO_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "CONSEC_DESENT")

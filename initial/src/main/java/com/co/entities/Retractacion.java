@@ -19,7 +19,7 @@ public class Retractacion extends BaseEntity
 {
     @Id
     @Column(name = "SRV_RETRACTACION_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal retractacionId;
 
     @Column(name = "CONSEC_DESENT")

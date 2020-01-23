@@ -9,7 +9,7 @@ public class VariacionCentro extends BaseEntity
 {
     @Id
     @Column(name = "SRV_VARIACION_CENTRO_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "CONSEC_DESENT")

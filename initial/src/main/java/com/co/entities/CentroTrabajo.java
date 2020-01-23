@@ -17,7 +17,7 @@ public class CentroTrabajo
 
     @Id
     @Column(name = "SRV_ESTRUCTURA_CENTRO_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "TOKEN_MIN")

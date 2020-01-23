@@ -187,8 +187,7 @@ public class Controller extends BaseController
 			for (InicioLaboral inicioLaboral : this.inicioLaboralService.getIniciosLaborales(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName())) {
 				try {
 
-					Method method = new Object() {
-					}.getClass().getEnclosingMethod();
+					Method method = new Object() {}.getClass().getEnclosingMethod();
 					RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(inicioLaboral), method.getName(), this.getClass(), method.getParameterTypes());
 					request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 					response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
@@ -272,6 +271,8 @@ public class Controller extends BaseController
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 			response = super.responseFromPostListRequest(request_body, ConsultaEmpresaDTO.class);
 			log.info("Consulta empresa response BODY: ".concat(response.toString()));
+			if(response instanceof ErrorDTO)
+				return response;
 			List<ConsultaEmpresa> empresas =  this.consultaEmpresaService.transformConsultaEmpresa((List<ConsultaEmpresaDTO>) response, authorization);
 			log.info("Consulta empresa Transform: ".concat(empresas.toString()));
 			int correctos = 0;
@@ -327,13 +328,14 @@ public class Controller extends BaseController
 			for(ConsultaEmpresa consultaEmpresa: empresasAConsultar) {
 				try
 				{
-
 					log.info("Consulta estructura empresa INIT: Empresa a consultar: ".concat(consultaEmpresa.getNumeroDocumentoEmpleador()));
 					Method method = new Object(){}.getClass().getEnclosingMethod();
 					RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(consultaEmpresa), method.getName(), this.getClass(), method.getParameterTypes());
 					request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 					log.info("Consulta estructura empresa REQUEST: ".concat(request_body.toString()));
 					response = super.responseFromPostRequest(request_body, String.class);
+					if(response instanceof ErrorDTO)
+						return response;
 					log.info("Consulta estructura empresa RESPONSE: ".concat(response.toString()));
 					EstructuraEmpresa estructuraEmpresa = this.consultaEmpresaService.mapEstructura(response.toString());
 					this.estructuraEmpresaService.save(estructuraEmpresa);
@@ -443,17 +445,17 @@ public class Controller extends BaseController
 				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(retiroDefinitivoSGRL), method.getName(), this.getClass(), method.getParameterTypes());
 				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 				response =  super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
-				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpre_form(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.EXITOSO.getName(), response.toString(), authorization));
+				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.EXITOSO.getName(), response.toString(), authorization));
 
 			} catch (NoSuchMethodException e) {
 				log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpre_form(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
 			} catch (IllegalAccessException | NoSuchFieldException e) {
 				log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpre_form(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
 			} catch (IOException e) {
 				log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpre_form(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
 			}
 		}
 
@@ -533,16 +535,16 @@ public class Controller extends BaseController
 					RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(reclasificacionCentroTrabajo), method.getName(), this.getClass(), method.getParameterTypes());
 					request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 					response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
-					this.logService.save(writeLogSATARL(reclasificacionCentroTrabajo.getEmpre_form(), reclasificacionCentroTrabajo.getId(), reclasificacionCentroTrabajo.getId(), EstadosEnum.EXITOSO.getName(), response.toString(), authorization));
+					this.logService.save(writeLogSATARL(reclasificacionCentroTrabajo.getEmpleid(), reclasificacionCentroTrabajo.getId(), reclasificacionCentroTrabajo.getId(), EstadosEnum.EXITOSO.getName(), response.toString(), authorization));
 				} catch (NoSuchMethodException e) {
 					log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
-					this.logService.save(writeLogSATARL(reclasificacionCentroTrabajo.getEmpre_form(), reclasificacionCentroTrabajo.getId(), reclasificacionCentroTrabajo.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO) response).getError_description(), authorization));
+					this.logService.save(writeLogSATARL(reclasificacionCentroTrabajo.getEmpleid(), reclasificacionCentroTrabajo.getId(), reclasificacionCentroTrabajo.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO) response).getError_description(), authorization));
 				} catch (IllegalAccessException | NoSuchFieldException e) {
 					log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
-					this.logService.save(writeLogSATARL(reclasificacionCentroTrabajo.getEmpre_form(), reclasificacionCentroTrabajo.getId(), reclasificacionCentroTrabajo.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO) response).getError_description(), authorization));
+					this.logService.save(writeLogSATARL(reclasificacionCentroTrabajo.getEmpleid(), reclasificacionCentroTrabajo.getId(), reclasificacionCentroTrabajo.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO) response).getError_description(), authorization));
 				} catch (IOException e) {
 					log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
-					this.logService.save(writeLogSATARL(reclasificacionCentroTrabajo.getEmpre_form(), reclasificacionCentroTrabajo.getId(), reclasificacionCentroTrabajo.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO) response).getError_description(), authorization));
+					this.logService.save(writeLogSATARL(reclasificacionCentroTrabajo.getEmpleid(), reclasificacionCentroTrabajo.getId(), reclasificacionCentroTrabajo.getId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO) response).getError_description(), authorization));
 				}
 
 			}

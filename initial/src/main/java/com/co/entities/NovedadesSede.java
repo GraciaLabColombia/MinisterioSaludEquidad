@@ -9,7 +9,7 @@ public class NovedadesSede extends BaseEntity
 {
     @Id
     @Column(name = "SRV_NOVEDADES_SEDE_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal novedadesSedeId;
 
     @Column(name = "EMPRE_NIT_DESCENT")

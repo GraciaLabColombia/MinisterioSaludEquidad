@@ -16,11 +16,11 @@ import java.math.BigDecimal;
         "fechaRespuesta", "estadoMin" })
 @Entity
 @Table(name = "SRV_RECL_CENTRO_TRABAJO")
-public class ReclasificacionCentroTrabajo extends BaseEntity
+public class ReclasificacionCentroTrabajo
 {
     @Id
     @Column(name = "SRV_RECL_CENTRO_TRABAJO_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @JsonSerialize(using = SerializerCustom.class)

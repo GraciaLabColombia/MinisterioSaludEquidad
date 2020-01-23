@@ -19,7 +19,7 @@ public class TransladoEmpresaArl extends BaseEntity
 {
     @Id
     @Column(name = "SRV_TRANSLADO_EMPRESA_ARL_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal transladoEmpresId;
 
     @Column(name = "CONSEC_DESENT")

@@ -99,7 +99,7 @@ public class BaseController
         respuestaSATARL.setTokenMin(authorization);
         respuestaSATARL.setFecRespuesta(java.util.Date.from(Instant.now()));
         respuestaSATARL.setEstadoMin(estado_min);
-        respuestaSATARL.setIderrorMin(match.find() ? match.group(1) : "Not found");
+        respuestaSATARL.setIderrorMin(match.find() ? match.group(1) : error);
 
         return respuestaSATARL;
     }

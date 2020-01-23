@@ -9,7 +9,7 @@ public class NovedadIBCTipsal extends BaseEntity
 {
     @Id
     @Column(name = "RV_NOVEDAD_IBC_TIPSAL_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "CONSEC_DESENT")

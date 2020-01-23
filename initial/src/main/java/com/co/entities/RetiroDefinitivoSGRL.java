@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
         "fechaRespuesta", "estadoMin", "naturalezaJuridica", "tipoAportante", "actividadEconomica" })
 @Entity
 @Table(name = "SRV_RETIRO_DEFINITIVO_SGRL")
-public class RetiroDefinitivoSGRL extends BaseEntity
+public class RetiroDefinitivoSGRL
 {
     @Id
     @Column(name = "SRV_RETIRO_DEFINITIVO_SGRL")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
     @Column(name = "EMPRE_TIPDOC")

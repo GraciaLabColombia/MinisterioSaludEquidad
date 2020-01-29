@@ -32,6 +32,9 @@ public class ConsultaEmpresaService
     @Autowired
     ConsultaEmpresaRepository consultaEmpresaRepository;
 
+    @Autowired
+    EstructuraEmpresaService estructuraEmpresaService;
+
     private LogService logService;
 
     public ConsultaEmpresaService() {
@@ -46,9 +49,9 @@ public class ConsultaEmpresaService
     }
 
 
-    public List<ConsultaEmpresa> consultaEmpresaPorFecha(String date)
+    public List<ConsultaEmpresa> consultaEmpresaPorFecha(String date, String fecToday)
     {
-        return this.consultaEmpresaRepository.consultaEmpresaPorFechaCobertura(date);
+        return this.consultaEmpresaRepository.consultaEmpresaPorFechaCobertura(fecToday ,date);
     }
 
     public void writeBusinessLog(RespuestaSATARL respuestaSATARL) {
@@ -79,11 +82,12 @@ public class ConsultaEmpresaService
         return empresas;
     }
 
-    public EstructuraEmpresa mapEstructura(String response) throws JsonProcessingException {
+    public EstructuraEmpresa mapEstructura(String response, String token) throws JsonProcessingException {
         JSONObject json = new JSONObject(response);
         JSONArray sedes = json.getJSONArray("sedes");
         ObjectMapper mapper = new ObjectMapper();
         EstructuraEmpresa empresa = mapper.readValue(response, EstructuraEmpresa.class);
+        empresa.setFecCaptura(LocalDateTime.now().toString());
         for(int i = 0; i < sedes.length(); i++)
         {
             JSONObject sede = sedes.getJSONObject(i);
@@ -105,6 +109,13 @@ public class ConsultaEmpresaService
             empresa.addSede(sede_o);
         }
 
+        EstructuraEmpresa estructuraEmpresa = this.estructuraEmpresaService.consultaEstructuraEmpresa(empresa.getEmpreId(), empresa.getEmpreTipDoc());
+        empresa.setId(estructuraEmpresa == null ? null : estructuraEmpresa.getId());
+        empresa.setTokenMin(token);
+        empresa.getSedes().forEach( p -> {p.setEstructuraEmpresa(empresa); p.setTokenMin(token);});
+        empresa.getSedes().forEach( p -> p.getCentros().forEach(c -> {c.setSede(p); c.setTokenMin(token);}));
+        empresa.getSedes().forEach( p -> p.getCentros().forEach( c -> c.getEmpleados().forEach(e -> {e.setCentro(c); e.setTokenMin(token);})));
+        empresa.setFecRespuesta(LocalDateTime.now().toString());
         return empresa;
     }
 

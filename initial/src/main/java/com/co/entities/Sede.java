@@ -1,5 +1,10 @@
 package com.co.entities;
 
+import com.co.builder.SedesCustomSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -7,10 +12,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+
+@JsonIgnoreProperties(value = { "id",
+        "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
+        "fechaRespuesta", "estructuraEmpresa", "centros", "centrosTrabajo", "estadoMin", "naturalezaJuridica", "tipoAportante", "actividadEconomica" })
 @Entity
 @Table(name = "SRV_ESTRUCTURA_SEDE")
-public class Sede
-{
+public class Sede {
     public Sede() {
         this.centros = new ArrayList<>();
     }
@@ -37,7 +47,7 @@ public class Sede
     private String codSede;
 
     @Column(name = "SEDE_PRINCIPAL")
-    private BigDecimal sedePrincipal;
+    private String sedePrincipal;
 
     @Column(name = "SEDE_NOMBRE")
     private String sedeNombre;
@@ -76,7 +86,7 @@ public class Sede
     private String sedeRespoSegundoNombre;
 
     @Column(name = "SEDE_EMPRE_MISION")
-    private BigDecimal sedeEmpreMision;
+    private String sedeEmpreMision;
 
     @Column(name = "TIPDOC_EMPRE_MISION")
     private String tipDocEmpreMision;
@@ -87,7 +97,7 @@ public class Sede
     @Column(name = "EMPRE_MISION_NIT_DESCEN")
     private String empreMisionNitDescen;
 
-    @OneToMany(mappedBy = "sede", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {PERSIST, MERGE}, mappedBy = "sede", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     List<CentroTrabajo> centros;
 
@@ -135,22 +145,25 @@ public class Sede
         return codSede;
     }
 
+    @JsonProperty("codigoSede")
     public void setCodSede(String codSede) {
         this.codSede = codSede;
     }
 
-    public BigDecimal getSedePrincipal() {
+    public String getSedePrincipal() {
         return sedePrincipal;
     }
 
-    public void setSedePrincipal(BigDecimal sedePrincipal) {
-        this.sedePrincipal = sedePrincipal;
+    @JsonProperty("sedePrincipal")
+    public void setSedePrincipal(String sedePrincipal) {
+        this.sedePrincipal = sedePrincipal.toLowerCase().equals("true") ? "1" : "0";
     }
 
     public String getSedeNombre() {
         return sedeNombre;
     }
 
+    @JsonProperty("nombreSede")
     public void setSedeNombre(String sedeNombre) {
         this.sedeNombre = sedeNombre;
     }
@@ -159,6 +172,7 @@ public class Sede
         return sedeMunic;
     }
 
+    @JsonProperty("municipioSede")
     public void setSedeMunic(String sedeMunic) {
         this.sedeMunic = sedeMunic;
     }
@@ -167,6 +181,7 @@ public class Sede
         return sedeDir;
     }
 
+    @JsonProperty("direccionSede")
     public void setSedeDir(String sedeDir) {
         this.sedeDir = sedeDir;
     }
@@ -175,6 +190,7 @@ public class Sede
         return sedeZonaUbi;
     }
 
+    @JsonProperty("zonaUbicacionSede")
     public void setSedeZonaUbi(String sedeZonaUbi) {
         this.sedeZonaUbi = sedeZonaUbi;
     }
@@ -183,6 +199,7 @@ public class Sede
         return sedeTel;
     }
 
+    @JsonProperty("telefonoSede")
     public void setSedeTel(String sedeTel) {
         this.sedeTel = sedeTel;
     }
@@ -191,6 +208,7 @@ public class Sede
         return sedeEmail;
     }
 
+    @JsonProperty("correoSede")
     public void setSedeEmail(String sedeEmail) {
         this.sedeEmail = sedeEmail;
     }
@@ -199,6 +217,7 @@ public class Sede
         return tipoDocResponsable;
     }
 
+    @JsonProperty("tipoDocumentoResponsable")
     public void setTipoDocResponsable(String tipoDocResponsable) {
         this.tipoDocResponsable = tipoDocResponsable;
     }
@@ -207,6 +226,7 @@ public class Sede
         return sedeNumDocRespo;
     }
 
+    @JsonProperty("numeroDocumentoResponsable")
     public void setSedeNumDocRespo(String sedeNumDocRespo) {
         this.sedeNumDocRespo = sedeNumDocRespo;
     }
@@ -215,6 +235,7 @@ public class Sede
         return sedeResponsablePrimerApellido;
     }
 
+    @JsonProperty("primerApellidoResponsable")
     public void setSedeResponsablePrimerApellido(String sedeResponsablePrimerApellido) {
         this.sedeResponsablePrimerApellido = sedeResponsablePrimerApellido;
     }
@@ -223,6 +244,7 @@ public class Sede
         return sedeRespoSegundoApellido;
     }
 
+    @JsonProperty("segundoApellidoResponsable")
     public void setSedeRespoSegundoApellido(String sedeRespoSegundoApellido) {
         this.sedeRespoSegundoApellido = sedeRespoSegundoApellido;
     }
@@ -231,6 +253,7 @@ public class Sede
         return sedeRespoPrimerNombre;
     }
 
+    @JsonProperty("primerNombreResponsable")
     public void setSedeRespoPrimerNombre(String sedeRespoPrimerNombre) {
         this.sedeRespoPrimerNombre = sedeRespoPrimerNombre;
     }
@@ -239,22 +262,25 @@ public class Sede
         return sedeRespoSegundoNombre;
     }
 
+    @JsonProperty("segundoNombreResponsable")
     public void setSedeRespoSegundoNombre(String sedeRespoSegundoNombre) {
         this.sedeRespoSegundoNombre = sedeRespoSegundoNombre;
     }
 
-    public BigDecimal getSedeEmpreMision() {
+    public String getSedeEmpreMision() {
         return sedeEmpreMision;
     }
 
-    public void setSedeEmpreMision(BigDecimal sedeEmpreMision) {
-        this.sedeEmpreMision = sedeEmpreMision;
+    @JsonProperty("sedeEmpleadorMision")
+    public void setSedeEmpreMision(String sedeEmpreMision) {
+        this.sedeEmpreMision = sedeEmpreMision.toLowerCase().equals("true") ? "1" : "0";
     }
 
     public String getTipDocEmpreMision() {
         return tipDocEmpreMision;
     }
 
+    @JsonProperty("tipoDocumentoEmpleadorMision")
     public void setTipDocEmpreMision(String tipDocEmpreMision) {
         this.tipDocEmpreMision = tipDocEmpreMision;
     }
@@ -263,6 +289,7 @@ public class Sede
         return numDocEmpreMision;
     }
 
+    @JsonProperty("numeroDocumentoEmpleadorMision")
     public void setNumDocEmpreMision(String numDocEmpreMision) {
         this.numDocEmpreMision = numDocEmpreMision;
     }
@@ -271,6 +298,7 @@ public class Sede
         return empreMisionNitDescen;
     }
 
+    @JsonProperty("consecutivoNITEmpleadorMision")
     public void setEmpreMisionNitDescen(String empreMisionNitDescen) {
         this.empreMisionNitDescen = empreMisionNitDescen;
     }
@@ -279,6 +307,7 @@ public class Sede
         return centros;
     }
 
+    @JsonProperty("centrosTrabajo")
     public void setCentros(List<CentroTrabajo> centros) {
         this.centros = centros;
     }
@@ -287,4 +316,5 @@ public class Sede
 
         this.centros.add(centro);
     }
+
 }

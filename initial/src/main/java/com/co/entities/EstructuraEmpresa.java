@@ -1,5 +1,7 @@
 package com.co.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -7,6 +9,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
+
+@JsonIgnoreProperties(value = { "id",
+        "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
+        "fechaRespuesta", "consultaEmpresa", "sedes", "estadoMin", "naturalezaJuridica", "tipoAportante", "actividadEconomica" })
 @Entity
 @Table(name = "SRV_ESTRUCTURA_EMPRESA")
 public class EstructuraEmpresa
@@ -29,7 +36,7 @@ public class EstructuraEmpresa
     @Column(name = "FECRESPUESTA")
     private String fecRespuesta;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = ALL)
     @JoinColumn(name = "SRV_CONSULTA_EMPRESA_ID")
     private ConsultaEmpresa consultaEmpresa;
 
@@ -46,7 +53,7 @@ public class EstructuraEmpresa
     private String tipPerson;
 
     @Column(name = "NAT_JURIDICA")
-    private String natJuridica;
+    private BigDecimal natJuridica;
 
     @Column(name = "TIPO_APOR")
     private String tipoAporte;
@@ -93,7 +100,7 @@ public class EstructuraEmpresa
     @Column(name = "EMPRE_REPRE_SEGNOM")
     private String segundoNombreRepresentante;
 
-    @OneToMany(mappedBy = "estructuraEmpresa", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {PERSIST, MERGE}, mappedBy = "estructuraEmpresa", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<Sede> sedes;
 
@@ -149,6 +156,7 @@ public class EstructuraEmpresa
         return empreTipDoc;
     }
 
+    @JsonProperty("tipoDocumentoEmpleador")
     public void setEmpreTipDoc(String empreTipDoc) {
         this.empreTipDoc = empreTipDoc;
     }
@@ -157,6 +165,7 @@ public class EstructuraEmpresa
         return empreId;
     }
 
+    @JsonProperty("numeroDocumentoEmpleador")
     public void setEmpreId(String empreId) {
         this.empreId = empreId;
     }
@@ -165,6 +174,7 @@ public class EstructuraEmpresa
         return empreNitDescen;
     }
 
+    @JsonProperty("consecutivoNITDescentralizado")
     public void setEmpreNitDescen(String empreNitDescen) {
         this.empreNitDescen = empreNitDescen;
     }
@@ -173,15 +183,17 @@ public class EstructuraEmpresa
         return tipPerson;
     }
 
+    @JsonProperty("tipoPersona")
     public void setTipPerson(String tipPerson) {
         this.tipPerson = tipPerson;
     }
 
-    public String getNatJuridica() {
+    public BigDecimal getNatJuridica() {
         return natJuridica;
     }
 
-    public void setNatJuridica(String natJuridica) {
+    @JsonProperty("naturalezaJuridica")
+    public void setNatJuridica(BigDecimal natJuridica) {
         this.natJuridica = natJuridica;
     }
 
@@ -189,6 +201,7 @@ public class EstructuraEmpresa
         return tipoAporte;
     }
 
+    @JsonProperty("tipoAportante")
     public void setTipoAporte(String tipoAporte) {
         this.tipoAporte = tipoAporte;
     }
@@ -197,6 +210,7 @@ public class EstructuraEmpresa
         return razonSocial;
     }
 
+    @JsonProperty("razonSocial")
     public void setRazonSocial(String razonSocial) {
         this.razonSocial = razonSocial;
     }
@@ -205,6 +219,7 @@ public class EstructuraEmpresa
         return primerNombreEmpre;
     }
 
+    @JsonProperty("primerNombrePersonaNatural")
     public void setPrimerNombreEmpre(String primerNombreEmpre) {
         this.primerNombreEmpre = primerNombreEmpre;
     }
@@ -213,6 +228,7 @@ public class EstructuraEmpresa
         return segundoNombreEmpre;
     }
 
+    @JsonProperty("segundoNombrePersonaNatural")
     public void setSegundoNombreEmpre(String segundoNombreEmpre) {
         this.segundoNombreEmpre = segundoNombreEmpre;
     }
@@ -221,6 +237,7 @@ public class EstructuraEmpresa
         return primerApelidoEmpre;
     }
 
+    @JsonProperty("primerApellidoPersonaNatural")
     public void setPrimerApelidoEmpre(String primerApelidoEmpre) {
         this.primerApelidoEmpre = primerApelidoEmpre;
     }
@@ -229,6 +246,7 @@ public class EstructuraEmpresa
         return segundoApellidoEmpre;
     }
 
+    @JsonProperty("segundoApellidoPersonaNatural")
     public void setSegundoApellidoEmpre(String segundoApellidoEmpre) {
         this.segundoApellidoEmpre = segundoApellidoEmpre;
     }
@@ -237,6 +255,7 @@ public class EstructuraEmpresa
         return empreEmail;
     }
 
+    @JsonProperty("correoElectronico")
     public void setEmpreEmail(String empreEmail) {
         this.empreEmail = empreEmail;
     }
@@ -245,6 +264,7 @@ public class EstructuraEmpresa
         return codigoActividadEconomica;
     }
 
+    @JsonProperty("codigoActividadEconomica")
     public void setCodigoActividadEconomica(String codigoActividadEconomica) {
         this.codigoActividadEconomica = codigoActividadEconomica;
     }
@@ -253,6 +273,7 @@ public class EstructuraEmpresa
         return claseAportacion;
     }
 
+    @JsonProperty("claseAportante")
     public void setClaseAportacion(String claseAportacion) {
         this.claseAportacion = claseAportacion;
     }
@@ -261,6 +282,7 @@ public class EstructuraEmpresa
         return tipoDocRepresentante;
     }
 
+    @JsonProperty("tipoDocumentoRepresentante")
     public void setTipoDocRepresentante(String tipoDocRepresentante) {
         this.tipoDocRepresentante = tipoDocRepresentante;
     }
@@ -269,6 +291,7 @@ public class EstructuraEmpresa
         return docRepresentante;
     }
 
+    @JsonProperty("numeroDocumentoRepresentante")
     public void setDocRepresentante(String docRepresentante) {
         this.docRepresentante = docRepresentante;
     }
@@ -277,6 +300,7 @@ public class EstructuraEmpresa
         return primerApellidoRepresentante;
     }
 
+    @JsonProperty("primerApellidoRepresentante")
     public void setPrimerApellidoRepresentante(String primerApellidoRepresentante) {
         this.primerApellidoRepresentante = primerApellidoRepresentante;
     }
@@ -285,6 +309,7 @@ public class EstructuraEmpresa
         return segundopellidoRepresentante;
     }
 
+    @JsonProperty("segundoApellidoRepresentante")
     public void setSegundopellidoRepresentante(String segundopellidoRepresentante) {
         this.segundopellidoRepresentante = segundopellidoRepresentante;
     }
@@ -293,6 +318,7 @@ public class EstructuraEmpresa
         return primerNombreRepresentante;
     }
 
+    @JsonProperty("primerNombreRepresentante")
     public void setPrimerNombreRepresentante(String primerNombreRepresentante) {
         this.primerNombreRepresentante = primerNombreRepresentante;
     }
@@ -301,6 +327,7 @@ public class EstructuraEmpresa
         return segundoNombreRepresentante;
     }
 
+    @JsonProperty("segundoNombreRepresentante")
     public void setSegundoNombreRepresentante(String segundoNombreRepresentante) {
         this.segundoNombreRepresentante = segundoNombreRepresentante;
     }
@@ -308,5 +335,37 @@ public class EstructuraEmpresa
     public void addSede(Sede sede)
     {
         this.sedes.add(sede);
+    }
+
+    @Override
+    public String toString() {
+        return "EstructuraEmpresa{" +
+                "id=" + id +
+                ", tokenMin='" + tokenMin + '\'' +
+                ", fecCaptura='" + fecCaptura + '\'' +
+                ", fecRespuesta='" + fecRespuesta + '\'' +
+                ", consultaEmpresa=" + consultaEmpresa +
+                ", empreTipDoc='" + empreTipDoc + '\'' +
+                ", empreId='" + empreId + '\'' +
+                ", empreNitDescen='" + empreNitDescen + '\'' +
+                ", tipPerson='" + tipPerson + '\'' +
+                ", natJuridica='" + natJuridica + '\'' +
+                ", tipoAporte='" + tipoAporte + '\'' +
+                ", razonSocial='" + razonSocial + '\'' +
+                ", primerNombreEmpre='" + primerNombreEmpre + '\'' +
+                ", segundoNombreEmpre='" + segundoNombreEmpre + '\'' +
+                ", primerApelidoEmpre='" + primerApelidoEmpre + '\'' +
+                ", segundoApellidoEmpre='" + segundoApellidoEmpre + '\'' +
+                ", empreEmail='" + empreEmail + '\'' +
+                ", codigoActividadEconomica='" + codigoActividadEconomica + '\'' +
+                ", claseAportacion='" + claseAportacion + '\'' +
+                ", tipoDocRepresentante='" + tipoDocRepresentante + '\'' +
+                ", docRepresentante='" + docRepresentante + '\'' +
+                ", primerApellidoRepresentante='" + primerApellidoRepresentante + '\'' +
+                ", segundopellidoRepresentante='" + segundopellidoRepresentante + '\'' +
+                ", primerNombreRepresentante='" + primerNombreRepresentante + '\'' +
+                ", segundoNombreRepresentante='" + segundoNombreRepresentante + '\'' +
+                ", sedes=" + sedes +
+                '}';
     }
 }

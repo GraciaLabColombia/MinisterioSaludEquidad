@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.co.annotation.ServiceConfig;
@@ -56,6 +58,7 @@ public class Controller extends BaseController
     @Autowired
     private RetractionService retractionService;
 
+    @Autowired
     private TransladoEmpresaService transladoEmpresaService;
 
 	public Controller()
@@ -138,7 +141,7 @@ public class Controller extends BaseController
 						incorrectos++;
 					} else if(response instanceof ResponseMinSaludDTO)
 					{
-						this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(), afiliacion.getAfiliacionEmpresaId(), afiliacion.getAfiliacionEmpresaId(), EstadosEnum.EXITOSO.getName(), response.toString(), authorization));
+						this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(), afiliacion.getAfiliacionEmpresaId(), afiliacion.getAfiliacionEmpresaId(), EstadosEnum.EXITOSO.getName(), "OK", authorization));
 						afiliacion.setEstadoMin(EstadosEnum.EXITOSO.getName());
 						correctos++;
 					}
@@ -147,7 +150,7 @@ public class Controller extends BaseController
                 }
                 catch (Exception e)
                 {
-					this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(), afiliacion.getAfiliacionEmpresaId(), afiliacion.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+					this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(), afiliacion.getAfiliacionEmpresaId(), afiliacion.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
                     log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
                 }
 			}
@@ -280,18 +283,18 @@ public class Controller extends BaseController
 				try {
 					this.consultaEmpresaService.save(consultaEmpresa);
 					log.info("Consulta empresa Save Ok!");
-					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.EXITOSO.getName(), response.toString(), authorization));
+					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.EXITOSO.getName(), "OK", authorization));
 					correctos++;
 				}catch (Exception ex)
 				{
-					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+					//this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), "FAIL", authorization));
 					log.info("Consulta empresa Save fail! ".concat(ex.getMessage()));
 				}
 			}
 			CountResponseDTO count = new CountResponseDTO();
 			count.setTotal(empresas.size());
 			count.setCorrectos(correctos);
-			count.setIncorrecto(empresas.size() / correctos);
+			count.setIncorrecto(empresas.size() == correctos ? 0 : empresas.size() / correctos);
 			return count;
 
 		} catch (NoSuchMethodException e)
@@ -319,11 +322,13 @@ public class Controller extends BaseController
 			method = RequestMethod.POST)
 	public Object consultaEstructuraEmpresa(@RequestHeader("Authorization") String authorization)
 	{
-		Object response = null;
+			List<String> documentosFull = new ArrayList<>();
+			Object response = null;
 
-			LocalDate now = LocalDate.now();
+			LocalDateTime now = LocalDateTime.now();
+            log.info("Fecha para buscar estructuras Empresa es: ".concat(now.toString()));
 
-			List<ConsultaEmpresa> empresasAConsultar = this.consultaEmpresaService.consultaEmpresaPorFecha(now.toString());
+			List<ConsultaEmpresa> empresasAConsultar = this.consultaEmpresaService.consultaEmpresaPorFecha(now.toString(), LocalDate.now().toString());
 
 			for(ConsultaEmpresa consultaEmpresa: empresasAConsultar) {
 				try
@@ -337,37 +342,33 @@ public class Controller extends BaseController
 					if(response instanceof ErrorDTO)
 						throw new MinSaludBusinessException(response.toString());
 					log.info("Consulta estructura empresa RESPONSE: ".concat(response.toString()));
-					EstructuraEmpresa estructuraEmpresa = this.consultaEmpresaService.mapEstructura(response.toString());
+					EstructuraEmpresa estructuraEmpresa = this.consultaEmpresaService.mapEstructura(response.toString(), authorization);
+					estructuraEmpresa.setConsultaEmpresa(consultaEmpresa);
+					log.info("Consulta Estructura MAP: ".concat(estructuraEmpresa.toString()));
 					this.estructuraEmpresaService.save(estructuraEmpresa);
-					log.info("Estructura persistida correctamente ".concat(estructuraEmpresa.getEmpreId()));
-					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.EXITOSO.getName(), response.toString(), authorization));
+					log.info("Consulta Estructura persistida correctamente ".concat(estructuraEmpresa.getEmpreId()));
+					documentosFull.add(estructuraEmpresa.getEmpreId());
+					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.EXITOSO.getName(), "OK", authorization));
 				} catch (NoSuchMethodException e)
 				{
 					log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
-					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
 				}catch (IllegalAccessException | NoSuchFieldException e)
 				{
 					log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
-					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
 				} catch (IOException e)
 				{
 					log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
-					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
 				} catch (MinSaludBusinessException e)
 				{
 					log.error("Error de negocio: ".concat(e.getMessage()));
-					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), consultaEmpresa.getAfiliacionEmpresaId(), consultaEmpresa.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), "FAIL", authorization));
 				}
 			}
 
-			CountResponseDTO count = new CountResponseDTO();
-			count.setTotal(empresasAConsultar.size());
-			count.setCorrectos(empresasAConsultar.size());
-			count.setIncorrecto(0);
-
-			return count;
-
-
+			return documentosFull;
 	}
 
 	@PostMapping(path = "/TrasladoEmpleador", consumes = "application/json", produces = "application/json")

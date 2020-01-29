@@ -1,8 +1,14 @@
 package com.co.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@JsonIgnoreProperties(value = { "id",
+        "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
+        "fechaRespuesta", "centro", "estadoMin", "naturalezaJuridica", "tipoAportante", "actividadEconomica" })
 @Entity
 @Table(name = "SRV_ESTRUCTURA_EMPLEADO")
 public class Empleado
@@ -47,16 +53,16 @@ public class Empleado
     private String segundoNombreEmpleado;
 
     @Column(name = "TIPO_COTIZANTE")
-    private BigDecimal tipoCotizante;
+    private String tipoCotizante;
 
     @Column(name = "SUBTIPO_COTIZANTE")
-    private BigDecimal subTipoCotizante;
+    private String subTipoCotizante;
 
     @Column(name = "IBC")
-    private BigDecimal ibc;
+    private String ibc;
 
     @Column(name = "TIPO_SALARIO")
-    private BigDecimal tipoSalario;
+    private String tipoSalario;
 
     @Column(name = "EMPLE__FECNAC")
     private String empleFecNac;
@@ -117,6 +123,7 @@ public class Empleado
         return fechaInicio;
     }
 
+    @JsonProperty("fechaInicio")
     public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
@@ -125,6 +132,7 @@ public class Empleado
         return tipoDocEmpleado;
     }
 
+    @JsonProperty("tipoDocumentoIdentificacion")
     public void setTipoDocEmpleado(String tipoDocEmpleado) {
         this.tipoDocEmpleado = tipoDocEmpleado;
     }
@@ -133,6 +141,7 @@ public class Empleado
         return numeroEmpleado;
     }
 
+    @JsonProperty("numeroDocumentoIdentificacion")
     public void setNumeroEmpleado(String numeroEmpleado) {
         this.numeroEmpleado = numeroEmpleado;
     }
@@ -141,6 +150,7 @@ public class Empleado
         return primerApellidoEmpleado;
     }
 
+    @JsonProperty("primerApellidoTrabajador")
     public void setPrimerApellidoEmpleado(String primerApellidoEmpleado) {
         this.primerApellidoEmpleado = primerApellidoEmpleado;
     }
@@ -149,6 +159,7 @@ public class Empleado
         return segundoApellidoEmpleado;
     }
 
+    @JsonProperty("segundoApellidoTrabajador")
     public void setSegundoApellidoEmpleado(String segundoApellidoEmpleado) {
         this.segundoApellidoEmpleado = segundoApellidoEmpleado;
     }
@@ -157,6 +168,7 @@ public class Empleado
         return primerNombreEmpleado;
     }
 
+    @JsonProperty("primerNombreTrabajador")
     public void setPrimerNombreEmpleado(String primerNombreEmpleado) {
         this.primerNombreEmpleado = primerNombreEmpleado;
     }
@@ -165,39 +177,44 @@ public class Empleado
         return segundoNombreEmpleado;
     }
 
+    @JsonProperty("segundoNombreTrabajador")
     public void setSegundoNombreEmpleado(String segundoNombreEmpleado) {
         this.segundoNombreEmpleado = segundoNombreEmpleado;
     }
 
-    public BigDecimal getTipoCotizante() {
+    public String getTipoCotizante() {
         return tipoCotizante;
     }
 
-    public void setTipoCotizante(BigDecimal tipoCotizante) {
+    @JsonProperty("tipoCotizante")
+    public void setTipoCotizante(String tipoCotizante) {
         this.tipoCotizante = tipoCotizante;
     }
 
-    public BigDecimal getSubTipoCotizante() {
+    public String getSubTipoCotizante() {
         return subTipoCotizante;
     }
 
-    public void setSubTipoCotizante(BigDecimal subTipoCotizante) {
+    @JsonProperty("subtipoCotizante")
+    public void setSubTipoCotizante(String subTipoCotizante) {
         this.subTipoCotizante = subTipoCotizante;
     }
 
-    public BigDecimal getIbc() {
+    public String getIbc() {
         return ibc;
     }
 
-    public void setIbc(BigDecimal ibc) {
+    @JsonProperty("ibc")
+    public void setIbc(String ibc) {
         this.ibc = ibc;
     }
 
-    public BigDecimal getTipoSalario() {
+    public String getTipoSalario() {
         return tipoSalario;
     }
 
-    public void setTipoSalario(BigDecimal tipoSalario) {
+    @JsonProperty("tipoSalario")
+    public void setTipoSalario(String tipoSalario) {
         this.tipoSalario = tipoSalario;
     }
 
@@ -205,6 +222,7 @@ public class Empleado
         return empleFecNac;
     }
 
+    @JsonProperty("fechaNacimiento")
     public void setEmpleFecNac(String empleFecNac) {
         this.empleFecNac = empleFecNac;
     }
@@ -213,6 +231,7 @@ public class Empleado
         return empleGenero;
     }
 
+    @JsonProperty("sexoTrabajador")
     public void setEmpleGenero(String empleGenero) {
         this.empleGenero = empleGenero;
     }
@@ -221,6 +240,7 @@ public class Empleado
         return empleEps;
     }
 
+    @JsonProperty("epsTrabajador")
     public void setEmpleEps(String empleEps) {
         this.empleEps = empleEps;
     }
@@ -229,6 +249,7 @@ public class Empleado
         return empleAfp;
     }
 
+    @JsonProperty("afpTrabajador")
     public void setEmpleAfp(String empleAfp) {
         this.empleAfp = empleAfp;
     }
@@ -237,6 +258,7 @@ public class Empleado
         return fechaFin;
     }
 
+    @JsonProperty("fechafin")
     public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;
     }

@@ -1,5 +1,7 @@
 package com.co.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -7,6 +9,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+
+@JsonIgnoreProperties(value = { "id",
+        "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
+        "fechaRespuesta", "sede", "empleados", "estadoMin", "naturalezaJuridica", "tipoAportante", "actividadEconomica" })
 @Entity
 @Table(name = "SRV_ESTRUCTURA_CENTRO")
 public class CentroTrabajo
@@ -81,7 +89,7 @@ public class CentroTrabajo
     @Column(name = "ID_PERSONA_RESP")
     private String idPersonaResp;
 
-    @OneToMany(mappedBy = "centro", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {PERSIST, MERGE}, mappedBy = "centro", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<Empleado> empleados;
 
@@ -129,6 +137,7 @@ public class CentroTrabajo
         return codCentroTrab;
     }
 
+    @JsonProperty("codigoCentroTrabajo")
     public void setCodCentroTrab(String codCentroTrab) {
         this.codCentroTrab = codCentroTrab;
     }
@@ -137,6 +146,7 @@ public class CentroTrabajo
         return centroTrab;
     }
 
+    @JsonProperty("nombreCentroTrabajo")
     public void setCentroTrab(BigDecimal centroTrab) {
         this.centroTrab = centroTrab;
     }
@@ -145,6 +155,7 @@ public class CentroTrabajo
         return indicadorAct;
     }
 
+    @JsonProperty("idCodigoActividadEconomica")
     public void setIndicadorAct(String indicadorAct) {
         this.indicadorAct = indicadorAct;
     }
@@ -153,6 +164,7 @@ public class CentroTrabajo
         return codActCentroTrabajo;
     }
 
+    @JsonProperty("codigoActividadEconomica")
     public void setCodActCentroTrabajo(BigDecimal codActCentroTrabajo) {
         this.codActCentroTrabajo = codActCentroTrabajo;
     }
@@ -161,6 +173,7 @@ public class CentroTrabajo
         return muniCentroTrab;
     }
 
+    @JsonProperty("municipio")
     public void setMuniCentroTrab(String muniCentroTrab) {
         this.muniCentroTrab = muniCentroTrab;
     }
@@ -169,6 +182,7 @@ public class CentroTrabajo
         return dirCentroTrabajo;
     }
 
+    @JsonProperty("direccionCT")
     public void setDirCentroTrabajo(String dirCentroTrabajo) {
         this.dirCentroTrabajo = dirCentroTrabajo;
     }
@@ -177,6 +191,7 @@ public class CentroTrabajo
         return zonaUbiCentroTrabajo;
     }
 
+    @JsonProperty("zonaUbicacion")
     public void setZonaUbiCentroTrabajo(String zonaUbiCentroTrabajo) {
         this.zonaUbiCentroTrabajo = zonaUbiCentroTrabajo;
     }
@@ -185,6 +200,7 @@ public class CentroTrabajo
         return telCentroTrab;
     }
 
+    @JsonProperty("telefono")
     public void setTelCentroTrab(String telCentroTrab) {
         this.telCentroTrab = telCentroTrab;
     }
@@ -193,6 +209,7 @@ public class CentroTrabajo
         return emailCentroTrabajo;
     }
 
+    @JsonProperty("correoElectronico")
     public void setEmailCentroTrabajo(String emailCentroTrabajo) {
         this.emailCentroTrabajo = emailCentroTrabajo;
     }
@@ -201,6 +218,7 @@ public class CentroTrabajo
         return tipDocRespCentrab;
     }
 
+    @JsonProperty("tipoDocumentoResponsableCT")
     public void setTipDocRespCentrab(String tipDocRespCentrab) {
         this.tipDocRespCentrab = tipDocRespCentrab;
     }
@@ -209,6 +227,7 @@ public class CentroTrabajo
         return idRespCentrab;
     }
 
+    @JsonProperty("numeroDocumentoResponsableCT")
     public void setIdRespCentrab(String idRespCentrab) {
         this.idRespCentrab = idRespCentrab;
     }
@@ -217,6 +236,7 @@ public class CentroTrabajo
         return respCentrabPrimerApellido;
     }
 
+    @JsonProperty("primerApellidoResponsableCT")
     public void setRespCentrabPrimerApellido(String respCentrabPrimerApellido) {
         this.respCentrabPrimerApellido = respCentrabPrimerApellido;
     }
@@ -225,6 +245,7 @@ public class CentroTrabajo
         return respCentrabSegundoApellido;
     }
 
+    @JsonProperty("segundoApellidoResponsableCT")
     public void setRespCentrabSegundoApellido(String respCentrabSegundoApellido) {
         this.respCentrabSegundoApellido = respCentrabSegundoApellido;
     }
@@ -233,6 +254,7 @@ public class CentroTrabajo
         return respCentrabPrimerNombre;
     }
 
+    @JsonProperty("primerNombreResponsableCT")
     public void setRespCentrabPrimerNombre(String respCentrabPrimerNombre) {
         this.respCentrabPrimerNombre = respCentrabPrimerNombre;
     }
@@ -241,6 +263,7 @@ public class CentroTrabajo
         return respCentrabSegundoNombre;
     }
 
+    @JsonProperty("segundoNombreResponsableCT")
     public void setRespCentrabSegundoNombre(String respCentrabSegundoNombre) {
         this.respCentrabSegundoNombre = respCentrabSegundoNombre;
     }
@@ -249,6 +272,7 @@ public class CentroTrabajo
         return idPersonaResp;
     }
 
+    @JsonProperty("id_PersonaResponsable")
     public void setIdPersonaResp(String idPersonaResp) {
         this.idPersonaResp = idPersonaResp;
     }

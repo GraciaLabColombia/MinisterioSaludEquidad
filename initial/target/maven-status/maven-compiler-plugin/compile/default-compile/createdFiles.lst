@@ -67,6 +67,7 @@ com\co\exception\MinSaludBusinessException.class
 com\co\persistence\TerminacionLaboralRepository.class
 com\co\dto\ErrorDTO.class
 com\co\service\TerminacionLaboralService.class
+com\co\builder\SedesCustomSerializer.class
 com\co\service\InicioLaboralService.class
 com\co\builder\SerializerCustom.class
 com\co\service\TransladoEmpresaService.class

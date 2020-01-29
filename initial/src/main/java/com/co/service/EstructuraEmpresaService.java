@@ -18,4 +18,9 @@ public class EstructuraEmpresaService
         this.estructuraEmpresaRepository.save(estructuraEmpresa);
     }
 
+    public EstructuraEmpresa consultaEstructuraEmpresa(String empreId, String empreTipDoc){
+
+        return this.estructuraEmpresaRepository.consultaEstructuraEmpresa(empreId, empreTipDoc);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.co.entities;
 
 import com.co.builder.SedesCustomSerializer;
+import com.co.builder.SerializerCustom;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -12,8 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.*;
 
 @JsonIgnoreProperties(value = { "id",
         "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
@@ -43,61 +43,79 @@ public class Sede {
     @JoinColumn(name = "SRV_ESTRUCTURA_EMPRESA_ID")
     private EstructuraEmpresa estructuraEmpresa;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "COD_SEDE")
     private String codSede;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_PRINCIPAL")
     private String sedePrincipal;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_NOMBRE")
     private String sedeNombre;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_MUNIC")
     private String sedeMunic;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_DIR")
     private String sedeDir;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_ZONA_UBI")
     private String sedeZonaUbi;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_TEL")
     private String sedeTel;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_EMAIL")
     private String sedeEmail;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPDOC_RESPO")
     private String tipoDocResponsable;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_NUMDOC_RESPO")
     private String sedeNumDocRespo;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_RESPO_PRIAPE")
     private String sedeResponsablePrimerApellido;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_RESPO_SEGAPE")
     private String sedeRespoSegundoApellido;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_RESPO_PRINOM")
     private String sedeRespoPrimerNombre;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_RESPO_SEGNOM")
     private String sedeRespoSegundoNombre;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SEDE_EMPRE_MISION")
     private String sedeEmpreMision;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPDOC_EMPRE_MISION")
     private String tipDocEmpreMision;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "NUMDOC_EMPRE_MISION")
     private String numDocEmpreMision;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_MISION_NIT_DESCEN")
     private String empreMisionNitDescen;
 
-    @OneToMany(cascade = {PERSIST, MERGE}, mappedBy = "sede", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {PERSIST, MERGE, REMOVE}, mappedBy = "sede", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     List<CentroTrabajo> centros;
 

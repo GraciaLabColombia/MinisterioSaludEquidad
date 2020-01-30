@@ -1,7 +1,9 @@
 package com.co.entities;
 
+import com.co.builder.SerializerCustom;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -34,48 +36,63 @@ public class Empleado
     @Column(name = "FECINI_NOV")
     private String fechaInicio;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE_TIPDOC")
     private String tipoDocEmpleado;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE_ID")
     private String numeroEmpleado;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE_PAPELLIDO")
     private String primerApellidoEmpleado;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE_SAPELLIDO")
     private String segundoApellidoEmpleado;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE_PNOMBRE")
     private String primerNombreEmpleado;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE_SNOMBRE")
     private String segundoNombreEmpleado;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPO_COTIZANTE")
     private String tipoCotizante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "SUBTIPO_COTIZANTE")
     private String subTipoCotizante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "IBC")
     private String ibc;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPO_SALARIO")
     private String tipoSalario;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE__FECNAC")
     private String empleFecNac;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE__GENERO")
     private String empleGenero;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE_EPS")
     private String empleEps;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPLE_AFP")
     private String empleAfp;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "FECFIN_NOV")
     private String fechaFin;
 

@@ -1,8 +1,10 @@
 package com.co.entities;
 
+import com.co.builder.SerializerCustom;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -11,8 +13,8 @@ import java.math.BigDecimal;
         "consecutivoNITEmpleador"})
 @JsonIgnoreProperties(value = { "id",
         "empreForm", "tokenMinIni", "fecCapturaTokenIni", "fecRespuestaTokenIni",
-        "tipoReporte", "tokenMinFin", "fecCapturaTokenFin", "fecRespuestaTokenFin", "tipoReporteTokenFin",
-        "fechaSolicitud", "fecIniCobertura", "fechaFinAfiliacion"})
+        "tipoReporte", "tokenMinFin", "fecCapturaTokenFin", "fecRespuestaTokenFin", "tipoReporteTokenFin", "tipoReporteMinTokenIni",
+        "fechaSolicitud", "fecIniCobertura", "fechaFinAfiliacion", "afiliacionEmpresaId" , "tipoReporteMinTokenFin"})
 @Entity
 @Table(name = "SRV_CONSULTA_EMPRESA")
 public class ConsultaEmpresa
@@ -49,12 +51,15 @@ public class ConsultaEmpresa
     @Column(name = "TIPOREPORTE_MIN_TOKEN_FIN")
     private String tipoReporteTokenFin;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_TIPDOC")
     private String tipoDocumentoEmpleador;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_ID")
     private String numeroDocumentoEmpleador;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_NIT_DESCEN")
     private String consecutivoNitDescentralizado;
 

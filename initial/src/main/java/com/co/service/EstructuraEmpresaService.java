@@ -23,4 +23,12 @@ public class EstructuraEmpresaService
         return this.estructuraEmpresaRepository.consultaEstructuraEmpresa(empreId, empreTipDoc);
     }
 
+    public EstructuraEmpresa consultaEmpresDocRepresentante(String empreId, String docRepresentante) {
+        return this.estructuraEmpresaRepository.consultaEstructuraEmpresaDocRepresentante(empreId, docRepresentante);
+    }
+
+    public void delete(EstructuraEmpresa estructuraEmpresa) {
+        this.estructuraEmpresaRepository.delete(estructuraEmpresa);
+    }
+
 }

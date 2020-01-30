@@ -1,7 +1,9 @@
 package com.co.entities;
 
+import com.co.builder.SerializerCustom;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -9,8 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.*;
 
 @JsonIgnoreProperties(value = { "id",
         "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
@@ -41,55 +42,70 @@ public class CentroTrabajo
     @JoinColumn(name = "SRV_ESTRUCTURA_SEDE_ID")
     private Sede sede;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "COD_CENTRO_TRAB")
     private String codCentroTrab;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "CENTRO_TRAB")
-    private BigDecimal centroTrab;
+    private String centroTrab;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "INDICADOR_ACT")
     private String indicadorAct;
 
     @Column(name = "CODACT_CENTRO_TRAB")
     private BigDecimal codActCentroTrabajo;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "MUNI_CENTRO_TRAB")
     private String muniCentroTrab;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "DIR_CENTRO_TRAB")
     private String dirCentroTrabajo;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "ZONA_UBI_CENTRO_TRABAJO")
     private String zonaUbiCentroTrabajo;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TEL_CENTRO_TRAB")
     private String telCentroTrab;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMAIL_CENTRO_TRAB")
     private String emailCentroTrabajo;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPDOC_RESP_CENTRAB")
     private String tipDocRespCentrab;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "ID_RESP_CENTRAB")
     private String idRespCentrab;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "RESP_CENTRAB_PRIAPE")
     private String respCentrabPrimerApellido;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "RESP_CENTRAB_SEGAPE")
     private String respCentrabSegundoApellido;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "RESP_CENTRAB_PRINOM")
     private String respCentrabPrimerNombre;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "RESP_CENTRAB_SEGNOM")
     private String respCentrabSegundoNombre;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "ID_PERSONA_RESP")
     private String idPersonaResp;
 
-    @OneToMany(cascade = {PERSIST, MERGE}, mappedBy = "centro", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {PERSIST, MERGE, REMOVE}, mappedBy = "centro", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<Empleado> empleados;
 
@@ -142,12 +158,12 @@ public class CentroTrabajo
         this.codCentroTrab = codCentroTrab;
     }
 
-    public BigDecimal getCentroTrab() {
+    public String getCentroTrab() {
         return centroTrab;
     }
 
     @JsonProperty("nombreCentroTrabajo")
-    public void setCentroTrab(BigDecimal centroTrab) {
+    public void setCentroTrab(String centroTrab) {
         this.centroTrab = centroTrab;
     }
 

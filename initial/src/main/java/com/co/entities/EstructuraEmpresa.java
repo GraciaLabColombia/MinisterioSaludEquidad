@@ -1,7 +1,9 @@
 package com.co.entities;
 
+import com.co.builder.SerializerCustom;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -13,7 +15,7 @@ import static javax.persistence.CascadeType.*;
 
 @JsonIgnoreProperties(value = { "id",
         "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",
-        "fechaRespuesta", "consultaEmpresa", "sedes", "estadoMin", "naturalezaJuridica", "tipoAportante", "actividadEconomica" })
+        "fechaRespuesta", "consultaEmpresa", "sedes", "estadoMin", "tipoAportante", "actividadEconomica", "afiliacionEmpresaId" })
 @Entity
 @Table(name = "SRV_ESTRUCTURA_EMPRESA")
 public class EstructuraEmpresa
@@ -36,71 +38,91 @@ public class EstructuraEmpresa
     @Column(name = "FECRESPUESTA")
     private String fecRespuesta;
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne(cascade = MERGE)
     @JoinColumn(name = "SRV_CONSULTA_EMPRESA_ID")
     private ConsultaEmpresa consultaEmpresa;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_TIPDOC")
     private String empreTipDoc;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_ID")
     private String empreId;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_NIT_DESCEN")
     private String empreNitDescen;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_TIPPERS")
     private String tipPerson;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "NAT_JURIDICA")
     private BigDecimal natJuridica;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPO_APOR")
     private String tipoAporte;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_RAZSOC")
     private String razonSocial;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_PERNAT_PRINOM")
     private String primerNombreEmpre;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_PERNAT_SEGNOM")
     private String segundoNombreEmpre;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_PERNAT_PRIAPE")
     private String primerApelidoEmpre;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_PERNAT_SEGAPE")
     private String segundoApellidoEmpre;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_EMAIL")
     private String empreEmail;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_CODACT")
     private String codigoActividadEconomica;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "CLASE_APOR")
     private String claseAportacion;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPDOC_REPRE")
     private String tipoDocRepresentante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "ID_REPRE")
     private String docRepresentante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_REPRE_PRIAPE")
     private String primerApellidoRepresentante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_REPRE_SEGAPE")
     private String segundopellidoRepresentante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_REPRE_PRINOM")
     private String primerNombreRepresentante;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_REPRE_SEGNOM")
     private String segundoNombreRepresentante;
 
-    @OneToMany(cascade = {PERSIST, MERGE}, mappedBy = "estructuraEmpresa", fetch = FetchType.LAZY)
+    @OneToMany(cascade = {PERSIST, MERGE, REMOVE}, mappedBy = "estructuraEmpresa", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<Sede> sedes;
 

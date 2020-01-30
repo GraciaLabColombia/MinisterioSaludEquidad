@@ -1,4 +1,5 @@
 com\co\persistence\ReclasificacionCentroTrabajoRepository.class
+com\co\persistence\SedesRepository.class
 com\co\service\AfiliacionService.class
 com\co\service\RetractionService.class
 com\co\entities\BaseEntity.class
@@ -21,9 +22,11 @@ com\co\persistence\EstructuraEmpresaRepository.class
 com\co\app\Controller$10.class
 com\co\app\Controller.class
 com\co\persistence\TransladoEmpresaRepository.class
+com\co\service\CentroService.class
 com\co\entities\Empleado.class
 com\co\persistence\RetractacionRepository.class
 com\co\dto\RequestBodyDTO.class
+com\co\dto\ResponseContentExitFailDTO.class
 com\co\app\Application.class
 com\co\app\Controller$12.class
 com\co\dto\RequestFormPostDTO.class
@@ -36,6 +39,7 @@ com\co\entities\Sede.class
 com\co\entities\VariacionCentro.class
 com\co\app\Controller$1.class
 com\co\persistence\RetiroDefinitivoRepository.class
+com\co\dto\InternalServerErrorDTO.class
 com\co\entities\NovedadesSede.class
 com\co\entities\ConsultaEmpresa.class
 com\co\entities\NovedadesTransitorias.class
@@ -43,6 +47,7 @@ com\co\service\EstructuraEmpresaService.class
 com\co\enums\CalculoFechas.class
 com\co\enums\EstadosEnum.class
 com\co\entities\RedCentroTrabajo.class
+com\co\persistence\EmpleadoRepository.class
 com\co\controller\BaseController.class
 com\co\entities\SatArl.class
 com\co\dto\TokenDTO.class
@@ -52,6 +57,7 @@ com\co\app\Controller$8.class
 com\co\entities\ParametroGeneral.class
 com\co\entities\InicioLaboral.class
 com\co\utils\SisafitraConstant.class
+com\co\service\SedeService.class
 com\co\dto\ResponseMinSaludDTO.class
 com\co\entities\Retractacion.class
 com\co\app\Controller$2.class
@@ -64,6 +70,7 @@ com\co\service\RetiroDefinitivoService.class
 com\co\persistence\RespuestaSATARLRepository.class
 com\co\entities\CentrosTrabajo.class
 com\co\exception\MinSaludBusinessException.class
+com\co\service\EmpleadoService.class
 com\co\persistence\TerminacionLaboralRepository.class
 com\co\dto\ErrorDTO.class
 com\co\service\TerminacionLaboralService.class
@@ -77,3 +84,4 @@ com\co\persistence\AfiliacionRepository.class
 com\co\app\Controller$11.class
 com\co\service\ConsultaEmpresaService$1.class
 com\co\app\Controller$6.class
+com\co\persistence\CentroRepository.class

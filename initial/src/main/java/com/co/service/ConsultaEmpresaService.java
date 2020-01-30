@@ -3,7 +3,10 @@ package com.co.service;
 import com.co.dto.ConsultaEmpresaDTO;
 import com.co.entities.*;
 import com.co.enums.CalculoFechas;
+import com.co.persistence.CentroRepository;
 import com.co.persistence.ConsultaEmpresaRepository;
+import com.co.persistence.EmpleadoRepository;
+import com.co.persistence.SedesRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.beanutils.BeanUtils;
@@ -34,6 +37,15 @@ public class ConsultaEmpresaService
 
     @Autowired
     EstructuraEmpresaService estructuraEmpresaService;
+
+    @Autowired
+    SedesRepository sedesRepository;
+
+    @Autowired
+    CentroRepository centroRepository;
+
+    @Autowired
+    EmpleadoRepository empleadoRepository;
 
     private LogService logService;
 
@@ -109,13 +121,42 @@ public class ConsultaEmpresaService
             empresa.addSede(sede_o);
         }
 
-        EstructuraEmpresa estructuraEmpresa = this.estructuraEmpresaService.consultaEstructuraEmpresa(empresa.getEmpreId(), empresa.getEmpreTipDoc());
-        empresa.setId(estructuraEmpresa == null ? null : estructuraEmpresa.getId());
+        EstructuraEmpresa estructuraEmpresa = null;
+        if(empresa.getEmpreTipDoc() == null)
+        {
+            estructuraEmpresa = this.estructuraEmpresaService.consultaEmpresDocRepresentante(empresa.getEmpreId(), empresa.getDocRepresentante());
+
+        }else
+        {
+            estructuraEmpresa = this.estructuraEmpresaService.consultaEstructuraEmpresa(empresa.getEmpreId(), empresa.getEmpreTipDoc());
+
+        }
+        log.info("Encontramos estructura con id: ".concat(estructuraEmpresa == null ? "Es nueva" : estructuraEmpresa.getId().toString()));
+        if(estructuraEmpresa != null) {
+            this.estructuraEmpresaService.delete(estructuraEmpresa); //cascade
+        }
         empresa.setTokenMin(token);
-        empresa.getSedes().forEach( p -> {p.setEstructuraEmpresa(empresa); p.setTokenMin(token);});
-        empresa.getSedes().forEach( p -> p.getCentros().forEach(c -> {c.setSede(p); c.setTokenMin(token);}));
-        empresa.getSedes().forEach( p -> p.getCentros().forEach( c -> c.getEmpleados().forEach(e -> {e.setCentro(c); e.setTokenMin(token);})));
+        empresa.getSedes().forEach(p -> {
+            p.setEstructuraEmpresa(empresa);
+            p.setTokenMin(token);
+            p.setFecCaptura(LocalDateTime.now().toString());
+            p.setFecRespuesta(LocalDateTime.now().toString());
+            p.setCodSede(p.getCodSede().length() == 1 ? "0".concat(p.getCodSede()) : p.getCodSede());
+        });
+        empresa.getSedes().forEach(p -> p.getCentros().forEach(c -> {
+            c.setSede(p);
+            c.setTokenMin(token);
+            c.setFecCaptura(LocalDateTime.now().toString());
+            c.setFecRespuesta(LocalDateTime.now().toString());
+        }));
+        empresa.getSedes().forEach(p -> p.getCentros().forEach(c -> c.getEmpleados().forEach(e -> {
+            e.setCentro(c);
+            e.setTokenMin(token);
+            e.setFecCaptura(LocalDateTime.now().toString());
+            e.setFecRespuesta(LocalDateTime.now().toString());
+        })));
         empresa.setFecRespuesta(LocalDateTime.now().toString());
+
         return empresa;
     }
 

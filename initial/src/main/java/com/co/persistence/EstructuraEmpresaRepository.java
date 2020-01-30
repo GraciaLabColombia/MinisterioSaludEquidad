@@ -17,4 +17,7 @@ public interface EstructuraEmpresaRepository extends CrudRepository<EstructuraEm
 {
     @Query("SELECT a FROM EstructuraEmpresa a WHERE a.empreId = :empreId AND a.empreTipDoc = :empreTipDoc")
     EstructuraEmpresa consultaEstructuraEmpresa(@Param("empreId") String empreId, @Param("empreTipDoc") String empreTipDoc);
+
+    @Query("SELECT a FROM EstructuraEmpresa a WHERE a.empreId = :empreId AND a.docRepresentante = :docRepresentante")
+    EstructuraEmpresa consultaEstructuraEmpresaDocRepresentante(@Param("empreId") String empreId, @Param("docRepresentante") String docRepresentante);
 }

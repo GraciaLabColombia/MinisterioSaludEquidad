@@ -87,6 +87,8 @@ public class ConsultaEmpresaService
                 empresas.add(consultaEmpresa);
             }else
             {
+                empresa_o.setTokenMinIni(token);
+                empresa_o.setFecCapturaTokenIni(LocalDateTime.now().toString());
                 BeanUtils.copyProperties(empresa_o, empresa);
                 log.info("Se actualizara la empresa con NumeroIdentificacion: ".concat(empresa_o.getNumeroDocumentoEmpleador()));
                 this.save(empresa_o);
@@ -123,7 +125,6 @@ public class ConsultaEmpresaService
             empresa.addSede(sede_o);
         }*/
 
-        EstructuraEmpresa estructuraEmpresa = null;
         empresa.setTokenMin(token);
         empresa.getSedes().forEach(p -> {
             p.setEstructuraEmpresa(empresa);
@@ -148,6 +149,9 @@ public class ConsultaEmpresaService
 
         log.info("Mapeo de estructura completo exitosamente!");
         log.info("Consultando si la estructura esta en la base de datos...");
+
+        EstructuraEmpresa estructuraEmpresa = null;
+
         if(empresa.getEmpreTipDoc() == null)
         {
             estructuraEmpresa = this.estructuraEmpresaService.consultaEmpresDocRepresentante(empresa.getEmpreId(), empresa.getDocRepresentante());

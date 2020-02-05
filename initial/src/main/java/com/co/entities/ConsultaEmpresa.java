@@ -75,11 +75,11 @@ public class ConsultaEmpresa
     public ConsultaEmpresa() {
     }
 
-    public BigDecimal getAfiliacionEmpresaId() {
+    public BigDecimal getId() {
         return id;
     }
 
-    public void setAfiliacionEmpresaId(BigDecimal afiliacionEmpresaId) {
+    public void setId(BigDecimal afiliacionEmpresaId) {
         this.id = afiliacionEmpresaId;
     }
 

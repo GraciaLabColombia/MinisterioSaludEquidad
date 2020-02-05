@@ -74,6 +74,8 @@ public class ConsultaEmpresaService
         List<ConsultaEmpresa> empresas = new ArrayList<>();
         for(ConsultaEmpresaDTO empresa: resultados)
         {
+            log.info("Consultando empresa por: ".concat(empresa.getTipoDocumentoEmpleador()).concat("Y: ").concat(empresa.getNumeroDocumentoEmpleador()).concat("..."));
+
             ConsultaEmpresa empresa_o = this.empresaPorTipoDocumentoYNumeroDocumento(empresa.getTipoDocumentoEmpleador(), empresa.getNumeroDocumentoEmpleador());
             if(empresa_o == null) {
                 log.info("La empresa con NumeroIdentificacion: ".concat(empresa.getTipoDocumentoEmpleador()).concat(" Va ser persistida"));
@@ -94,8 +96,8 @@ public class ConsultaEmpresaService
         return empresas;
     }
 
-    public EstructuraEmpresa mapEstructura(String response, String token) throws JsonProcessingException {
-        JSONObject json = new JSONObject(response);
+    public EstructuraEmpresa mapEstructura(EstructuraEmpresa empresa, String token) throws JsonProcessingException {
+        /*JSONObject json = new JSONObject(response);
         JSONArray sedes = json.getJSONArray("sedes");
         ObjectMapper mapper = new ObjectMapper();
         EstructuraEmpresa empresa = mapper.readValue(response, EstructuraEmpresa.class);
@@ -119,22 +121,9 @@ public class ConsultaEmpresaService
                 sede_o.addCentro(centro_o);
             }
             empresa.addSede(sede_o);
-        }
+        }*/
 
         EstructuraEmpresa estructuraEmpresa = null;
-        if(empresa.getEmpreTipDoc() == null)
-        {
-            estructuraEmpresa = this.estructuraEmpresaService.consultaEmpresDocRepresentante(empresa.getEmpreId(), empresa.getDocRepresentante());
-
-        }else
-        {
-            estructuraEmpresa = this.estructuraEmpresaService.consultaEstructuraEmpresa(empresa.getEmpreId(), empresa.getEmpreTipDoc());
-
-        }
-        log.info("Encontramos estructura con id: ".concat(estructuraEmpresa == null ? "Es nueva" : estructuraEmpresa.getId().toString()));
-        if(estructuraEmpresa != null) {
-            this.estructuraEmpresaService.delete(estructuraEmpresa); //cascade
-        }
         empresa.setTokenMin(token);
         empresa.getSedes().forEach(p -> {
             p.setEstructuraEmpresa(empresa);
@@ -156,6 +145,28 @@ public class ConsultaEmpresaService
             e.setFecRespuesta(LocalDateTime.now().toString());
         })));
         empresa.setFecRespuesta(LocalDateTime.now().toString());
+
+        log.info("Mapeo de estructura completo exitosamente!");
+        log.info("Consultando si la estructura esta en la base de datos...");
+        if(empresa.getEmpreTipDoc() == null)
+        {
+            estructuraEmpresa = this.estructuraEmpresaService.consultaEmpresDocRepresentante(empresa.getEmpreId(), empresa.getDocRepresentante());
+
+        }else
+        {
+            estructuraEmpresa = this.estructuraEmpresaService.consultaEstructuraEmpresa(empresa.getEmpreId(), empresa.getEmpreTipDoc());
+
+        }
+        log.info("Encontramos estructura con id: ".concat(estructuraEmpresa == null ? "Es nueva" : estructuraEmpresa.getId().toString()));
+        if(estructuraEmpresa != null) {
+            log.info("Preparando estructura para eliminar y guardar de nuevo! ");
+            log.warn("Borrando estructuras con: ".concat(String.valueOf(estructuraEmpresa.sedes())).concat(" Sedes"));
+            log.warn("Borrando estructuras con: ".concat(String.valueOf(estructuraEmpresa.centros())).concat(" Centros"));
+            log.warn("Borrando estructuras con: ".concat(String.valueOf(estructuraEmpresa.empleados())).concat(" Empleados"));
+            this.estructuraEmpresaService.delete(estructuraEmpresa); //cascade
+            log.warn("Borrado exitoso!");
+        }
+        log.info("Lista para guardar ");
 
         return empresa;
     }
@@ -179,14 +190,14 @@ public class ConsultaEmpresaService
             case AF:
                return date.plusDays(estado.getDias());
             case TR:
-                return estado.getDias() == 2L ?  getLocalDateMonthsPlus(date, estado.getDias()) : date.plusDays(estado.getDias());
+                return estado.getDias() == 2L ?  getLocalDateMonthsPlus(date, ((int) estado.getDias())) : date.plusDays(estado.getDias());
             default:
                 return date.plusDays(1);
         }
 
     }
 
-    public static LocalDateTime getLocalDateMonthsPlus(final LocalDateTime localDate, long months) {
+    public static LocalDateTime getLocalDateMonthsPlus(final LocalDateTime localDate, int months) {
         final LocalDateTime localDateStartingWithNextMonth = localDate.with(TemporalAdjusters.firstDayOfNextMonth()).plusMonths(months);
         return IntStream.range(0, 1).boxed().map(localDateStartingWithNextMonth::plusDays).findAny().get();
     }

@@ -297,11 +297,16 @@ public class CentroTrabajo
         return empleados;
     }
 
+    @JsonProperty("empleados")
     public void setEmpleados(List<Empleado> empleados) {
         this.empleados = empleados;
     }
 
     public void addEmpleados(Empleado empleado){
         this.empleados.add(empleado);
+    }
+
+    public int empleados() {
+        return this.getEmpleados() == null ? 0 : this.getEmpleados().size();
     }
 }

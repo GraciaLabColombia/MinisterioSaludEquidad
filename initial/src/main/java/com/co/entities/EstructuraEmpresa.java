@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static javax.persistence.CascadeType.*;
 
@@ -130,6 +131,7 @@ public class EstructuraEmpresa
         return sedes;
     }
 
+    @JsonProperty("sedes")
     public void setSedes(List<Sede> sedes) {
         this.sedes = sedes;
     }
@@ -354,9 +356,37 @@ public class EstructuraEmpresa
         this.segundoNombreRepresentante = segundoNombreRepresentante;
     }
 
+
+
     public void addSede(Sede sede)
     {
         this.sedes.add(sede);
+    }
+
+    public int sedes() {
+        return this.getSedes() == null ? 0 : this.getSedes().size();
+    }
+
+    public int centros() {
+        AtomicInteger i = new AtomicInteger();
+        if (this.getSedes() != null) {
+            this.getSedes().stream().filter(p -> p.centros != null).forEach(sede -> {
+                sede.getCentros().forEach(c -> i.getAndIncrement());
+            });
+        }
+        return i.get();
+    }
+
+    public int empleados() {
+        AtomicInteger i = new AtomicInteger();
+        if (this.getSedes() != null) {
+            this.getSedes().stream().filter(p -> p.centros != null).forEach(sede -> {
+                sede.getCentros().stream().filter(c -> c.getEmpleados() != null).forEach(centroTrabajo -> {
+                    centroTrabajo.getEmpleados().forEach(e -> i.getAndIncrement());
+                });
+            });
+        }
+        return i.get();
     }
 
     @Override

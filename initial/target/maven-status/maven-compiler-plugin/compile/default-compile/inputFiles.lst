@@ -60,9 +60,11 @@ C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initi
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\CentroTrabajo.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\controller\BaseController.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\dto\InternalServerErrorDTO.java
+C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\service\ParametroGeneralService.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\builder\SerializerCustom.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\VariacionCentro.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\entities\Sede.java
+C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\persistence\ParametroGeneralRepository.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\service\InicioLaboralService.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\persistence\EstructuraEmpresaRepository.java
 C:\Users\Alejandro Lindarte C\Escritorio\Gracialab\SegurosEquidad\MinSalud\initial\src\main\java\com\co\persistence\TerminacionLaboralRepository.java

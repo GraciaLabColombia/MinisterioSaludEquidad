@@ -3,6 +3,7 @@ com\co\persistence\SedesRepository.class
 com\co\service\AfiliacionService.class
 com\co\service\RetractionService.class
 com\co\entities\BaseEntity.class
+com\co\persistence\ParametroGeneralRepository.class
 com\co\annotation\ServiceConfig.class
 com\co\app\Controller$3.class
 com\co\persistence\InicioLaboralRepository.class
@@ -33,6 +34,7 @@ com\co\dto\RequestFormPostDTO.class
 com\co\singleton\ConfiguracionSingleton.class
 com\co\entities\NovedadIBCTipsal.class
 com\co\persistence\ConsultaEmpresaRepository.class
+com\co\utils\SisafitraConstant$ParameroGeneralConstant.class
 com\co\app\Controller$4.class
 com\co\service\LogService.class
 com\co\entities\Sede.class
@@ -85,3 +87,4 @@ com\co\app\Controller$11.class
 com\co\service\ConsultaEmpresaService$1.class
 com\co\app\Controller$6.class
 com\co\persistence\CentroRepository.class
+com\co\service\ParametroGeneralService.class

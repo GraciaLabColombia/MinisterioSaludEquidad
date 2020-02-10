@@ -33,6 +33,10 @@ public class BaseEntity implements Serializable
     private BigDecimal estadoMin;
 
     @JsonSerialize(using = SerializerCustom.class)
+    @Column(name = "COD_ARL")
+    private String codArl;
+
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_TIPDOC")
     private String TipoDocumentoEmpleador;
 
@@ -107,5 +111,14 @@ public class BaseEntity implements Serializable
     @JsonProperty("NumeroDocumentoEmpleador")
     public void setNumeroDocumentoEmpleador(String numeroDocumentoEmpleador) {
         NumeroDocumentoEmpleador = numeroDocumentoEmpleador;
+    }
+
+    public String getCodArl() {
+        return codArl;
+    }
+
+    @JsonProperty("CodigoARL")
+    public void setCodArl(String codArl) {
+        this.codArl = codArl;
     }
 }

@@ -17,6 +17,7 @@ import com.co.service.*;
 import com.co.controller.BaseController;
 import com.co.enums.EstadosEnum;
 import com.co.exception.MinSaludBusinessException;
+import com.co.singleton.ConfiguracionSingleton;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +79,8 @@ public class Controller extends BaseController
 		this.retractionService = new RetractionService();
 		this.transladoEmpresaService = new TransladoEmpresaService();
 		this.parametroGeneralService = new ParametroGeneralService();
+
+		ConfiguracionSingleton.getInstance().setParametros(this.parametroGeneralService.parametros());
 	}
 
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
@@ -159,10 +162,7 @@ public class Controller extends BaseController
 			List<AfiliacionEmpresa> afiliaciones = this.afiliacionService.afiliacionPorEstado(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName());
 			log.info("Numero afiliaciones a registrar: ".concat(String.valueOf(afiliaciones.size())));
             Method method = new Object() {}.getClass().getEnclosingMethod();
-			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.SATARLSERVICIO, new BigDecimal(1), SisafitraConstant.ParameroGeneralConstant.EMPRESA);
-			if(parametro == null)
-				throw new MinSaludBusinessException("Parametro general no existe");
-			log.info("Parametro general Valor: ".concat(parametro.getValor() == null ? "No existe" : parametro.getValor()));
+			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			for(AfiliacionEmpresa afiliacion: afiliaciones)
 			{
 				log.info("Afiliacion ID: ".concat(afiliacion.getAfiliacionEmpresaId().toPlainString()));
@@ -230,7 +230,7 @@ public class Controller extends BaseController
 	{
 		Object response = null;
 		try {
-
+			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			for (InicioLaboral inicioLaboral : this.inicioLaboralService.getIniciosLaborales(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName())) {
 				try {
 
@@ -269,7 +269,7 @@ public class Controller extends BaseController
 	{
 		Object response = null;
 		try {
-
+			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			for(TerminacionLaboral terminacionLaboral: this.terminacionLaboralService.getTerminacionesLaborales(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName()))
 			{
 				try {
@@ -336,15 +336,13 @@ public class Controller extends BaseController
 				return response;
 			List<ConsultaEmpresa> empresas =  this.consultaEmpresaService.transformConsultaEmpresa((List<ConsultaEmpresaDTO>) response, authorization);
 			log.info("Consulta empresa Transform: ".concat(empresas.toString()));
-			int correctos = 0;
-			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.SATARLSERVICIO, new BigDecimal(1), SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			for(ConsultaEmpresa consultaEmpresa: empresas) {
 				try {
 					this.consultaEmpresaService.save(consultaEmpresa);
 					log.info("Consulta empresa Save Ok!");
 					empresasConsultadas.add(consultaEmpresa.getNumeroDocumentoEmpleador());
 					this.logService.save(writeLogSATARL(consultaEmpresa.getEmpreForm(), new BigDecimal(parametro.getValor()), consultaEmpresa.getId(), EstadosEnum.EXITOSO.getName(), "OK", authorization));
-					correctos++;
 				}catch (Exception ex)
 				{
 					empresasIncorrectas.add(consultaEmpresa.getNumeroDocumentoEmpleador());
@@ -374,6 +372,9 @@ public class Controller extends BaseController
 		} catch (InvocationTargetException e) {
 			log.error("Error al invocar el servicio: ERROR: ".concat(e.getMessage()));
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (MinSaludBusinessException e) {
+			log.error("Error de negocio. ERROR: ".concat(e.getMessage()));
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -395,8 +396,7 @@ public class Controller extends BaseController
 			name = "ConsultaEstructuraEmpresa", clientId = "d99d20985fde4150b924c8d0177691b6",
 			uri = "/ConsultaEstructuraEmpresa", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public Object consultaEstructuraEmpresa(@RequestHeader("Authorization") String authorization)
-	{
+	public Object consultaEstructuraEmpresa(@RequestHeader("Authorization") String authorization) throws MinSaludBusinessException {
 			List<String> documentosFull = new ArrayList<>();
 			List<String> estructurasIncorrectas = new ArrayList<>();
 			Object response = null;
@@ -405,9 +405,9 @@ public class Controller extends BaseController
             log.info("Fecha para buscar estructuras Empresa es: ".concat(now.toString()));
 
 			List<ConsultaEmpresa> empresasAConsultar = this.consultaEmpresaService.consultaEmpresaPorFecha(now.toString(), LocalDate.now().toString());
-			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.SATARLSERVICIO, new BigDecimal(1), SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 
-			for(ConsultaEmpresa consultaEmpresa: empresasAConsultar) {
+		for(ConsultaEmpresa consultaEmpresa: empresasAConsultar) {
 				try
 				{
 					log.info("Consulta estructura empresa INIT: Empresa a consultar: ".concat(consultaEmpresa.getNumeroDocumentoEmpleador()));
@@ -461,26 +461,29 @@ public class Controller extends BaseController
 			name = "TrasladoEmpleador", clientId = "ecf9cfbadbe046f8b33f372dbbca31cd",
 			uri = "/TrasladoEmpleador", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public Object trasladoEmpleador(@RequestHeader("Authorization") String authorization)
-	{
+	public Object trasladoEmpleador(@RequestHeader("Authorization") String authorization) throws MinSaludBusinessException {
 		Object response = null;
+		ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 		for(TransladoEmpresaArl transladoEmpresaArl: this.transladoEmpresaService.getAll(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName())) {
 			try {
 				Method method = new Object() {}.getClass().getEnclosingMethod();
 				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(transladoEmpresaArl), method.getName(), this.getClass(), method.getParameterTypes());
 				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
-				response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
-				this.logService.save(writeLogSATARL(transladoEmpresaArl.getEmpre_form(), transladoEmpresaArl.getTransladoEmpresId(), transladoEmpresaArl.getTransladoEmpresId(), EstadosEnum.EXITOSO.getName(), "OK", authorization));
+				response = super.responseFromPostRequestWithPossibleMappingError(request_body, ResponseMinSaludDTO.class);
+				this.logService.save(writeLogSATARL(transladoEmpresaArl.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), transladoEmpresaArl.getTransladoEmpresId(), EstadosEnum.EXITOSO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 
 			} catch (NoSuchMethodException e) {
 				log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(transladoEmpresaArl.getEmpre_form(), transladoEmpresaArl.getTransladoEmpresId(), transladoEmpresaArl.getTransladoEmpresId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+				assert response != null;
+				this.logService.save(writeLogSATARL(transladoEmpresaArl.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), transladoEmpresaArl.getTransladoEmpresId(), EstadosEnum.FALLIDO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 			} catch (IllegalAccessException | NoSuchFieldException e) {
 				log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(transladoEmpresaArl.getEmpre_form(), transladoEmpresaArl.getTransladoEmpresId(), transladoEmpresaArl.getTransladoEmpresId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+				assert response != null;
+				this.logService.save(writeLogSATARL(transladoEmpresaArl.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), transladoEmpresaArl.getTransladoEmpresId(), EstadosEnum.FALLIDO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 			} catch (IOException e) {
 				log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(transladoEmpresaArl.getEmpre_form(), transladoEmpresaArl.getTransladoEmpresId(), transladoEmpresaArl.getTransladoEmpresId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+				assert response != null;
+				this.logService.save(writeLogSATARL(transladoEmpresaArl.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), transladoEmpresaArl.getTransladoEmpresId(), EstadosEnum.FALLIDO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 			}
 		}
 
@@ -494,24 +497,28 @@ public class Controller extends BaseController
 			method = RequestMethod.POST)
 	public Object retractoTrasladoEmpleador(@RequestHeader("Authorization") String authorization) throws MinSaludBusinessException {
 		Object response = null;
+		ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 		for(Retractacion retractacion: this.retractionService.getAll(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName()))
 		{
 			try {
 				Method method = new Object() {}.getClass().getEnclosingMethod();
 				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(retractacion), method.getName(), this.getClass(), method.getParameterTypes());
 				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
-				response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
-				this.logService.save(writeLogSATARL(retractacion.getEmpre_form(), retractacion.getRetractacionId(), retractacion.getRetractacionId(), EstadosEnum.EXITOSO.getName(),"OK", authorization));
+				response = super.responseFromPostRequestWithPossibleMappingError(request_body, ResponseMinSaludDTO.class);
+				this.logService.save(writeLogSATARL(retractacion.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), retractacion.getRetractacionId(), EstadosEnum.EXITOSO.getName(),((ResponseMinSaludDTO)response).getCodigo(), authorization));
 
 			} catch (NoSuchMethodException e) {
 				log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(retractacion.getEmpre_form(), retractacion.getRetractacionId(), retractacion.getRetractacionId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+				assert response != null;
+				this.logService.save(writeLogSATARL(retractacion.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), retractacion.getRetractacionId(), EstadosEnum.FALLIDO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 			} catch (IllegalAccessException | NoSuchFieldException e) {
 				log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(retractacion.getEmpre_form(), retractacion.getRetractacionId(), retractacion.getRetractacionId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+				assert response != null;
+				this.logService.save(writeLogSATARL(retractacion.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), retractacion.getRetractacionId(), EstadosEnum.FALLIDO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 			} catch (IOException e) {
 				log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(retractacion.getEmpre_form(), retractacion.getRetractacionId(), retractacion.getRetractacionId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+				assert response != null;
+				this.logService.save(writeLogSATARL(retractacion.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), retractacion.getRetractacionId(), EstadosEnum.FALLIDO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 			}
 		}
 
@@ -524,27 +531,29 @@ public class Controller extends BaseController
 			name = "RetiroDefinitivoEmpresaSGRL", clientId = "697a4eff67b24efb8714e512bda5c818",
 			uri = "/RetiroDefinitivoEmpresaSGRL", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public Object retiroDefinitivoEmpresaSGRL(@RequestHeader("Authorization") String authorization)
-	{
+	public Object retiroDefinitivoEmpresaSGRL(@RequestHeader("Authorization") String authorization) throws MinSaludBusinessException {
 		Object response = null;
+		ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 		for(RetiroDefinitivoSGRL retiroDefinitivoSGRL: this.retiroDefinitivoService.getAll()) {
 			try {
-				Method method = new Object() {
-				}.getClass().getEnclosingMethod();
+				Method method = new Object() {}.getClass().getEnclosingMethod();
 				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(retiroDefinitivoSGRL), method.getName(), this.getClass(), method.getParameterTypes());
 				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
 				response =  super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
-				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.EXITOSO.getName(), "OK", authorization));
+				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), new BigDecimal(parametro.getValor().trim()), retiroDefinitivoSGRL.getId(), EstadosEnum.EXITOSO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 
 			} catch (NoSuchMethodException e) {
 				log.error("Configuracion @ServiceConfig invalida: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+				assert response != null;
+				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), new BigDecimal(parametro.getValor().trim()), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 			} catch (IllegalAccessException | NoSuchFieldException e) {
 				log.error("Response es invalido para el objeto ResponseMinSaludDTO: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+				assert response != null;
+				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), new BigDecimal(parametro.getValor().trim()), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 			} catch (IOException e) {
 				log.error("Error de conexion con el servicio: ERROR: ".concat(e.getMessage()));
-				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), retiroDefinitivoSGRL.getId(), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+				assert response != null;
+				this.logService.save(writeLogSATARL(retiroDefinitivoSGRL.getEmpreId(), new BigDecimal(parametro.getValor().trim()), retiroDefinitivoSGRL.getId(), EstadosEnum.FALLIDO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
 			}
 		}
 
@@ -616,9 +625,11 @@ public class Controller extends BaseController
 			name = "ReclasificacionCentroTrabajo", clientId = "a1829924eb1642a2adbe48799a905e55",
 			uri = "/ReclasificacionCentroTrabajo", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public Object reclasificacionCentroTrabajo(@RequestHeader("Authorization") String authorization) {
+	public Object reclasificacionCentroTrabajo(@RequestHeader("Authorization") String authorization) throws MinSaludBusinessException {
 		Object response = null;
-			for (ReclasificacionCentroTrabajo reclasificacionCentroTrabajo : this.reclasificacionCentroTrabajoService.getAll()) {
+		ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+
+		for (ReclasificacionCentroTrabajo reclasificacionCentroTrabajo : this.reclasificacionCentroTrabajoService.getAll()) {
 				try {
 					Method method = new Object() {}.getClass().getEnclosingMethod();
 					RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(reclasificacionCentroTrabajo), method.getName(), this.getClass(), method.getParameterTypes());

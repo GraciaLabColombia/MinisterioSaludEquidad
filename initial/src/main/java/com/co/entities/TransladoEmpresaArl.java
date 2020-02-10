@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@JsonPropertyOrder({ "TipoDocumentoEmpleador", "NumeroDocumentoEmpleador",
+@JsonPropertyOrder({ "CodigoArl", "TipoDocumentoEmpleador", "NumeroDocumentoEmpleador",
         "ConsecutivoNITEmpleador", "FechaNovedad"})
 @JsonIgnoreProperties(value = { "transladoEmpresId",
         "empre_form", "tokenMin", "fechaCaptura", "fechaReporte",

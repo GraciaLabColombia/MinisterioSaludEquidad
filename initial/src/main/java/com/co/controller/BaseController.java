@@ -25,12 +25,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -43,6 +41,13 @@ public class BaseController
         request.getHeaders().forEach(post::setHeader);
         post.setEntity(new ByteArrayEntity(request.getBody().getBytes()));
         return sendRequest(post, type);
+    }
+
+    public <T> Object responseFromPostRequestWithPossibleMappingError(RequestBodyDTO request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
+        HttpPost post = new HttpPost(request.getUrl());
+        request.getHeaders().forEach(post::setHeader);
+        post.setEntity(new ByteArrayEntity(request.getBody().getBytes()));
+        return sendRequestWithMappingError(post, type);
     }
 
     public <T> Object responseFromPostListRequest(RequestBodyDTO request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
@@ -105,14 +110,18 @@ public class BaseController
     }
 
     private <T> Object sendRequestList(HttpUriRequest request, Class<T> type) throws IllegalAccessException, NoSuchFieldException, IOException {
-        return this.sendGeneralRequest(request, type, true);
+        return this.sendGeneralRequest(request, type, true, false);
     }
 
     private <T> Object sendRequest(HttpUriRequest request, Class<T> type) throws IllegalAccessException, NoSuchFieldException, IOException {
-        return this.sendGeneralRequest(request, type, false);
+        return this.sendGeneralRequest(request, type, false, false);
     }
 
-    private <T> Object sendGeneralRequest(HttpUriRequest request, Class<T> type, boolean isArray) throws IOException, NoSuchFieldException, IllegalAccessException {
+    private <T> Object sendRequestWithMappingError(HttpUriRequest request, Class<T> type) throws IllegalAccessException, NoSuchFieldException, IOException {
+        return this.sendGeneralRequest(request, type, false, true);
+    }
+
+    private <T> Object sendGeneralRequest(HttpUriRequest request, Class<T> type, boolean isArray, boolean isPossibleMappingError) throws IOException, NoSuchFieldException, IllegalAccessException {
         ObjectMapper mapper = new ObjectMapper();
         Object returning;
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -123,11 +132,16 @@ public class BaseController
             Field statusCodeField;
             if (status_code != 200 && status_code != 204)
             {
-                returning = new ErrorDTO();
-                ((ErrorDTO)returning).setStatus_code(status_code);
-                ((ErrorDTO)returning).setError(response.getStatusLine().toString());
-                ((ErrorDTO)returning).setError_description(response.getStatusLine().getReasonPhrase());
-                ((ErrorDTO)returning).setError_description(json_string);
+                if(isPossibleMappingError)
+                {
+                    returning = mapper.readValue(json_string, type);
+                }else {
+                    returning = new ErrorDTO();
+                    ((ErrorDTO) returning).setStatus_code(status_code);
+                    ((ErrorDTO) returning).setError(response.getStatusLine().toString());
+                    ((ErrorDTO) returning).setCode_error(response.getStatusLine().getReasonPhrase());
+                    ((ErrorDTO) returning).setError_description(json_string);
+                }
             }else {
                 if(isArray) {
                     returning = mapper.readValue(json_string, mapper.getTypeFactory().constructCollectionType(List.class, type));

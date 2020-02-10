@@ -1,6 +1,11 @@
 package com.co.singleton;
 
 import com.co.dto.TokenDTO;
+import com.co.entities.ParametroGeneral;
+import com.co.exception.MinSaludBusinessException;
+import com.co.utils.SisafitraConstant;
+
+import java.util.List;
 
 public class ConfiguracionSingleton
 {
@@ -8,6 +13,7 @@ public class ConfiguracionSingleton
 
     private TokenDTO token;
     private String authorization;
+    private List<ParametroGeneral> parametros;
 
     public static ConfiguracionSingleton getInstance()
     {
@@ -41,5 +47,19 @@ public class ConfiguracionSingleton
         if (this.authorization == null) {
             this.authorization = authorization;
         }
+    }
+
+    public List<ParametroGeneral> getParametros() {
+        return parametros;
+    }
+
+    public void setParametros(List<ParametroGeneral> parametros) {
+        if(this.parametros == null) {
+            this.parametros = parametros;
+        }
+    }
+
+    public ParametroGeneral getParametroPorDocumento(String parameroGeneralConstant) throws MinSaludBusinessException {
+        return this.parametros.stream().filter(p -> p.getDocumento().equalsIgnoreCase(parameroGeneralConstant)).findFirst().orElseThrow(() -> new MinSaludBusinessException("No existe parametro con ese documento: ".concat(parameroGeneralConstant)));
     }
 }

@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(value = { "empre_form",  "tokenMin", "fechaCaptura", "fechaReporte", "fechaRespuesta", "estadoMin"})
 @MappedSuperclass
@@ -21,13 +22,13 @@ public class BaseEntity implements Serializable
     private String tokenMin;
 
     @Column(name = "FECCAPTURA")
-    private String fechaCaptura;
+    private LocalDateTime fechaCaptura;
 
     @Column(name = "FECREPORTE")
-    private String  fechaReporte;
+    private LocalDateTime  fechaReporte;
 
     @Column(name = "FECRESPUESTA")
-    private String  fechaRespuesta;
+    private LocalDateTime  fechaRespuesta;
 
     @Column(name = "ESTADO_MIN")
     private BigDecimal estadoMin;
@@ -63,27 +64,27 @@ public class BaseEntity implements Serializable
         this.tokenMin = tokenMin;
     }
 
-    public String getFechaCaptura() {
+    public LocalDateTime getFechaCaptura() {
         return fechaCaptura;
     }
 
-    public void setFechaCaptura(String fechaCaptura) {
+    public void setFechaCaptura(LocalDateTime fechaCaptura) {
         this.fechaCaptura = fechaCaptura;
     }
 
-    public String getFechaReporte() {
+    public LocalDateTime getFechaReporte() {
         return fechaReporte;
     }
 
-    public void setFechaReporte(String fechaReporte) {
+    public void setFechaReporte(LocalDateTime fechaReporte) {
         this.fechaReporte = fechaReporte;
     }
 
-    public String getFechaRespuesta() {
+    public LocalDateTime getFechaRespuesta() {
         return fechaRespuesta;
     }
 
-    public void setFechaRespuesta(String fechaRespuesta) {
+    public void setFechaRespuesta(LocalDateTime fechaRespuesta) {
         this.fechaRespuesta = fechaRespuesta;
     }
 

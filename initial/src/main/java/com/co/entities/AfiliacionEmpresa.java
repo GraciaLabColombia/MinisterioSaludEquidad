@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @JsonPropertyOrder({ "CodigoARL", "TipoDocumentoEmpleador", "NumeroDocumentoEmpleador",
                     "ConsecutivoNITEmpleador", "TipoPersona", "NaturalezaJuridica", "TipoAportante",
@@ -85,9 +86,8 @@ public class AfiliacionEmpresa extends BaseEntity
     @Column(name = "EMPRE_REPRE_PRIAPE")
     private String PrimerApellidoRepresentante;
 
-    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "FECCREAARL")
-    private String FechaAfiliacion;
+    private LocalDateTime FechaAfiliacion;
 
     @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_COD_SEDEPRIN")
@@ -293,12 +293,12 @@ public class AfiliacionEmpresa extends BaseEntity
         PrimerApellidoRepresentante = primerApellidoRepresentante;
     }
 
-    public String getFechaAfiliacion() {
+    public LocalDateTime getFechaAfiliacion() {
         return FechaAfiliacion;
     }
 
     @JsonProperty("FechaAfiliacion")
-    public void setFechaAfiliacion(String fechaAfiliacion) {
+    public void setFechaAfiliacion(LocalDateTime fechaAfiliacion) {
         FechaAfiliacion = fechaAfiliacion;
     }
 

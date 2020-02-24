@@ -67,10 +67,6 @@ public class AfiliacionEmpresa extends BaseEntity
     private String ClaseAportante;
 
     @JsonSerialize(using = SerializerCustom.class)
-    @Column(name = "COD_ARL")
-    private String CodigoARL;
-
-    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "TIPDOC_REPRE")
     private String TipoDocumentoRepresentante;
 
@@ -149,15 +145,6 @@ public class AfiliacionEmpresa extends BaseEntity
     @Transient
     @JsonProperty("TipoAportante")
     public int tipAportante;
-
-    public String getCodigoARL() {
-        return CodigoARL;
-    }
-
-    @JsonProperty("CodigoARL")
-    public void setCodigoARL(String codigoARL) {
-        CodigoARL = codigoARL;
-    }
 
     public BigDecimal getAfiliacionEmpresaId() {
         return afiliacionEmpresaId;

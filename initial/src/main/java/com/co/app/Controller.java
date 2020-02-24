@@ -28,6 +28,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import com.co.utils.SisafitraConstant;
 
+import javax.annotation.PostConstruct;
+
 @Component
 @RestController
 @RequestMapping("/")
@@ -66,6 +68,8 @@ public class Controller extends BaseController
     @Autowired
     private ParametroGeneralService parametroGeneralService;
 
+    List<ParametroGeneral> parametros;
+
 	public Controller()
 	{
 		this.afiliacionService = new AfiliacionService();
@@ -80,7 +84,13 @@ public class Controller extends BaseController
 		this.transladoEmpresaService = new TransladoEmpresaService();
 		this.parametroGeneralService = new ParametroGeneralService();
 
-		ConfiguracionSingleton.getInstance().setParametros(this.parametroGeneralService.parametros());
+		this.parametros = new ArrayList<>();
+
+	}
+
+	@PostConstruct
+	public void singleton(){
+		this.parametroGeneralService.parametros();
 	}
 
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
@@ -162,7 +172,7 @@ public class Controller extends BaseController
 			List<AfiliacionEmpresa> afiliaciones = this.afiliacionService.afiliacionPorEstado(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName());
 			log.info("Numero afiliaciones a registrar: ".concat(String.valueOf(afiliaciones.size())));
             Method method = new Object() {}.getClass().getEnclosingMethod();
-			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			for(AfiliacionEmpresa afiliacion: afiliaciones)
 			{
 				log.info("Afiliacion ID: ".concat(afiliacion.getAfiliacionEmpresaId().toPlainString()));
@@ -195,8 +205,8 @@ public class Controller extends BaseController
                 }
 
 				afiliacion.setTokenMin(authorization);
-				afiliacion.setFechaReporte(LocalDateTime.now().toString());
-				afiliacion.setFechaRespuesta(LocalDateTime.now().toString());
+				afiliacion.setFechaReporte(LocalDateTime.now());
+				afiliacion.setFechaRespuesta(LocalDateTime.now());
 				this.afiliacionService.add(afiliacion);
 			}
 
@@ -221,6 +231,19 @@ public class Controller extends BaseController
 		}
     }
 
+        @ApiOperation(value = "Inicia la relacion laboral en una ARL",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/InicioRelacionLaboralARL", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "InicioRelacionLaboralARL", clientId = "37cf0135c6c5408eb474a8ac0cdd11f2",
@@ -229,7 +252,7 @@ public class Controller extends BaseController
 	public Object inicioRelacionLaboralARL(@RequestHeader("Authorization") String authorization) {
 		Object response = null;
 		try {
-			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			for(InicioLaboral inicioLaboral: this.inicioLaboralService.getIniciosLaborales(EstadosEnum.FALLIDO.getName(), EstadosEnum.EN_TRAMITE.getName())) {
 				try {
 					Method method = new Object() {}.getClass().getEnclosingMethod();
@@ -256,6 +279,19 @@ public class Controller extends BaseController
 		return response;
 	}
 
+    @ApiOperation(value = "Termina la relacion laboral en una ARL",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/TerminacionRelacionLaboralARL", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "TerminacionRelacionLaboralARL", clientId = "b09ba3fd1e1e4f05a05daf36bab5a552",
@@ -265,7 +301,7 @@ public class Controller extends BaseController
 	{
 		Object response = null;
 		try {
-			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			for(TerminacionLaboral terminacionLaboral: this.terminacionLaboralService.getTerminacionesLaborales(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName()))
 			{
 				try {
@@ -334,7 +370,7 @@ public class Controller extends BaseController
 				return response;
 			List<ConsultaEmpresa> empresas =  this.consultaEmpresaService.transformConsultaEmpresa((List<ConsultaEmpresaDTO>) response, authorization);
 			log.info("Consulta empresa Transform: ".concat(empresas.toString()));
-			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			for(ConsultaEmpresa consultaEmpresa: empresas) {
 				try {
 					this.consultaEmpresaService.save(consultaEmpresa);
@@ -403,7 +439,7 @@ public class Controller extends BaseController
             log.info("Fecha para buscar estructuras Empresa es: ".concat(now.toString()));
 
 			List<ConsultaEmpresa> empresasAConsultar = this.consultaEmpresaService.consultaEmpresaPorFecha(now.toString(), LocalDate.now().toString());
-			ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 
 		for(ConsultaEmpresa consultaEmpresa: empresasAConsultar) {
 				try
@@ -454,6 +490,19 @@ public class Controller extends BaseController
 			return responseContentExitFailDTO;
 	}
 
+    @ApiOperation(value = "Translada el empleador",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/TrasladoEmpleador", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "TrasladoEmpleador", clientId = "ecf9cfbadbe046f8b33f372dbbca31cd",
@@ -461,7 +510,7 @@ public class Controller extends BaseController
 			method = RequestMethod.POST)
 	public Object trasladoEmpleador(@RequestHeader("Authorization") String authorization) throws MinSaludBusinessException {
 		Object response = null;
-		ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+		ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 		for(TransladoEmpresaArl transladoEmpresaArl: this.transladoEmpresaService.getAll(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName())) {
 			try {
 				Method method = new Object() {}.getClass().getEnclosingMethod();
@@ -488,6 +537,19 @@ public class Controller extends BaseController
 		return response;
 	}
 
+    @ApiOperation(value = "Retractacion del translado del empleador",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/RetractoTrasladoEmpleador", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "RetractoTrasladoEmpleador", clientId = "13d29ae635514990810dd2c6ec54e6ea",
@@ -495,7 +557,7 @@ public class Controller extends BaseController
 			method = RequestMethod.POST)
 	public Object retractoTrasladoEmpleador(@RequestHeader("Authorization") String authorization) throws MinSaludBusinessException {
 		Object response = null;
-		ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+		ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 		for(Retractacion retractacion: this.retractionService.getAll(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName()))
 		{
 			try {
@@ -524,6 +586,19 @@ public class Controller extends BaseController
 		return response;
 	}
 
+    @ApiOperation(value = "Retiro definitivo SGRL",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/RetiroDefinitivoEmpresaSGRL", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "RetiroDefinitivoEmpresaSGRL", clientId = "697a4eff67b24efb8714e512bda5c818",
@@ -531,7 +606,7 @@ public class Controller extends BaseController
 			method = RequestMethod.POST)
 	public Object retiroDefinitivoEmpresaSGRL(@RequestHeader("Authorization") String authorization) throws MinSaludBusinessException {
 		Object response = null;
-		ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+		ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 		for(RetiroDefinitivoSGRL retiroDefinitivoSGRL: this.retiroDefinitivoService.getAll()) {
 			try {
 				Method method = new Object() {}.getClass().getEnclosingMethod();
@@ -558,20 +633,34 @@ public class Controller extends BaseController
 		return response;
 	}
 
+    @ApiOperation(value = "Novedades sedes",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/NovedadesSedes", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "NovedadesSedes", clientId = "f45d4049f9a44f839e692f2ca331ec77",
 			uri = "/NovedadesSedes", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public ResponseMinSaludDTO novedadesSedes(String authorization, String entity_body)
+	public Object novedadesSedes(String authorization, String entity_body)
 	{
-		ResponseMinSaludDTO response = null;
+		Object response = null;
 		try
 		{
+			//ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
-			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
+			response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
 		{
@@ -588,20 +677,34 @@ public class Controller extends BaseController
 		return response;
 	}
 
+    @ApiOperation(value = "Novedades centro de trabajo",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/NovedadesCentroTrabajo", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "NovedadesCentroTrabajo", clientId = "f0dccc17a4b84772848fd5f3efe20f4b",
 			uri = "/NovedadesCentroTrabajo", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public ResponseMinSaludDTO novedadesCentroTrabajo(String authorization, String entity_body)
+	public Object novedadesCentroTrabajo(String authorization, String entity_body)
 	{
-		ResponseMinSaludDTO response = null;
+		Object response = null;
+		//ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 		try
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
-			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
+			response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
 		{
@@ -618,6 +721,19 @@ public class Controller extends BaseController
 		return response;
 	}
 
+    @ApiOperation(value = "Reclasificacion de centro de trabajo",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/ReclasificacionCentroTrabajo", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "ReclasificacionCentroTrabajo", clientId = "a1829924eb1642a2adbe48799a905e55",
@@ -625,7 +741,7 @@ public class Controller extends BaseController
 			method = RequestMethod.POST)
 	public Object reclasificacionCentroTrabajo(@RequestHeader("Authorization") String authorization) throws MinSaludBusinessException {
 		Object response = null;
-		ParametroGeneral parametro = ConfiguracionSingleton.getInstance().getParametroPorDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+		ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 
 		for (ReclasificacionCentroTrabajo reclasificacionCentroTrabajo : this.reclasificacionCentroTrabajoService.getAll()) {
 				try {
@@ -650,20 +766,34 @@ public class Controller extends BaseController
 		return response;
 	}
 
+    @ApiOperation(value = "Novedades transitorias",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/NovedadesTransitorias", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "NovedadesTransitorias", clientId = "6ff4b98c8c22497b9c1d7d7eb5c94644",
 			uri = "/NovedadesTransitorias", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public ResponseMinSaludDTO novedadesTransitorias(String authorization, String entity_body)
+	public Object novedadesTransitorias(String authorization, String entity_body)
 	{
-		ResponseMinSaludDTO response = null;
+		Object response = null;
+		//ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 		try
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
-			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
+			response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
 		{
@@ -680,20 +810,34 @@ public class Controller extends BaseController
 		return response;
 	}
 
+    @ApiOperation(value = "Modificacion IBC",  response = ResponseContentExitFailDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Header con la autenticacion", paramType = "header", dataType = "string")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ResponseContentExitFailDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = void.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+            @ApiResponse(code = 401, message = "Forbidden", response = String.class),
+            @ApiResponse(code = 404, message = "Not found", response = ErrorDTO.class),
+            @ApiResponse(code = 500, message = "Failure", response = InternalServerErrorDTO.class),
+    })
 	@PostMapping(path = "/ModificacionIBC", consumes = "application/json", produces = "application/json")
 	@ServiceConfig(protocol = "https", domain = "sisafitra.sispropreprod.gov.co", port = "8062",
 			name = "ModificacionIBC", clientId = "83d16bb59dc548cb8a75bc43c8da68c6",
 			uri = "/ModificacionIBC", headers = {"Content-Type=application/json"},
 			method = RequestMethod.POST)
-	public ResponseMinSaludDTO modificacionIBC(String authorization, String entity_body)
+	public Object modificacionIBC(String authorization, String entity_body)
 	{
-		ResponseMinSaludDTO response = null;
+		Object response = null;
+		//ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 		try
 		{
 			Method method = new Object() {}.getClass().getEnclosingMethod();
 			RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(entity_body, method.getName(), this.getClass(), method.getParameterTypes());
 			request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION, authorization);
-			response = (ResponseMinSaludDTO) super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
+			response = super.responseFromPostRequest(request_body, ResponseMinSaludDTO.class);
 
 		} catch (NoSuchMethodException e)
 		{

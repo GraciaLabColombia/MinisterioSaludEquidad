@@ -3,25 +3,26 @@ package com.co.singleton;
 import com.co.dto.TokenDTO;
 import com.co.entities.ParametroGeneral;
 import com.co.exception.MinSaludBusinessException;
-import com.co.utils.SisafitraConstant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+@Configuration
 public class ConfiguracionSingleton
 {
     private static ConfiguracionSingleton configuracion;
 
-    private TokenDTO token;
-    private String authorization;
-    private List<ParametroGeneral> parametros;
+    public TokenDTO token;
+    public String authorization;
+    public List<ParametroGeneral> parametros;
 
-    public static ConfiguracionSingleton getInstance()
-    {
-        if (configuracion == null)
-            configuracion = new ConfiguracionSingleton();
 
-        return configuracion;
-    }
+    Logger log = LoggerFactory.getLogger(ConfiguracionSingleton.class);
 
     @Override
     protected Object clone() throws CloneNotSupportedException
@@ -55,11 +56,12 @@ public class ConfiguracionSingleton
 
     public void setParametros(List<ParametroGeneral> parametros) {
         if(this.parametros == null) {
+            log.info("Seteamos: ".concat(parametros.size() + " ").concat("parametros"));
             this.parametros = parametros;
         }
     }
-
     public ParametroGeneral getParametroPorDocumento(String parameroGeneralConstant) throws MinSaludBusinessException {
-        return this.parametros.stream().filter(p -> p.getDocumento().equalsIgnoreCase(parameroGeneralConstant)).findFirst().orElseThrow(() -> new MinSaludBusinessException("No existe parametro con ese documento: ".concat(parameroGeneralConstant)));
+        log.info("Parametros: ".concat(this.parametros.size() + " "));
+        return this.parametros.stream().filter(p -> p.getDocumento().trim().equalsIgnoreCase(parameroGeneralConstant)).findFirst().orElseThrow(() -> new MinSaludBusinessException("No existe parametro con ese documento: ".concat(parameroGeneralConstant)));
     }
 }

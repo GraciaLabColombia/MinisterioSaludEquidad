@@ -1,7 +1,10 @@
 package com.co.controller;
 
 import com.co.dto.ErrorDTO;
+import com.co.entities.ParametroGeneral;
 import com.co.entities.RespuestaSATARL;
+import com.co.exception.MinSaludBusinessException;
+import com.co.singleton.ConfiguracionSingleton;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.co.dto.RequestBodyDTO;
@@ -16,6 +19,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import com.co.utils.SisafitraConstant;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -36,6 +40,8 @@ import java.util.stream.IntStream;
  */
 public class BaseController
 {
+    List<ParametroGeneral> parametros;
+
     public <T> Object responseFromPostRequest(RequestBodyDTO request, Class<T> type) throws IOException, NoSuchFieldException, IllegalAccessException {
         HttpPost post = new HttpPost(request.getUrl());
         request.getHeaders().forEach(post::setHeader);
@@ -92,6 +98,21 @@ public class BaseController
     public static LocalDate getLocalDate(final LocalDate localDate) {
         final LocalDate localDateStartingWithNextMonth = localDate.with(TemporalAdjusters.firstDayOfNextMonth()).plusMonths(1);
         return IntStream.range(0, 1).boxed().map(localDateStartingWithNextMonth::plusDays).findAny().get();
+    }
+
+    public ParametroGeneral getParametroByDocument(String document) throws MinSaludBusinessException {
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(ConfiguracionSingleton.class);
+        ParametroGeneral parametroGeneral = context.getBean(ConfiguracionSingleton.class).getParametroPorDocumento(document);
+
+        return parametroGeneral;
+    }
+
+    public List<ParametroGeneral> getParametros() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfiguracionSingleton.class);
+        this.parametros = context.getBean(ConfiguracionSingleton.class).getParametros();
+
+        return parametros;
     }
 
     public RespuestaSATARL writeLogSATARL(String empre_form, BigDecimal srv_id, BigDecimal srv_consec, BigDecimal estado_min, String error, String authorization){

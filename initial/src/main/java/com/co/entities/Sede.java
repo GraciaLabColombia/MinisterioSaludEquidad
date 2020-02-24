@@ -10,6 +10,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +35,10 @@ public class Sede {
     private String tokenMin;
 
     @Column(name = "FECCAPTURA")
-    private String fecCaptura;
+    private LocalDateTime fecCaptura;
 
     @Column(name = "FECRESPUESTA")
-    private String fecRespuesta;
+    private LocalDateTime fecRespuesta;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "SRV_ESTRUCTURA_EMPRESA_ID")
@@ -135,19 +136,19 @@ public class Sede {
         this.tokenMin = tokenMin;
     }
 
-    public String getFecCaptura() {
+    public LocalDateTime getFecCaptura() {
         return fecCaptura;
     }
 
-    public void setFecCaptura(String fecCaptura) {
+    public void setFecCaptura(LocalDateTime fecCaptura) {
         this.fecCaptura = fecCaptura;
     }
 
-    public String getFecRespuesta() {
+    public LocalDateTime getFecRespuesta() {
         return fecRespuesta;
     }
 
-    public void setFecRespuesta(String fecRespuesta) {
+    public void setFecRespuesta(LocalDateTime fecRespuesta) {
         this.fecRespuesta = fecRespuesta;
     }
 

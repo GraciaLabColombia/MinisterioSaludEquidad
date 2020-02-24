@@ -1,5 +1,8 @@
 package com.co.entities;
 
+import com.co.builder.SerializerCustom;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,21 +15,27 @@ public class ParametroGeneral {
     @Column(name = "idparametro")
     private BigDecimal id;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "parametro")
     private String parametro;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "consecutivo")
     private BigDecimal consecutivo;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "documento")
     private String documento;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "sigla")
     private String sigla;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "activo")
     private BigDecimal activo;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "tipodato")
     private String tipodato;
 
@@ -42,27 +51,34 @@ public class ParametroGeneral {
     @Column(name = "aplicaempleado")
     private BigDecimal aplicaempleado;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "cantidad")
     private String cantidad;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "valor")
     private String valor;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "entecontrol")
     private String entecontrol;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "normatividad")
     private String normatividad;
 
     @Column(name = "feccaptura")
     private LocalDateTime feccaptura;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "usuariocaptura")
     private String usuariocaptura;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "fecinactivacion")
     private String fecinactivacion;
 
+    @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "usuarioinactiva")
     private String usuarioinactiva;
 

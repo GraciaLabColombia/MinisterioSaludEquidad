@@ -169,14 +169,17 @@ public class Controller extends BaseController
 		try
 		{
 			log.info("Consultamos afiliaciones en estado EN_TRAMITE o FALLIDO ");
-			List<AfiliacionEmpresa> afiliaciones = this.afiliacionService.afiliacionPorEstado(EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName());
+			List<AfiliacionEmpresa> afiliaciones = this.afiliacionService.afiliacionPorEstado(
+					EstadosEnum.EN_TRAMITE.getName(), EstadosEnum.FALLIDO.getName());
 			log.info("Numero afiliaciones a registrar: ".concat(String.valueOf(afiliaciones.size())));
             Method method = new Object() {}.getClass().getEnclosingMethod();
-			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(SisafitraConstant.ParameroGeneralConstant.EMPRESA);
+			ParametroGeneral parametro = this.parametroGeneralService.getParametroGeneralParametroDocumento(
+					SisafitraConstant.ParameroGeneralConstant.EMPRESA);
 			for(AfiliacionEmpresa afiliacion: afiliaciones)
 			{
 				log.info("Afiliacion ID: ".concat(afiliacion.getAfiliacionEmpresaId().toPlainString()));
-				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(mapperBody(afiliacion), method.getName(), this.getClass(), method.getParameterTypes());
+				RequestBodyDTO request_body = PropertiesBuilder.getAnnotationFeatures(
+						mapperBody(afiliacion), method.getName(), this.getClass(), method.getParameterTypes());
 				request_body.getHeaders().put(SisafitraConstant.AUTHORIZATION,  authorization);
 				log.info("Afiliacion request: ".concat(request_body.toString()));
 				Object response = null;
@@ -185,12 +188,18 @@ public class Controller extends BaseController
 					log.info("Afiliacion response: ".concat(response.toString()));
 					if(response instanceof ErrorDTO)
 					{
-						this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), afiliacion.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(), authorization));
+						this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(),
+								new BigDecimal(parametro.getValor().trim()), afiliacion.getAfiliacionEmpresaId(),
+								EstadosEnum.FALLIDO.getName(), ((ErrorDTO)response).getError_description(),
+								authorization));
 						afiliacion.setEstadoMin(EstadosEnum.FALLIDO.getName());
 						afiliacionesInCorrectas.add(afiliacion.getNumeroDocumentoEmpleador());
 					} else if(response instanceof ResponseMinSaludDTO)
 					{
-						this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), afiliacion.getAfiliacionEmpresaId(), EstadosEnum.EXITOSO.getName(), ((ResponseMinSaludDTO)response).getCodigo(), authorization));
+						this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(),
+								new BigDecimal(parametro.getValor().trim()), afiliacion.getAfiliacionEmpresaId(),
+								EstadosEnum.EXITOSO.getName(), ((ResponseMinSaludDTO)response).getCodigo(),
+								authorization));
 						afiliacion.setEstadoMin(EstadosEnum.EXITOSO.getName());
 						afiliacionesCorrectas.add(afiliacion.getNumeroDocumentoEmpleador());
 					}
@@ -198,7 +207,10 @@ public class Controller extends BaseController
                 }
                 catch (Exception e)
                 {
-					this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(), new BigDecimal(parametro.getValor().trim()), afiliacion.getAfiliacionEmpresaId(), EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description() : "FAIL", authorization));
+					this.logService.save(writeLogSATARL(afiliacion.getEmpre_form(),
+                            new BigDecimal(parametro.getValor().trim()), afiliacion.getAfiliacionEmpresaId(),
+                            EstadosEnum.FALLIDO.getName(), response instanceof ErrorDTO ? ((ErrorDTO)response).getError_description()
+                                    : "FAIL", authorization));
 					afiliacion.setEstadoMin(EstadosEnum.FALLIDO.getName());
                     log.error("Error interno: ".concat(e.getMessage()));
 					afiliacionesInCorrectas.add(afiliacion.getNumeroDocumentoEmpleador());

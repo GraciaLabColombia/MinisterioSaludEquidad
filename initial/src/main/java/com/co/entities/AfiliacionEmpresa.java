@@ -2,10 +2,14 @@ package com.co.entities;
 
 import com.co.builder.SerializerCustom;
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @JsonPropertyOrder({ "CodigoARL", "TipoDocumentoEmpleador", "NumeroDocumentoEmpleador",
@@ -82,8 +86,11 @@ public class AfiliacionEmpresa extends BaseEntity
     @Column(name = "EMPRE_REPRE_PRIAPE")
     private String PrimerApellidoRepresentante;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     @Column(name = "FECCREAARL")
-    private LocalDateTime FechaAfiliacion;
+    private LocalDate FechaAfiliacion;
 
     @JsonSerialize(using = SerializerCustom.class)
     @Column(name = "EMPRE_COD_SEDEPRIN")
@@ -280,12 +287,12 @@ public class AfiliacionEmpresa extends BaseEntity
         PrimerApellidoRepresentante = primerApellidoRepresentante;
     }
 
-    public LocalDateTime getFechaAfiliacion() {
+    public LocalDate getFechaAfiliacion() {
         return FechaAfiliacion;
     }
 
     @JsonProperty("FechaAfiliacion")
-    public void setFechaAfiliacion(LocalDateTime fechaAfiliacion) {
+    public void setFechaAfiliacion(LocalDate fechaAfiliacion) {
         FechaAfiliacion = fechaAfiliacion;
     }
 

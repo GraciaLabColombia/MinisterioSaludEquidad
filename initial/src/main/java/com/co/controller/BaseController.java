@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.co.dto.RequestBodyDTO;
 import com.co.dto.RequestFormPostDTO;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -79,6 +80,7 @@ public class BaseController
 
     public String mapperBody(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         //mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsString(object);
     }
@@ -116,7 +118,7 @@ public class BaseController
     }
 
     public RespuestaSATARL writeLogSATARL(String empre_form, BigDecimal srv_id, BigDecimal srv_consec, BigDecimal estado_min, String error, String authorization){
-        Pattern patron = Pattern.compile("\\{\"Message\":\"(.+?)\"}");
+        Pattern patron = Pattern.compile("\"mensaje\":\"(.+?)\",\"codigo\":\"(.+?)\"");
         Matcher match = patron.matcher(error);
         RespuestaSATARL respuestaSATARL = new RespuestaSATARL();
         respuestaSATARL.setEmpreForm(empre_form);
@@ -125,8 +127,14 @@ public class BaseController
         respuestaSATARL.setTokenMin(authorization);
         respuestaSATARL.setFecRespuesta(java.util.Date.from(Instant.now()));
         respuestaSATARL.setEstadoMin(estado_min);
-        respuestaSATARL.setIderrorMin(match.find() ? match.group(1) : error);
-
+        if(match.find()) {
+            respuestaSATARL.setDescerrorMin(match.group(1));
+            respuestaSATARL.setIderrorMin(match.group(2));
+        } else {
+            respuestaSATARL.setIderrorMin(error);
+            respuestaSATARL.setDescerrorMin(error);
+        }
+        
         return respuestaSATARL;
     }
 

@@ -35,6 +35,9 @@ public class RespuestaSATARL
     @Column(name = "IDERROR_MIN")
     private String iderrorMin;
 
+    @Column(name = "DESCERROR_MIN")
+    private String descerrorMin;
+
     @Column(name = "ESTADO_ARL")
     private BigDecimal estadoArl;
 
@@ -121,5 +124,13 @@ public class RespuestaSATARL
 
     public void setFecCorrecion(String fecCorrecion) {
         this.fecCorrecion = fecCorrecion;
+    }
+
+    public String getDescerrorMin() {
+        return descerrorMin;
+    }
+
+    public void setDescerrorMin(String descerrorMin) {
+        this.descerrorMin = descerrorMin;
     }
 }
